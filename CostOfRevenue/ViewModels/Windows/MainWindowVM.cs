@@ -12,22 +12,28 @@ namespace CostOfRevenue.ViewModels.Windows
     public partial class MainWindowVM : ObservableObject
     {
         [ObservableProperty]
-        private string _applicationTitle = "WPF UI - CostOfRevenue";
+        private string _applicationTitle = "Cost Of Revenue";
 
         [ObservableProperty]
         private ObservableCollection<object> _menuItems = new()
         {
             new NavigationViewItem()
             {
-                Content = "Home",
+                Content = "Accueil",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Home24 },
                 TargetPageType = typeof(Views.Pages.DashboardPage)
             },
             new NavigationViewItem()
             {
-                Content = "Data",
-                Icon = new SymbolIcon { Symbol = SymbolRegular.DataHistogram24 },
-                TargetPageType = typeof(Views.Pages.DataPage)
+                Content = "Ingrédients",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.List24 },
+                TargetPageType = typeof(Views.Pages.IngredientsPage)
+            },
+            new NavigationViewItem()
+            {
+                Content = "Recettes",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.Book24 },
+                TargetPageType = typeof(Views.Pages.RecipesPage)
             }
         };
 
@@ -36,7 +42,7 @@ namespace CostOfRevenue.ViewModels.Windows
         {
             new NavigationViewItem()
             {
-                Content = "Settings",
+                Content = "Paramètres",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Settings24 },
                 TargetPageType = typeof(Views.Pages.SettingsPage)
             }

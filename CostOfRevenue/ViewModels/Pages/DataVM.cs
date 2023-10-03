@@ -22,7 +22,9 @@ namespace CostOfRevenue.ViewModels.Pages
                 InitializeViewModel();
         }
 
-        public void OnNavigatedFrom() { InitializeViewModel(); }
+        public void OnNavigatedFrom()
+        {
+        }
 
         private void InitializeViewModel()
         {

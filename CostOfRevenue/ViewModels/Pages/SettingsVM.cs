@@ -12,7 +12,7 @@ namespace CostOfRevenue.ViewModels.Pages
         private bool _isInitialized = false;
 
         [ObservableProperty]
-        private string _appVersion = String.Empty;
+        private string _appVersion = string.Empty;
 
         [ObservableProperty]
         private Wpf.Ui.Appearance.ThemeType _currentTheme = Wpf.Ui.Appearance.ThemeType.Unknown;
@@ -23,7 +23,9 @@ namespace CostOfRevenue.ViewModels.Pages
                 InitializeViewModel();
         }
 
-        public void OnNavigatedFrom() { }
+        public void OnNavigatedFrom()
+        {
+        }
 
         private void InitializeViewModel()
         {
