@@ -18,7 +18,31 @@
       mc:Ignorable="d">
 
     <Grid>
-        <ui:VirtualizingItemsControl
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ui:Card>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <ui:TextBox PlaceholderText="Nom du produit..."
+                            Text="{Binding ViewModel.SelectedName}"
+                            Width="300"/>
+                <ComboBox ItemsSource="{Binding ViewModel.UnitsType}" SelectedValue="{Binding ViewModel.SelectedUnitType}"
+                          Grid.Column="1" Margin="10 0 0 0" Width="120"/>
+                <ui:TextBox PlaceholderText="Prix du produit..."
+                            Text="{Binding ViewModel.SelectedPrice}"
+                            Grid.Column="2" Margin="10 0 0 0" Width="140"/>
+            </Grid>
+        </ui:Card>
+        
+        <ui:VirtualizingItemsControl Grid.Row="1"
             Foreground="{DynamicResource TextFillColorSecondaryBrush}"
             ItemsSource="{Binding ViewModel.Colors, Mode=OneWay}"
             VirtualizingPanel.CacheLengthUnit="Item">

@@ -11,7 +11,9 @@ namespace CostOfRevenue.Resources
         public enum Unit
         {
             kilogram,
-            liter
+            liter,
+            piece,
+            dozen
         }
     }
 }

@@ -9,7 +9,7 @@ using Wpf.Ui.Controls;
 
 namespace CostOfRevenue.ViewModels.Pages
 {
-    public partial class IngredientsVM : ObservableObject, INavigationAware
+    public partial class RecipesVM : ObservableObject, INavigationAware
     {
         private bool _isInitialized = false;
 

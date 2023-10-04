@@ -7,10 +7,13 @@ using System.Threading.Tasks;
 
 namespace CostOfRevenue.Models
 {
-    public struct Ingredient
+    public class Ingredient
     {
         public string Id;
         public string Name;
         public Enums.Unit Unit;
+        public float Price;
+        public DateTime Date;
+        public float Quantity;
     }
 }

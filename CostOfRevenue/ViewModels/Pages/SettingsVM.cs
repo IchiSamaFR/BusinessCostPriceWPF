@@ -3,6 +3,7 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
+using CommunityToolkit.Mvvm.Input;
 using Wpf.Ui.Controls;
 
 namespace CostOfRevenue.ViewModels.Pages
@@ -17,6 +18,9 @@ namespace CostOfRevenue.ViewModels.Pages
         [ObservableProperty]
         private Wpf.Ui.Appearance.ThemeType _currentTheme = Wpf.Ui.Appearance.ThemeType.Unknown;
 
+        [ObservableProperty]
+        private List<Wpf.Ui.Appearance.ThemeType> _themes = new List<Wpf.Ui.Appearance.ThemeType>();
+
         public void OnNavigatedTo()
         {
             if (!_isInitialized)
@@ -30,7 +34,8 @@ namespace CostOfRevenue.ViewModels.Pages
         private void InitializeViewModel()
         {
             CurrentTheme = Wpf.Ui.Appearance.Theme.GetAppTheme();
-            AppVersion = $"CostOfRevenue - {GetAssemblyVersion()}";
+            AppVersion = $"v{GetAssemblyVersion()}";
+            Themes = new List<Wpf.Ui.Appearance.ThemeType>() { Wpf.Ui.Appearance.ThemeType.Light, Wpf.Ui.Appearance.ThemeType.Dark };
 
             _isInitialized = true;
         }
@@ -41,28 +46,11 @@ namespace CostOfRevenue.ViewModels.Pages
                 ?? string.Empty;
         }
 
-        [RelayCommand]
-        private void OnChangeTheme(string parameter)
+        partial void OnCurrentThemeChanging(Wpf.Ui.Appearance.ThemeType parameter)
         {
-            switch (parameter)
+            if(CurrentTheme != parameter)
             {
-                case "theme_light":
-                    if (CurrentTheme == Wpf.Ui.Appearance.ThemeType.Light)
-                        break;
-
-                    Wpf.Ui.Appearance.Theme.Apply(Wpf.Ui.Appearance.ThemeType.Light);
-                    CurrentTheme = Wpf.Ui.Appearance.ThemeType.Light;
-
-                    break;
-
-                default:
-                    if (CurrentTheme == Wpf.Ui.Appearance.ThemeType.Dark)
-                        break;
-
-                    Wpf.Ui.Appearance.Theme.Apply(Wpf.Ui.Appearance.ThemeType.Dark);
-                    CurrentTheme = Wpf.Ui.Appearance.ThemeType.Dark;
-
-                    break;
+                Wpf.Ui.Appearance.Theme.Apply(parameter);
             }
         }
     }

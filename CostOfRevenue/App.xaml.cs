@@ -37,8 +37,6 @@ namespace CostOfRevenue
 
                 services.AddSingleton<DashboardPage>();
                 services.AddSingleton<DashboardVM>();
-                services.AddSingleton<DataPage>();
-                services.AddSingleton<DataVM>();
                 services.AddSingleton<SettingsPage>();
                 services.AddSingleton<SettingsVM>();
 

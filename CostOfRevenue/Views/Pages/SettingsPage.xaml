@@ -21,31 +21,82 @@
     </Page.Resources>
 
     <StackPanel>
-        <TextBlock
-            FontSize="20"
-            FontWeight="Medium"
-            Text="Personalization" />
-        <TextBlock Margin="0,12,0,0" Text="Theme" />
-        <RadioButton
-            Margin="0,12,0,0"
-            Command="{Binding ViewModel.ChangeThemeCommand, Mode=OneWay}"
-            CommandParameter="theme_light"
-            Content="Light"
-            GroupName="themeSelect"
-            IsChecked="{Binding ViewModel.CurrentTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}" />
-        <RadioButton
-            Margin="0,8,0,0"
-            Command="{Binding ViewModel.ChangeThemeCommand, Mode=OneWay}"
-            CommandParameter="theme_dark"
-            Content="Dark"
-            GroupName="themeSelect"
-            IsChecked="{Binding ViewModel.CurrentTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}" />
+        <ui:TextBlock
+            Margin="0,0,0,8"
+            FontTypography="BodyStrong"
+            Text="Appearance &amp; behavior" />
 
-        <TextBlock
-            Margin="0,24,0,0"
-            FontSize="20"
-            FontWeight="Medium"
-            Text="About CostOfRevenue" />
-        <TextBlock Margin="0,12,0,0" Text="{Binding ViewModel.AppVersion, Mode=OneWay}" />
+        <ui:Card Margin="0,0,0,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <ui:SymbolIcon Grid.RowSpan="2"
+                               FontSize="28" Margin="0 0 12 0"
+                               Symbol="Color24" />
+                <ui:TextBlock
+                        Grid.Row="0" Grid.Column="1"
+                        FontTypography="Body"
+                        Text="App theme" />
+                <ui:TextBlock
+                        Grid.Row="1" Grid.Column="1"
+                        Foreground="{ui:ThemeResource TextFillColorTertiaryBrush}"
+                        Text="Select which app theme to display" />
+
+                <ComboBox Grid.Column="3" Grid.RowSpan="3" MinWidth="200"
+                      ItemsSource="{Binding ViewModel.Themes}" SelectedValue="{Binding ViewModel.CurrentTheme}">
+                </ComboBox>
+            </Grid>
+        </ui:Card>
+
+        <ui:TextBlock
+            Margin="0,24,0,8"
+            FontTypography="BodyStrong"
+            Text="About" />
+
+        <ui:Card>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+
+                <ui:SymbolIcon Grid.RowSpan="2"
+                               FontSize="28" Margin="0 0 12 0"
+                               Symbol="Apps24" />
+                <ui:TextBlock
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        FontTypography="Body"
+                        Text="Cost of revenues" />
+                <ui:TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Foreground="{ui:ThemeResource TextFillColorTertiaryBrush}"
+                        Text="© 2023 Jordan De Sousa Oliveira" />
+                <TextBlock
+                        Grid.Row="0"
+                        Grid.RowSpan="2"
+                        Grid.Column="2"
+                        Margin="0,0,16,0"
+                        VerticalAlignment="Center"
+                        Foreground="{ui:ThemeResource TextFillColorTertiaryBrush}"
+                        Text="{Binding ViewModel.AppVersion, Mode=OneWay}" />
+            </Grid>
+        </ui:Card>
     </StackPanel>
 </Page>
