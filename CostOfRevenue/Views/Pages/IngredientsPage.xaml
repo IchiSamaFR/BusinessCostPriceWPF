@@ -6,6 +6,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:models="clr-namespace:CostOfRevenue.Models"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:converter="clr-namespace:CostOfRevenue.Helpers"
       Title="IngredientsPage"
       d:DataContext="{d:DesignInstance local:IngredientsPage,
                                        IsDesignTimeCreatable=False}"
@@ -14,53 +15,107 @@
       ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
       ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-      ScrollViewer.CanContentScroll="False"
+      ScrollViewer.CanContentScroll="False" Name="ingredientsPage"
       mc:Ignorable="d">
 
-    <Grid>
+    <Page.Resources>
+        <converter:DecimalConverter x:Key="DecimalConverter"/>
+        <converter:DecimalToString x:Key="DecimalToString"/>
+        <converter:EnumUnitToDescription x:Key="EnumUnitToDescription"/>
+    </Page.Resources>
+
+    <Grid Grid.IsSharedSizeScope="True">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <ui:Card>
+        <ui:Card Margin="0 0 0 10">
             <Grid>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" MaxWidth="240" />
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <ui:TextBox PlaceholderText="Nom du produit..."
-                            Text="{Binding ViewModel.SelectedName}"
-                            Width="300"/>
-                <ComboBox ItemsSource="{Binding ViewModel.UnitsType}" SelectedValue="{Binding ViewModel.SelectedUnitType}"
-                          Grid.Column="1" Margin="10 0 0 0" Width="120"/>
-                <ui:TextBox PlaceholderText="Prix du produit..."
-                            Text="{Binding ViewModel.SelectedPrice}"
-                            Grid.Column="2" Margin="10 0 0 0" Width="140"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <ui:TextBox Text="{Binding ViewModel.NameToFind}"
+                                Margin="0 0 10 0"
+                                PlaceholderText="Rechercher"/>
+                    <ui:Button Icon="{ui:SymbolIcon Search24}" Command="{Binding ViewModel.SearchByTextCommand}"
+                               Grid.Column="1"
+                               VerticalAlignment="Stretch"/>
+                </Grid>
+                <ui:Button Content="Ajout"
+                           Grid.Column="3" Margin="10 0 0 0" 
+                           Command="{Binding ViewModel.AddIngredientCommand}"/>
             </Grid>
         </ui:Card>
-        
-        <ui:VirtualizingItemsControl Grid.Row="1"
-            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-            ItemsSource="{Binding ViewModel.Colors, Mode=OneWay}"
-            VirtualizingPanel.CacheLengthUnit="Item">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type models:DataColor}">
-                    <ui:Button
-                        Width="80"
-                        Height="80"
-                        Margin="2"
-                        Padding="0"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Appearance="Secondary"
-                        Background="{Binding Color, Mode=OneWay}"
-                        FontSize="25"
-                        Icon="Fluent24" />
+        <Grid Grid.Row="1" Margin="12,4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MinWidth="160" Width="*"/>
+                <ColumnDefinition MinWidth="100" Width="*"/>
+                <ColumnDefinition MinWidth="80" MaxWidth="100"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0"
+                       VerticalAlignment="Center"
+                       Margin="0 0 10 0"
+                       Text="Produit" />
+            <TextBlock Grid.Column="1"
+                       VerticalAlignment="Center"
+                       Margin="0 0 10 0"
+                       Text="Unité" />
+            <TextBlock Grid.Column="2"
+                       VerticalAlignment="Center"
+                       Margin="0 0 10 0"
+                       Text="Prix" />
+            <ui:Button Icon="{ui:SymbolIcon Pen24}"
+                       Visibility="Hidden"
+                       Grid.Column="4"/>
+        </Grid>
+        <ListView Grid.Row="2"
+                  ItemsSource="{Binding ViewModel.ShowedIngredients, Mode=TwoWay}"
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto">
+            <ListView.ItemTemplate>
+                <DataTemplate DataType="{x:Type models:Ingredient}">
+                    <Grid Margin="8,0" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition MinWidth="160" Width="*"/>
+                            <ColumnDefinition MinWidth="100" Width="*"/>
+                            <ColumnDefinition MinWidth="80" MaxWidth="100"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   FontWeight="Bold"
+                                   VerticalAlignment="Center"
+                                   Margin="0 0 10 0"
+                                   Text="{Binding Name, Mode=OneWay}" />
+                        <TextBlock Grid.Column="1"
+                                   VerticalAlignment="Center"
+                                   Margin="0 0 10 0"
+                                   Text="{Binding Unit, Mode=OneWay, Converter={StaticResource EnumUnitToDescription}}" />
+                        <TextBlock Grid.Column="2"
+                                   VerticalAlignment="Center"
+                                   Margin="0 0 10 0"
+                                   Text="{Binding Price, Mode=OneWay, Converter={StaticResource DecimalToString}, ConverterParameter='0.00'}" />
+                        <ui:Button Icon="{ui:SymbolIcon Pen24}"
+                                   Grid.Column="4"
+                                   Command="{Binding ViewModel.UpdateIngredientCommand, ElementName=ingredientsPage}"
+                                   CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"/>
+                    </Grid>
                 </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ui:VirtualizingItemsControl>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </Page>

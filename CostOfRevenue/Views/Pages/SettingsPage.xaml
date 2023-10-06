@@ -24,7 +24,7 @@
         <ui:TextBlock
             Margin="0,0,0,8"
             FontTypography="BodyStrong"
-            Text="Appearance &amp; behavior" />
+            Text="Apparence" />
 
         <ui:Card Margin="0,0,0,12">
             <Grid>
@@ -45,11 +45,11 @@
                 <ui:TextBlock
                         Grid.Row="0" Grid.Column="1"
                         FontTypography="Body"
-                        Text="App theme" />
+                        Text="Thème de l'application" />
                 <ui:TextBlock
                         Grid.Row="1" Grid.Column="1"
                         Foreground="{ui:ThemeResource TextFillColorTertiaryBrush}"
-                        Text="Select which app theme to display" />
+                        Text="Selectionnez le thème de l'application." />
 
                 <ComboBox Grid.Column="3" Grid.RowSpan="3" MinWidth="200"
                       ItemsSource="{Binding ViewModel.Themes}" SelectedValue="{Binding ViewModel.CurrentTheme}">
@@ -60,7 +60,7 @@
         <ui:TextBlock
             Margin="0,24,0,8"
             FontTypography="BodyStrong"
-            Text="About" />
+            Text="A propos" />
 
         <ui:Card>
             <Grid>
@@ -82,7 +82,7 @@
                         Grid.Row="0"
                         Grid.Column="1"
                         FontTypography="Body"
-                        Text="Cost of revenues" />
+                        Text="Coût et revenue de fabrication" />
                 <ui:TextBlock
                         Grid.Row="1"
                         Grid.Column="1"

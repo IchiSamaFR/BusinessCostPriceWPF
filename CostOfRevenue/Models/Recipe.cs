@@ -7,11 +7,24 @@ using System.Threading.Tasks;
 
 namespace CostOfRevenue.Models
 {
-    public class Recipe
+    public partial class Recipe : ObservableObject
     {
-        public string Id;
-        public string Name;
+        [ObservableProperty]
+        private string _id;
+        [ObservableProperty]
+        private string _name;
+        [ObservableProperty]
+        private DateTime _date;
 
-        public List<Ingredient> Ingredients;
+        [ObservableProperty]
+        public List<Ingredient> _ingredients;
+
+        public Recipe(string id, string name, DateTime date, List<Ingredient> ingredients)
+        {
+            _id = id;
+            _name = name;
+            _date = date.Date;
+            _ingredients = ingredients;
+        }
     }
 }

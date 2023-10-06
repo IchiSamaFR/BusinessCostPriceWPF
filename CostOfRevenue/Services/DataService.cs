@@ -13,15 +13,29 @@ namespace CostOfRevenue.Services
 {
     public static class DataService
     {
-        private static string folder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        private static string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "CostOfRevenue");
 
         public static ObservableCollection<Ingredient> Ingredients = new ObservableCollection<Ingredient>();
         public static ObservableCollection<Recipe> Recipes = new ObservableCollection<Recipe>();
+        public static IEnumerable<Ingredient> GetLastIngredients
+        {
+            get
+            {
+                return Ingredients.GroupBy(p => p.Id).Select(g => g.OrderByDescending(p => p.Date).FirstOrDefault());
+            }
+        }
+        public static IEnumerable<Recipe> GetLastRecipes
+        {
+            get
+            {
+                return Recipes.GroupBy(p => p.Id).Select(g => g.OrderByDescending(p => p.Date).FirstOrDefault());
+            }
+        }
 
         public static void Initialize()
         {
-            Ingredients = DeserializeData<ObservableCollection<Ingredient>>(nameof(Ingredients));
-            Recipes = DeserializeData<ObservableCollection<Recipe>>(nameof(Recipes));
+            Ingredients = DeserializeData<ObservableCollection<Ingredient>>(nameof(Ingredients)) ?? new ObservableCollection<Ingredient>();
+            Recipes = DeserializeData<ObservableCollection<Recipe>>(nameof(Recipes)) ?? new ObservableCollection<Recipe>();
         }
 
         public static void SaveDatas()
@@ -46,6 +60,10 @@ namespace CostOfRevenue.Services
 
         public static void SerializeData<T>(T obj, string jsonFile)
         {
+            if (!Directory.Exists(folder))
+            {
+                Directory.CreateDirectory(folder);
+            }
             string text = JsonConvert.SerializeObject(obj);
             File.WriteAllText(Path.Combine(folder, jsonFile), text);
         }

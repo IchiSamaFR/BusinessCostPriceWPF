@@ -46,7 +46,7 @@
             FrameMargin="0"
             IsPaneToggleVisible="True"
             MenuItemsSource="{Binding ViewModel.MenuItems, Mode=OneWay}"
-            OpenPaneLength="310"
+            OpenPaneLength="210"
             PaneDisplayMode="Left"
             IsBackButtonVisible="Collapsed">
             <ui:NavigationView.Header>
