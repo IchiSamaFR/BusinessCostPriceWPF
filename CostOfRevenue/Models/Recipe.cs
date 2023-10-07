@@ -1,4 +1,6 @@
-﻿using CostOfRevenue.ViewModels.Pages;
+﻿using CostOfRevenue.Services;
+using CostOfRevenue.ViewModels.Pages;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,15 +18,45 @@ namespace CostOfRevenue.Models
         [ObservableProperty]
         private DateTime _date;
 
-        [ObservableProperty]
-        public List<Ingredient> _ingredients;
 
-        public Recipe(string id, string name, DateTime date, List<Ingredient> ingredients)
+        [ObservableProperty]
+        private List<RecipeIngredient> _recipeIngredients;
+
+
+        [JsonIgnore]
+        public List<Ingredient> Ingredients
+        {
+            get
+            {
+                return RecipeIngredients.Select(r => r.Ingredient).ToList();
+            }
+        }
+
+        public Recipe(string id, string name, DateTime date)
         {
             _id = id;
             _name = name;
             _date = date.Date;
-            _ingredients = ingredients;
+        }
+        public Recipe(string id, string name, DateTime date, IEnumerable<Ingredient> ingredients) : this(id, name, date)
+        {
+            Id = id;
+            Name = name;
+            Date = date;
+            SetIngredients(ingredients);
+        }
+        [JsonConstructor]
+        public Recipe(string id, string name, DateTime date, IEnumerable<RecipeIngredient> ingredients) : this(id, name, date)
+        {
+            Id = id;
+            Name = name;
+            Date = date;
+            RecipeIngredients = ingredients?.ToList();
+        }
+
+        public void SetIngredients(IEnumerable<Ingredient> recipeIngredients)
+        {
+            RecipeIngredients = recipeIngredients?.Select(i => new RecipeIngredient(i.Id, i.Quantity))?.ToList();
         }
     }
 }

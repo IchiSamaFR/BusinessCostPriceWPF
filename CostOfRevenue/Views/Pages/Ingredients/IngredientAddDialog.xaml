@@ -12,13 +12,13 @@
         <converter:DecimalConverter x:Key="DecimalConverter"/>
         <converter:EnumUnitToDescription x:Key="EnumUnitToDescription"/>
     </UserControl.Resources>
-    <Grid>
-        <StackPanel Margin="1">
+    <Grid Margin="1">
+        <StackPanel>
             <ui:TextBox PlaceholderText="Matière première..."
                             Text="{Binding SelectedName}"/>
             <ComboBox ItemsSource="{Binding UnitsType}"
                       SelectedValue="{Binding SelectedUnitType}"
-                          Grid.Column="1" Margin="0 10 0 0">
+                      Grid.Column="1" Margin="0 10 0 0">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Converter={StaticResource EnumUnitToDescription}}" />

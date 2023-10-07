@@ -64,7 +64,7 @@ namespace CostOfRevenue.Services
             {
                 Directory.CreateDirectory(folder);
             }
-            string text = JsonConvert.SerializeObject(obj);
+            string text = JsonConvert.SerializeObject(obj, Formatting.Indented);
             File.WriteAllText(Path.Combine(folder, jsonFile), text);
         }
     }

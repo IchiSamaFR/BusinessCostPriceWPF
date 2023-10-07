@@ -13,18 +13,23 @@ namespace CostOfRevenue.Helpers
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            bool lower = false;
+            if(parameter != null)
+            {
+                lower = parameter.ToString().ToLower() == "true";
+            }
             if(value is Enums.Unit)
             {
                 switch ((Enums.Unit)value)
                 {
                     case Enums.Unit.kilogram:
-                        return "Kilogramme";
+                        return lower ? "Kg" : "Kilogramme";
                     case Enums.Unit.liter:
-                        return "Litre";
+                        return lower ? "L" : "Litre";
                     case Enums.Unit.piece:
-                        return "Pièce";
+                        return lower ? "Pce" : "Pièce";
                     case Enums.Unit.dozen:
-                        return "Douzaine";
+                        return lower ? "Dz" : "Douzaine";
                     default:
                         break;
                 }

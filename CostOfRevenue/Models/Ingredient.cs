@@ -1,4 +1,5 @@
 ﻿using CostOfRevenue.Resources;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,17 +11,18 @@ namespace CostOfRevenue.Models
     public partial class Ingredient : ObservableObject
     {
         [ObservableProperty]
-        public string _id;
+        private string _id;
         [ObservableProperty]
-        public string _name;
+        private string _name;
         [ObservableProperty]
-        public Enums.Unit _unit;
+        private Enums.Unit _unit;
         [ObservableProperty]
-        public float _price;
+        private float _price;
         [ObservableProperty]
-        public DateTime _date;
+        private DateTime _date;
         [ObservableProperty]
-        public float _quantity;
+        [JsonIgnore]
+        private float _quantity;
 
         public Ingredient(string id, string name, Enums.Unit unit, float price, DateTime date)
         {

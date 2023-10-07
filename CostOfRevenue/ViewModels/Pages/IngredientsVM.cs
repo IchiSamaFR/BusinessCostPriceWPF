@@ -124,7 +124,7 @@ namespace CostOfRevenue.ViewModels.Pages
             var result = await _contentDialogService.ShowSimpleDialogAsync(
                 new SimpleContentDialogCreateOptions()
                 {
-                    Title = "Ajouter un produit",
+                    Title = "Modifier un produit",
                     Content = content,
                     PrimaryButtonText = "Modifier",
                     SecondaryButtonText = "Supprimer",

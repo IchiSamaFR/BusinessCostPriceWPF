@@ -1,5 +1,4 @@
-﻿using CostOfRevenue.ViewModels.Pages;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,22 +12,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Wpf.Ui.Controls;
 
-namespace CostOfRevenue.Views.Pages
+namespace CostOfRevenue.Views.Pages.Recipes
 {
     /// <summary>
-    /// Logique d'interaction pour RecipesPage.xaml
+    /// Logique d'interaction pour RecipeAddDialog.xaml
     /// </summary>
-    public partial class RecipesPage : INavigableView<RecipesVM>
+    public partial class RecipeAddDialog : UserControl
     {
-        public RecipesVM ViewModel { get; }
-
-        public RecipesPage(RecipesVM viewModel)
+        public RecipeAddDialog()
         {
-            ViewModel = viewModel;
-            DataContext = this;
-
             InitializeComponent();
         }
     }
