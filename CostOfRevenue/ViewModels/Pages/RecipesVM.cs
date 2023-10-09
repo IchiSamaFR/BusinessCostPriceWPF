@@ -56,6 +56,8 @@ namespace CostOfRevenue.ViewModels.Pages
 
         private void InitializeViewModel()
         {
+            AllIngredients = DataService.Ingredients;
+
             ClearSelection();
             SearchByText();
         }
@@ -72,7 +74,6 @@ namespace CostOfRevenue.ViewModels.Pages
             _modifiedId = string.Empty;
             SelectedName = string.Empty;
 
-            AllIngredients = DataService.Ingredients;
             SelectedIngredient = null;
             SelectedRecipeIngredients.Clear();
 
