@@ -82,18 +82,18 @@
                                    FontWeight="Bold"
                                    VerticalAlignment="Center"
                                    Margin="0 0 10 0"
-                                   Text="{Binding Name, Mode=OneWay}" />
+                                   Text="{Binding Ingredient.Name, Mode=OneWay}" />
                                 <StackPanel Orientation="Horizontal" Grid.Column="1">
                                     <TextBlock
                                    VerticalAlignment="Center"
-                                   Text="{Binding Price, Mode=OneWay, Converter={StaticResource PriceToString}, ConverterParameter='0.00'}" />
+                                   Text="{Binding Ingredient.Price, Mode=OneWay, Converter={StaticResource PriceToString}, ConverterParameter='0.00'}" />
                                     <TextBlock
                                    VerticalAlignment="Center"
                                    Text=" / " />
                                     <TextBlock
                                    VerticalAlignment="Center"
                                    Margin="0 0 10 0"
-                                   Text="{Binding Unit, Mode=OneWay, Converter={StaticResource EnumUnitToDescription}, ConverterParameter=true}" />
+                                   Text="{Binding Ingredient.Unit, Mode=OneWay, Converter={StaticResource EnumUnitToDescription}, ConverterParameter=true}" />
                                 </StackPanel>
                                 <ui:TextBox Text="{Binding Quantity}"
                                         PlaceholderText="Quantité..." Grid.Column="2"/>

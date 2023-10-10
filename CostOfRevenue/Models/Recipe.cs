@@ -38,13 +38,6 @@ namespace CostOfRevenue.Models
             _name = name;
             _date = date.Date;
         }
-        public Recipe(string id, string name, DateTime date, IEnumerable<Ingredient> ingredients) : this(id, name, date)
-        {
-            Id = id;
-            Name = name;
-            Date = date;
-            SetIngredients(ingredients);
-        }
         [JsonConstructor]
         public Recipe(string id, string name, DateTime date, IEnumerable<RecipeIngredient> ingredients) : this(id, name, date)
         {
@@ -54,9 +47,9 @@ namespace CostOfRevenue.Models
             RecipeIngredients = ingredients?.ToList();
         }
 
-        public void SetIngredients(IEnumerable<Ingredient> recipeIngredients)
+        public void SetIngredients(IEnumerable<RecipeIngredient> recipeIngredients)
         {
-            RecipeIngredients = recipeIngredients?.Select(i => new RecipeIngredient(i.Id, i.Quantity))?.ToList();
+            RecipeIngredients = recipeIngredients.ToList();
         }
     }
 }

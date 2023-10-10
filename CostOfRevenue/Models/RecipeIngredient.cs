@@ -27,15 +27,20 @@ namespace CostOfRevenue.Models
                 {
                     _ingredient = DataService.GetLastIngredients.FirstOrDefault(i => i.Id == Id);
                 }
-                _ingredient.Quantity = Quantity;
                 return _ingredient;
             }
         }
 
+        [JsonConstructor]
         public RecipeIngredient(string id, float quantity)
         {
             _id = id;
             _quantity = quantity;
+        }
+        public RecipeIngredient(Ingredient ingredient)
+        {
+            _id = ingredient.Id;
+            _quantity = 0;
         }
     }
 }

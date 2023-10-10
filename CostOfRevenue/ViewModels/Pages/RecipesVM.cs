@@ -25,7 +25,7 @@ namespace CostOfRevenue.ViewModels.Pages
         private IEnumerable<Ingredient> _allIngredients;
 
         [ObservableProperty]
-        private ObservableCollection<Ingredient> _selectedRecipeIngredients = new ObservableCollection<Ingredient>();
+        private ObservableCollection<RecipeIngredient> _selectedRecipeIngredients = new ObservableCollection<RecipeIngredient>();
         #endregion
 
 
@@ -108,7 +108,7 @@ namespace CostOfRevenue.ViewModels.Pages
             _modifiedId = recipe.Id;
             SelectedName = recipe.Name;
             SelectedRecipeIngredients.Clear();
-            SelectedRecipeIngredients.AddRange(recipe.Ingredients);
+            SelectedRecipeIngredients.AddRange(recipe.RecipeIngredients);
 
             var content = new RecipeAddDialog();
             content.DataContext = this;
@@ -150,16 +150,16 @@ namespace CostOfRevenue.ViewModels.Pages
         [RelayCommand]
         public async void AddIngredientToRecipe()
         {
-            if (SelectedRecipeIngredients.Contains(SelectedIngredient))
+            if (SelectedIngredient == null || SelectedRecipeIngredients.Any(s => s.Id == SelectedIngredient.Id))
             {
                 return;
             }
-            SelectedRecipeIngredients.Add(SelectedIngredient);
+            SelectedRecipeIngredients.Add(new RecipeIngredient(SelectedIngredient));
             SelectedIngredient = null;
         }
 
         [RelayCommand]
-        public void RemoveIngredientToRecipe(Ingredient ingredient)
+        public void RemoveIngredientToRecipe(RecipeIngredient ingredient)
         {
             SelectedRecipeIngredients.Remove(ingredient);
         }

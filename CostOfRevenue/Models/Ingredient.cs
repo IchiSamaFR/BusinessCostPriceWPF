@@ -20,9 +20,6 @@ namespace CostOfRevenue.Models
         private float _price;
         [ObservableProperty]
         private DateTime _date;
-        [ObservableProperty]
-        [JsonIgnore]
-        private float _quantity;
 
         public Ingredient(string id, string name, Enums.Unit unit, float price, DateTime date)
         {
