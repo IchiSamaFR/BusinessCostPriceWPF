@@ -19,13 +19,26 @@ namespace CostOfRevenue.ViewModels.Pages
         private string _selectedName = string.Empty;
 
         [ObservableProperty]
-        private Ingredient _selectedIngredient;
+        private IIngredient _selectedIngredient;
 
         [ObservableProperty]
-        private IEnumerable<Ingredient> _allIngredients;
+        private IEnumerable<IIngredient> _allIngredients;
 
         [ObservableProperty]
         private ObservableCollection<RecipeIngredient> _selectedRecipeIngredients = new ObservableCollection<RecipeIngredient>();
+
+        private IEnumerable<IIngredient> GetAllIngredients(Recipe recipe = null)
+        {
+            return DataService.GetLastIIngredients.Where(i =>
+            {
+                if (i is Recipe)
+                {
+                    var rec = (Recipe)i;
+                    return !rec.Ingredients.Contains(recipe) && rec != recipe;
+                }
+                return true;
+            });
+        }
         #endregion
 
 
@@ -56,8 +69,6 @@ namespace CostOfRevenue.ViewModels.Pages
 
         private void InitializeViewModel()
         {
-            AllIngredients = DataService.Ingredients;
-
             ClearSelection();
             SearchByText();
         }
@@ -71,6 +82,8 @@ namespace CostOfRevenue.ViewModels.Pages
         [RelayCommand]
         public async void AddRecipe()
         {
+            AllIngredients = GetAllIngredients();
+            AllIngredients = DataService.GetLastIIngredients;
             _modifiedId = string.Empty;
             SelectedName = string.Empty;
 
@@ -100,12 +113,14 @@ namespace CostOfRevenue.ViewModels.Pages
                 default:
                     break;
             }
+            DataService.SaveRecipes();
             SearchByText();
         }
 
         [RelayCommand]
         public async void UpdateRecipe(Recipe recipe)
         {
+            AllIngredients = GetAllIngredients(recipe);
             _modifiedId = recipe.Id;
             SelectedName = recipe.Name;
             SelectedRecipeIngredients.Clear();
@@ -139,12 +154,13 @@ namespace CostOfRevenue.ViewModels.Pages
                     }
                     break;
                 case ContentDialogResult.Secondary:
-                    DataService.Recipes.Remove(recipe);
+                    DataService.Remove(recipe);
                     break;
                 case ContentDialogResult.None:
                 default:
                     break;
             }
+            DataService.SaveRecipes();
             SearchByText();
         }
 

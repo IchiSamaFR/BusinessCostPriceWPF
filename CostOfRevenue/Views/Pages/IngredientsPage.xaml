@@ -27,11 +27,10 @@
     <Grid Grid.IsSharedSizeScope="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <ui:Card Margin="0 0 0 10">
+        <ui:Card>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -85,8 +84,8 @@
                        Grid.Column="4"/>
                     </Grid>
                     <ListView Grid.Row="1"
-                  ItemsSource="{Binding ViewModel.ShowedIngredients, Mode=TwoWay}"
-                  ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                              ItemsSource="{Binding ViewModel.ShowedIngredients, Mode=TwoWay}"
+                              ScrollViewer.HorizontalScrollBarVisibility="Auto">
                         <ListView.ItemTemplate>
                             <DataTemplate DataType="{x:Type models:Ingredient}">
                                 <Grid Margin="8,0" >

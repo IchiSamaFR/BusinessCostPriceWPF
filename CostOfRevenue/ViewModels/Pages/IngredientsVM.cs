@@ -107,6 +107,7 @@ namespace CostOfRevenue.ViewModels.Pages
                 default:
                     break;
             }
+            DataService.SaveIngredients();
             SearchByText();
         }
 
@@ -135,7 +136,7 @@ namespace CostOfRevenue.ViewModels.Pages
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    if (ingredient.Date == DateTime.Now.Date)
+                    if (ingredient.Date.Date == DateTime.Now.Date)
                     {
                         ingredient.Name = SelectedName;
                         ingredient.Unit = SelectedUnitType;
@@ -147,12 +148,13 @@ namespace CostOfRevenue.ViewModels.Pages
                     }
                     break;
                 case ContentDialogResult.Secondary:
-                    DataService.Ingredients.Remove(ingredient);
+                    DataService.Remove(ingredient);
                     break;
                 case ContentDialogResult.None:
                 default:
                     break;
             }
+            DataService.SaveIngredients();
             SearchByText();
         }
 

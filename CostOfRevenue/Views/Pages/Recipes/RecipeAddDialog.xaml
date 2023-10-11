@@ -37,7 +37,6 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid Margin="0 0 0 10">
@@ -55,7 +54,14 @@
                               VerticalAlignment="Stretch">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Name}" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ui:SymbolIcon Symbol="{Binding IconString}" Width="24" Height="24" Margin="0 0 10 0"/>
+                                    <ui:TextBlock Text="{Binding Name}" Grid.Column="1"/>
+                                </Grid>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
@@ -63,8 +69,8 @@
                            Grid.Column="3" Margin="10 0 0 0" 
                            Command="{Binding AddIngredientToRecipeCommand}"/>
                 </Grid>
-                <ListView ItemsSource="{Binding SelectedRecipeIngredients, Mode=TwoWay}"
-                      ScrollViewer.HorizontalScrollBarVisibility="Auto" Grid.Row="1">
+                <ListView ItemsSource="{Binding SelectedRecipeIngredients, Mode=TwoWay}" Grid.Row="1"
+                        ScrollViewer.VerticalScrollBarVisibility="Visible">
                     <ListView.ItemTemplate>
                         <DataTemplate DataType="{x:Type models:Ingredient}">
                             <Grid Margin="8,0" >
@@ -72,36 +78,35 @@
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="140"/>
                                     <ColumnDefinition Width="100"/>
-                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0"
+                                <ui:SymbolIcon Symbol="{Binding Ingredient.IconString}" Width="24" Height="24" Margin="0 0 10 0"/>
+                                <TextBlock Grid.Column="1"
                                    FontWeight="Bold"
                                    VerticalAlignment="Center"
                                    Margin="0 0 10 0"
                                    Text="{Binding Ingredient.Name, Mode=OneWay}" />
-                                <StackPanel Orientation="Horizontal" Grid.Column="1">
-                                    <TextBlock
-                                   VerticalAlignment="Center"
-                                   Text="{Binding Ingredient.Price, Mode=OneWay, Converter={StaticResource PriceToString}, ConverterParameter='0.00'}" />
-                                    <TextBlock
-                                   VerticalAlignment="Center"
-                                   Text=" / " />
-                                    <TextBlock
-                                   VerticalAlignment="Center"
-                                   Margin="0 0 10 0"
-                                   Text="{Binding Ingredient.Unit, Mode=OneWay, Converter={StaticResource EnumUnitToDescription}, ConverterParameter=true}" />
+                                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center"
+                                               Text="{Binding Ingredient.Price, Mode=OneWay, Converter={StaticResource PriceToString}, ConverterParameter='0.00'}" />
+                                    <TextBlock VerticalAlignment="Center"
+                                               Text=" / " />
+                                    <TextBlock VerticalAlignment="Center"
+                                               Margin="0 0 10 0"
+                                               Text="{Binding Ingredient.Unit, Mode=OneWay, Converter={StaticResource EnumUnitToDescription}, ConverterParameter=true}" />
                                 </StackPanel>
-                                <ui:TextBox Text="{Binding Quantity}"
-                                        PlaceholderText="Quantité..." Grid.Column="2"/>
-
-                                <ui:Button Icon="{ui:SymbolIcon Delete24}"
-                                   Grid.Column="4"
-                                   Command="{Binding DataContext.RemoveIngredientToRecipeCommand, ElementName=recipesDialog}"
-                                   CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"/>
+                                <ui:TextBox Grid.Column="3"
+                                            Text="{Binding Quantity}"
+                                            PlaceholderText="Quantité..." />
+                                <ui:Button Grid.Column="5"
+                                           Icon="{ui:SymbolIcon Delete24}"
+                                           Command="{Binding DataContext.RemoveIngredientToRecipeCommand, ElementName=recipesDialog}"
+                                           CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"/>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>

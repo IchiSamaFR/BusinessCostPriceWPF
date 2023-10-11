@@ -31,6 +31,13 @@ namespace CostOfRevenue.Services
                 return Recipes.GroupBy(p => p.Id).Select(g => g.OrderByDescending(p => p.Date).FirstOrDefault());
             }
         }
+        public static IEnumerable<IIngredient> GetLastIIngredients
+        {
+            get
+            {
+                return GetLastIngredients.Select(t => t as IIngredient).Concat(GetLastRecipes.Select(t => t as IIngredient));
+            }
+        }
 
         public static void Initialize()
         {
@@ -38,9 +45,36 @@ namespace CostOfRevenue.Services
             Recipes = DeserializeData<ObservableCollection<Recipe>>(nameof(Recipes)) ?? new ObservableCollection<Recipe>();
         }
 
-        public static void SaveDatas()
+        public static void Remove(Ingredient ingredient)
+        {
+            while (true)
+            {
+                var tmp = Ingredients.FirstOrDefault(i => i.Id == ingredient.Id);
+                if (tmp == null)
+                {
+                    break;
+                }
+                Ingredients.Remove(tmp);
+            }
+        }
+        public static void Remove(Recipe recipe)
+        {
+            while(true)
+            {
+                var tmp = Recipes.FirstOrDefault(r => r.Id == recipe.Id);
+                if(tmp == null)
+                {
+                    break;
+                }
+                Recipes.Remove(tmp);
+            }
+        }
+        public static void SaveIngredients()
         {
             SerializeData(Ingredients, nameof(Ingredients));
+        }
+        public static void SaveRecipes()
+        {
             SerializeData(Recipes, nameof(Recipes));
         }
 
@@ -57,7 +91,6 @@ namespace CostOfRevenue.Services
                 return default(T);
             }
         }
-
         public static void SerializeData<T>(T obj, string jsonFile)
         {
             if (!Directory.Exists(folder))

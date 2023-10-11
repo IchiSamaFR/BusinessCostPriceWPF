@@ -5,11 +5,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Wpf.Ui.Common;
+using Wpf.Ui.Controls;
 
 namespace CostOfRevenue.Models
 {
-    public partial class Ingredient : ObservableObject
+    public partial class Ingredient : ObservableObject, IIngredient
     {
+        [JsonIgnore]
+        public string IconString { get; } = "DocumentOnePage24";
+
         [ObservableProperty]
         private string _id;
         [ObservableProperty]

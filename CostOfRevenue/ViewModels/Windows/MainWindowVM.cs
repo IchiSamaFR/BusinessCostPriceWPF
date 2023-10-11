@@ -26,13 +26,13 @@ namespace CostOfRevenue.ViewModels.Windows
             new NavigationViewItem()
             {
                 Content = "Ingrédients",
-                Icon = new SymbolIcon { Symbol = SymbolRegular.List24 },
+                Icon = new SymbolIcon { Symbol = SymbolRegular.DocumentOnePage24 },
                 TargetPageType = typeof(Views.Pages.IngredientsPage)
             },
             new NavigationViewItem()
             {
                 Content = "Recettes",
-                Icon = new SymbolIcon { Symbol = SymbolRegular.Book24 },
+                Icon = new SymbolIcon { Symbol = SymbolRegular.Notebook24 },
                 TargetPageType = typeof(Views.Pages.RecipesPage)
             }
         };

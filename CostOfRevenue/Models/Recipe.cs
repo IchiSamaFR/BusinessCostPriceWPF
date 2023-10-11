@@ -1,4 +1,5 @@
-﻿using CostOfRevenue.Services;
+﻿using CostOfRevenue.Resources;
+using CostOfRevenue.Services;
 using CostOfRevenue.ViewModels.Pages;
 using Newtonsoft.Json;
 using System;
@@ -6,15 +7,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Wpf.Ui.Common;
+using Wpf.Ui.Controls;
 
 namespace CostOfRevenue.Models
 {
-    public partial class Recipe : ObservableObject
+    public partial class Recipe : ObservableObject, IIngredient
     {
+        [JsonIgnore]
+        public string IconString { get; } = "Notebook24";
+
         [ObservableProperty]
         private string _id;
         [ObservableProperty]
         private string _name;
+        [ObservableProperty]
+        private Enums.Unit _unit;
         [ObservableProperty]
         private DateTime _date;
 
@@ -22,9 +30,18 @@ namespace CostOfRevenue.Models
         [ObservableProperty]
         private List<RecipeIngredient> _recipeIngredients;
 
-
+        private float _price;
         [JsonIgnore]
-        public List<Ingredient> Ingredients
+        public float Price
+        {
+            get
+            {
+                return RecipeIngredients.Sum(r => r.Price);
+            }
+        }
+        
+        [JsonIgnore]
+        public List<IIngredient> Ingredients
         {
             get
             {
@@ -43,7 +60,7 @@ namespace CostOfRevenue.Models
         {
             Id = id;
             Name = name;
-            Date = date;
+            Date = date.Date;
             RecipeIngredients = ingredients?.ToList();
         }
 

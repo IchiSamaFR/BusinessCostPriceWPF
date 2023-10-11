@@ -17,17 +17,19 @@ namespace CostOfRevenue.Models
         private float _quantity;
 
         [JsonIgnore]
-        private Ingredient _ingredient;
-        [JsonIgnore]
-        public Ingredient Ingredient
+        public IIngredient Ingredient
         {
             get
             {
-                if (_ingredient == null)
-                {
-                    _ingredient = DataService.GetLastIngredients.FirstOrDefault(i => i.Id == Id);
-                }
-                return _ingredient;
+                return DataService.GetLastIIngredients.FirstOrDefault(i => i.Id == Id);
+            }
+        }
+
+        public float Price
+        {
+            get
+            {
+                return Ingredient.Price * Quantity;
             }
         }
 
@@ -37,7 +39,7 @@ namespace CostOfRevenue.Models
             _id = id;
             _quantity = quantity;
         }
-        public RecipeIngredient(Ingredient ingredient)
+        public RecipeIngredient(IIngredient ingredient)
         {
             _id = ingredient.Id;
             _quantity = 0;

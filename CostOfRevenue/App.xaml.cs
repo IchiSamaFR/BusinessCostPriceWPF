@@ -60,7 +60,6 @@ namespace CostOfRevenue
 
         private async void OnExit(object sender, ExitEventArgs e)
         {
-            DataService.SaveDatas();
             await _host.StopAsync();
 
             _host.Dispose();
