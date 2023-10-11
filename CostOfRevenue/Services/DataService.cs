@@ -14,6 +14,7 @@ namespace CostOfRevenue.Services
     public static class DataService
     {
         private static string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "CostOfRevenue");
+        public static IIngredient DeletedIngredient { get; } = new Ingredient("0", "Supprimé", Resources.Enums.Unit.kilogram, 0);
 
         public static ObservableCollection<Ingredient> Ingredients = new ObservableCollection<Ingredient>();
         public static ObservableCollection<Recipe> Recipes = new ObservableCollection<Recipe>();
@@ -39,6 +40,7 @@ namespace CostOfRevenue.Services
             }
         }
 
+
         public static void Initialize()
         {
             Ingredients = DeserializeData<ObservableCollection<Ingredient>>(nameof(Ingredients)) ?? new ObservableCollection<Ingredient>();
@@ -56,6 +58,7 @@ namespace CostOfRevenue.Services
                 }
                 Ingredients.Remove(tmp);
             }
+            RemoveIngredientFromRecipes(ingredient);
         }
         public static void Remove(Recipe recipe)
         {
@@ -68,7 +71,19 @@ namespace CostOfRevenue.Services
                 }
                 Recipes.Remove(tmp);
             }
+            RemoveIngredientFromRecipes(recipe);
         }
+        public static void RemoveIngredientFromRecipes(IIngredient ingredient)
+        {
+            foreach (var recipe in Recipes.Where(r => r.RecipeIngredients.Any(i => i.Id == ingredient.Id)))
+            {
+                foreach (var recipeIngredient in recipe.RecipeIngredients.Where(i => i.Id == ingredient.Id))
+                {
+                    recipeIngredient.Id = DeletedIngredient.Id;
+                }
+            }
+        }
+
         public static void SaveIngredients()
         {
             SerializeData(Ingredients, nameof(Ingredients));

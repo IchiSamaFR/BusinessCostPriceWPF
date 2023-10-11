@@ -26,6 +26,7 @@ namespace CostOfRevenue.Models
         [ObservableProperty]
         private DateTime _date;
 
+        [JsonConstructor]
         public Ingredient(string id, string name, Enums.Unit unit, float price, DateTime date)
         {
             _id = id;
@@ -33,6 +34,13 @@ namespace CostOfRevenue.Models
             _unit = unit;
             _price = price;
             _date = date.Date;
+        }
+        public Ingredient(string id, string name, Enums.Unit unit, float price)
+        {
+            _id = id;
+            _name = name;
+            _unit = unit;
+            _price = price;
         }
     }
 }

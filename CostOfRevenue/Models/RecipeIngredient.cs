@@ -21,6 +21,10 @@ namespace CostOfRevenue.Models
         {
             get
             {
+                if(Id == "0")
+                {
+                    return DataService.DeletedIngredient;
+                }
                 return DataService.GetLastIIngredients.FirstOrDefault(i => i.Id == Id);
             }
         }
