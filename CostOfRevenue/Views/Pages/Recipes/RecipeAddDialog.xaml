@@ -70,10 +70,10 @@
                            Command="{Binding AddIngredientToRecipeCommand}"/>
                 </Grid>
                 <ListView ItemsSource="{Binding SelectedRecipeIngredients, Mode=TwoWay}" Grid.Row="1"
-                        ScrollViewer.VerticalScrollBarVisibility="Visible">
+                        ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <ListView.ItemTemplate>
                         <DataTemplate DataType="{x:Type models:Ingredient}">
-                            <Grid Margin="8,0" >
+                            <Grid Margin="8,0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>

@@ -72,16 +72,19 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0"
-                       VerticalAlignment="Center"
-                       Margin="0 0 10 0"
-                       Text="Produit" />
+                                   VerticalAlignment="Center"
+                                   Margin="0 0 10 0"
+                                   Text="Produit" />
                         <TextBlock Grid.Column="1"
-                       VerticalAlignment="Center"
-                       Margin="0 0 10 0"
-                       Text="Prix" />
-                        <ui:Button Icon="{ui:SymbolIcon Pen24}"
-                       Visibility="Hidden"
-                       Grid.Column="4"/>
+                                   VerticalAlignment="Center"
+                                   Margin="0 0 10 0"
+                                   Text="Coût Unit." />
+                        <StackPanel Orientation="Horizontal"
+                                    Visibility="Hidden"
+                                    Grid.Column="4">
+                            <ui:Button Icon="{ui:SymbolIcon Pen24}" Margin="0 0 4 0"/>
+                            <ui:Button Icon="{ui:SymbolIcon Delete24}"/>
+                        </StackPanel>
                     </Grid>
                     <ListView Grid.Row="1"
                               ItemsSource="{Binding ViewModel.ShowedIngredients, Mode=TwoWay}"
@@ -99,24 +102,28 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0"
-                                   FontWeight="Bold"
-                                   VerticalAlignment="Center"
-                                   Margin="0 0 10 0"
-                                   Text="{Binding Name, Mode=OneWay}" />
-                                    <StackPanel Grid.Column="1"
-                                    Orientation="Horizontal">
+                                               FontWeight="Bold"
+                                               VerticalAlignment="Center"
+                                               Margin="0 0 10 0"
+                                               Text="{Binding Name, Mode=OneWay}" />
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
                                         <TextBlock VerticalAlignment="Center"
-                                   Text="{Binding Price, Mode=OneWay, Converter={StaticResource PriceToString}, ConverterParameter='0.00'}" />
-                                        <TextBlock
-                                   VerticalAlignment="Center"
-                                   Text=" / " />
+                                                   Text="{Binding Price, Mode=OneWay, Converter={StaticResource PriceToString}, ConverterParameter='0.00'}" />
                                         <TextBlock VerticalAlignment="Center"
-                                   Text="{Binding Unit, Mode=OneWay, Converter={StaticResource EnumUnitToDescription}, ConverterParameter=true}" />
+                                                   Text=" / " />
+                                        <TextBlock VerticalAlignment="Center"
+                                                   Text="{Binding Unit, Mode=OneWay, Converter={StaticResource EnumUnitToDescription}, ConverterParameter=true}" />
                                     </StackPanel>
-                                    <ui:Button Icon="{ui:SymbolIcon Pen24}"
-                                   Grid.Column="4"
-                                   Command="{Binding ViewModel.UpdateIngredientCommand, ElementName=ingredientsPage}"
-                                   CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"/>
+
+                                    <StackPanel Orientation="Horizontal"
+                                                Grid.Column="4">
+                                        <ui:Button Icon="{ui:SymbolIcon Pen24}" Margin="0 0 4 0"
+                                               Command="{Binding ViewModel.UpdateIngredientCommand, ElementName=ingredientsPage}"
+                                               CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"/>
+                                        <ui:Button Icon="{ui:SymbolIcon Delete24}"
+                                               Command="{Binding ViewModel.RemoveIngredientCommand, ElementName=ingredientsPage}"
+                                               CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"/>
+                                    </StackPanel>
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>

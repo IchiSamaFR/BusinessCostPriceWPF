@@ -1,9 +1,11 @@
 ﻿using CostOfRevenue.Models;
 using CostOfRevenue.Resources;
 using CostOfRevenue.Services;
+using CostOfRevenue.Views.Pages.Dialogs;
 using CostOfRevenue.Views.Pages.Ingredients;
 using CostOfRevenue.Views.Pages.Recipes;
 using System.Collections.ObjectModel;
+using System.Windows.Controls;
 using Wpf.Ui.Controls;
 
 namespace CostOfRevenue.ViewModels.Pages
@@ -41,6 +43,13 @@ namespace CostOfRevenue.ViewModels.Pages
         }
         #endregion
 
+        #region -- RemoveDialogBox --
+        [ObservableProperty]
+        private IIngredient _removedIngredient;
+
+        [ObservableProperty]
+        private IEnumerable<Recipe> _removedFromRecipes;
+        #endregion
 
         [ObservableProperty]
         private string _nameToFind = string.Empty;
@@ -135,7 +144,6 @@ namespace CostOfRevenue.ViewModels.Pages
                     Title = "Modifier une recette",
                     Content = content,
                     PrimaryButtonText = "Modifier",
-                    SecondaryButtonText = "Supprimer",
                     CloseButtonText = "Annuler",
                 }
             );
@@ -154,8 +162,39 @@ namespace CostOfRevenue.ViewModels.Pages
                     }
                     break;
                 case ContentDialogResult.Secondary:
+                case ContentDialogResult.None:
+                default:
+                    break;
+            }
+            DataService.SaveRecipes();
+            SearchByText();
+        }
+
+        [RelayCommand]
+        public async void RemoveRecipe(Recipe recipe)
+        {
+            RemovedIngredient = recipe;
+            RemovedFromRecipes = DataService.Recipes.Where(r => r.Ingredients.Any(i => i.Id == recipe.Id)).ToList();
+
+            UserControl content = RemovedFromRecipes.Any() ? new RemoveIngredientWithRecipeDialog() : new RemoveIngredientDialog();
+            content.DataContext = this;
+
+            var result = await _contentDialogService.ShowSimpleDialogAsync(
+                new SimpleContentDialogCreateOptions()
+                {
+                    Title = "Supprimer une recette",
+                    Content = content,
+                    PrimaryButtonText = "Supprimer",
+                    CloseButtonText = "Annuler",
+                }
+            );
+
+            switch (result)
+            {
+                case ContentDialogResult.Primary:
                     DataService.Remove(recipe);
                     break;
+                case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
                 default:
                     break;

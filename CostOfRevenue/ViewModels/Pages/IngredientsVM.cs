@@ -1,6 +1,7 @@
 ﻿using CostOfRevenue.Models;
 using CostOfRevenue.Resources;
 using CostOfRevenue.Services;
+using CostOfRevenue.Views.Pages.Dialogs;
 using CostOfRevenue.Views.Pages.Ingredients;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,14 @@ namespace CostOfRevenue.ViewModels.Pages
 
         [ObservableProperty]
         private float? _selectedPrice = null;
+        #endregion
+
+        #region -- RemoveDialogBox --
+        [ObservableProperty]
+        private IIngredient _removedIngredient;
+
+        [ObservableProperty]
+        private IEnumerable<Recipe> _removedFromRecipes;
         #endregion
 
 
@@ -128,7 +137,6 @@ namespace CostOfRevenue.ViewModels.Pages
                     Title = "Modifier un produit",
                     Content = content,
                     PrimaryButtonText = "Modifier",
-                    SecondaryButtonText = "Supprimer",
                     CloseButtonText = "Annuler",
                 }
             );
@@ -148,8 +156,39 @@ namespace CostOfRevenue.ViewModels.Pages
                     }
                     break;
                 case ContentDialogResult.Secondary:
+                case ContentDialogResult.None:
+                default:
+                    break;
+            }
+            DataService.SaveIngredients();
+            SearchByText();
+        }
+
+        [RelayCommand]
+        public async void RemoveIngredient(Ingredient ingredient)
+        {
+            RemovedIngredient = ingredient;
+            RemovedFromRecipes = DataService.Recipes.Where(r => r.Ingredients.Any(i => i.Id == ingredient.Id)).ToList();
+
+            UserControl content = RemovedFromRecipes.Any() ? new RemoveIngredientWithRecipeDialog() : new RemoveIngredientDialog();
+            content.DataContext = this;
+
+            var result = await _contentDialogService.ShowSimpleDialogAsync(
+                new SimpleContentDialogCreateOptions()
+                {
+                    Title = "Supprimer un ingrédient",
+                    Content = content,
+                    PrimaryButtonText = "Supprimer",
+                    CloseButtonText = "Annuler",
+                }
+            );
+
+            switch (result)
+            {
+                case ContentDialogResult.Primary:
                     DataService.Remove(ingredient);
                     break;
+                case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
                 default:
                     break;
