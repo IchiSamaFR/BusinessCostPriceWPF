@@ -24,6 +24,9 @@ namespace CostOfRevenue.ViewModels.Pages
         private float _selectedQuantity = 0;
 
         [ObservableProperty]
+        private float _selectedCharges = 0;
+        
+        [ObservableProperty]
         private List<Enums.Unit> _unitsType = new List<Enums.Unit>();
 
         [ObservableProperty]
@@ -103,7 +106,6 @@ namespace CostOfRevenue.ViewModels.Pages
         public async void AddRecipe()
         {
             AllIngredients = GetAllIngredients();
-            AllIngredients = DataService.GetLastIIngredients;
             _modifiedId = string.Empty;
             SelectedName = string.Empty;
             SelectedQuantity = 0;
@@ -127,7 +129,7 @@ namespace CostOfRevenue.ViewModels.Pages
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    DataService.Recipes.Add(new Recipe(Guid.NewGuid().ToString(), SelectedName, DateTime.Now, SelectedQuantity, SelectedUnitType,  SelectedRecipeIngredients));
+                    DataService.Recipes.Add(new Recipe(Guid.NewGuid().ToString(), SelectedName, DateTime.Now, SelectedQuantity, SelectedCharges, SelectedUnitType,  SelectedRecipeIngredients));
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
@@ -145,6 +147,7 @@ namespace CostOfRevenue.ViewModels.Pages
             _modifiedId = recipe.Id;
             SelectedName = recipe.Name;
             SelectedQuantity = recipe.RecipeQuantity;
+            SelectedCharges = recipe.Charges;
             SelectedUnitType = recipe.Unit;
             SelectedRecipeIngredients.Clear();
             SelectedRecipeIngredients.AddRange(recipe.RecipeIngredients);
@@ -169,12 +172,13 @@ namespace CostOfRevenue.ViewModels.Pages
                     {
                         recipe.Name = SelectedName;
                         recipe.RecipeQuantity = SelectedQuantity;
+                        recipe.Charges = SelectedCharges;
                         recipe.Unit = SelectedUnitType;
                         recipe.SetIngredients(SelectedRecipeIngredients);
                     }
                     else
                     {
-                        DataService.Recipes.Add(new Recipe(_modifiedId, SelectedName, DateTime.Now, SelectedQuantity, SelectedUnitType, SelectedRecipeIngredients));
+                        DataService.Recipes.Add(new Recipe(_modifiedId, SelectedName, DateTime.Now, SelectedQuantity, SelectedCharges, SelectedUnitType, SelectedRecipeIngredients));
                     }
                     break;
                 case ContentDialogResult.Secondary:
