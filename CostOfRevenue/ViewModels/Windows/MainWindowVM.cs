@@ -34,6 +34,12 @@ namespace CostOfRevenue.ViewModels.Windows
                 Content = "Recettes",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Notebook24 },
                 TargetPageType = typeof(Views.Pages.RecipesPage)
+            },
+            new NavigationViewItem()
+            {
+                Content = "Stock",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.Archive24 },
+                TargetPageType = typeof(Views.Pages.StockPage)
             }
         };
 
