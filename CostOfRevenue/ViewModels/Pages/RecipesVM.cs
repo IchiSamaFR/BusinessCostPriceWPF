@@ -4,8 +4,13 @@ using CostOfRevenue.Services;
 using CostOfRevenue.Views.Pages.Dialogs;
 using CostOfRevenue.Views.Pages.Ingredients;
 using CostOfRevenue.Views.Pages.Recipes;
+using Microsoft.Win32;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Text;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Shapes;
 using Wpf.Ui.Controls;
 
 namespace CostOfRevenue.ViewModels.Pages
@@ -221,6 +226,34 @@ namespace CostOfRevenue.ViewModels.Pages
             }
             DataService.SaveRecipes();
             SearchByText();
+        }
+
+        [RelayCommand]
+        public async void ExportRecipe(Recipe recipe)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Texte CSV|*.csv";
+            saveFileDialog.Title = "Export de la recette";
+            saveFileDialog.ShowDialog();
+
+            if(saveFileDialog.FileName == string.Empty)
+            {
+                return;
+            }
+
+            using (StreamWriter outputFile = new StreamWriter(saveFileDialog.FileName, false, Encoding.UTF8))
+            {
+                outputFile.WriteLine($"Nom;Quantité;Prix Unitaire;Prix Totale");
+
+                foreach (var recipeIngredient in recipe.RecipeIngredients)
+                {
+                    outputFile.WriteLine($"{recipeIngredient.Ingredient.Name};{recipeIngredient.Quantity};{recipeIngredient.Ingredient.UnitPrice};{recipeIngredient.Price}");
+                }
+                outputFile.WriteLine(string.Empty);
+                outputFile.WriteLine($";;Prix;{recipe.RecipePriceNoFee}");
+                outputFile.WriteLine($";;Charges;{recipe.Charges}%");
+                outputFile.WriteLine($"{recipe.Name};{recipe.RecipeQuantity};{recipe.UnitPrice};{recipe.RecipePrice}");
+            }
         }
 
         [RelayCommand]

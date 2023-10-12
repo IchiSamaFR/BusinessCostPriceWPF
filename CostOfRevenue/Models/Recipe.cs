@@ -35,11 +35,19 @@ namespace CostOfRevenue.Models
         private List<RecipeIngredient> _recipeIngredients;
 
         [JsonIgnore]
+        public float RecipePriceNoFee
+        {
+            get
+            {
+                return RecipeIngredients.Sum(r => r.Price);
+            }
+        }
+        [JsonIgnore]
         public float RecipePrice
         {
             get
             {
-                return RecipeIngredients.Sum(r => r.Price) * (1 + (Charges / 100));
+                return RecipePriceNoFee * (1 + (Charges / 100));
             }
         }
         [JsonIgnore]
