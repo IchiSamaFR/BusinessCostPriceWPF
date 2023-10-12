@@ -21,6 +21,15 @@ namespace CostOfRevenue.ViewModels.Pages
         private string _selectedName = string.Empty;
 
         [ObservableProperty]
+        private float _selectedQuantity = 0;
+
+        [ObservableProperty]
+        private List<Enums.Unit> _unitsType = new List<Enums.Unit>();
+
+        [ObservableProperty]
+        private Enums.Unit _selectedUnitType = Enums.Unit.kilogram;
+
+        [ObservableProperty]
         private IIngredient _selectedIngredient;
 
         [ObservableProperty]
@@ -78,6 +87,8 @@ namespace CostOfRevenue.ViewModels.Pages
 
         private void InitializeViewModel()
         {
+            UnitsType = new List<Enums.Unit>() { Enums.Unit.kilogram, Enums.Unit.liter, Enums.Unit.piece, Enums.Unit.dozen };
+
             ClearSelection();
             SearchByText();
         }
@@ -95,7 +106,8 @@ namespace CostOfRevenue.ViewModels.Pages
             AllIngredients = DataService.GetLastIIngredients;
             _modifiedId = string.Empty;
             SelectedName = string.Empty;
-
+            SelectedQuantity = 0;
+            SelectedUnitType = Enums.Unit.kilogram;
             SelectedIngredient = null;
             SelectedRecipeIngredients.Clear();
 
@@ -115,7 +127,7 @@ namespace CostOfRevenue.ViewModels.Pages
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    DataService.Recipes.Add(new Recipe(Guid.NewGuid().ToString(), SelectedName, DateTime.Now, SelectedRecipeIngredients));
+                    DataService.Recipes.Add(new Recipe(Guid.NewGuid().ToString(), SelectedName, DateTime.Now, SelectedQuantity, SelectedUnitType,  SelectedRecipeIngredients));
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
@@ -132,6 +144,8 @@ namespace CostOfRevenue.ViewModels.Pages
             AllIngredients = GetAllIngredients(recipe);
             _modifiedId = recipe.Id;
             SelectedName = recipe.Name;
+            SelectedQuantity = recipe.RecipeQuantity;
+            SelectedUnitType = recipe.Unit;
             SelectedRecipeIngredients.Clear();
             SelectedRecipeIngredients.AddRange(recipe.RecipeIngredients);
 
@@ -154,11 +168,13 @@ namespace CostOfRevenue.ViewModels.Pages
                     if (recipe.Date == DateTime.Now.Date)
                     {
                         recipe.Name = SelectedName;
+                        recipe.RecipeQuantity = SelectedQuantity;
+                        recipe.Unit = SelectedUnitType;
                         recipe.SetIngredients(SelectedRecipeIngredients);
                     }
                     else
                     {
-                        DataService.Recipes.Add(new Recipe(_modifiedId, SelectedName, DateTime.Now, SelectedRecipeIngredients));
+                        DataService.Recipes.Add(new Recipe(_modifiedId, SelectedName, DateTime.Now, SelectedQuantity, SelectedUnitType, SelectedRecipeIngredients));
                     }
                     break;
                 case ContentDialogResult.Secondary:

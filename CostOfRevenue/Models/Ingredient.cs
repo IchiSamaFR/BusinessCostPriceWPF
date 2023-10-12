@@ -22,25 +22,25 @@ namespace CostOfRevenue.Models
         [ObservableProperty]
         private Enums.Unit _unit;
         [ObservableProperty]
-        private float _price;
+        private float _unitPrice;
         [ObservableProperty]
         private DateTime _date;
 
         [JsonConstructor]
-        public Ingredient(string id, string name, Enums.Unit unit, float price, DateTime date)
+        public Ingredient(string id, string name, Enums.Unit unit, float unitPrice, DateTime date)
         {
             _id = id;
             _name = name;
             _unit = unit;
-            _price = price;
+            _unitPrice = unitPrice;
             _date = date.Date;
         }
-        public Ingredient(string id, string name, Enums.Unit unit, float price)
+        public Ingredient(string id, string name, Enums.Unit unit, float unitPrice)
         {
             _id = id;
             _name = name;
             _unit = unit;
-            _price = price;
+            _unitPrice = unitPrice;
         }
     }
 }

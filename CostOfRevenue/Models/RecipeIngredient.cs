@@ -33,7 +33,7 @@ namespace CostOfRevenue.Models
         {
             get
             {
-                return Ingredient.Price * Quantity;
+                return Ingredient.UnitPrice * Quantity;
             }
         }
 

@@ -24,22 +24,30 @@ namespace CostOfRevenue.Models
         [ObservableProperty]
         private Enums.Unit _unit;
         [ObservableProperty]
+        private float _recipeQuantity;
+        [ObservableProperty]
         private DateTime _date;
 
 
         [ObservableProperty]
         private List<RecipeIngredient> _recipeIngredients;
 
-        private float _price;
         [JsonIgnore]
-        public float Price
+        public float RecipePrice
         {
             get
             {
                 return RecipeIngredients.Sum(r => r.Price);
             }
         }
-        
+        [JsonIgnore]
+        public float UnitPrice
+        {
+            get
+            {
+                return RecipePrice / RecipeQuantity;
+            }
+        }
         [JsonIgnore]
         public List<IIngredient> Ingredients
         {
@@ -49,19 +57,14 @@ namespace CostOfRevenue.Models
             }
         }
 
-        public Recipe(string id, string name, DateTime date)
+        public Recipe(string id, string name, DateTime date, float recipeQuantity, Enums.Unit unit, IEnumerable<RecipeIngredient> ingredients)
         {
             _id = id;
             _name = name;
+            _unit = unit;
+            _recipeQuantity = recipeQuantity;
             _date = date.Date;
-        }
-        [JsonConstructor]
-        public Recipe(string id, string name, DateTime date, IEnumerable<RecipeIngredient> ingredients) : this(id, name, date)
-        {
-            Id = id;
-            Name = name;
-            Date = date.Date;
-            RecipeIngredients = ingredients?.ToList();
+            _recipeIngredients = ingredients?.ToList();
         }
 
         public void SetIngredients(IEnumerable<RecipeIngredient> recipeIngredients)

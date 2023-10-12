@@ -108,7 +108,7 @@
                                                Text="{Binding Name, Mode=OneWay}" />
                                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                                         <TextBlock VerticalAlignment="Center"
-                                                   Text="{Binding Price, Mode=OneWay, Converter={StaticResource PriceToString}, ConverterParameter='0.00'}" />
+                                                   Text="{Binding UnitPrice, Mode=OneWay, Converter={StaticResource PriceToString}, ConverterParameter='0.00'}" />
                                         <TextBlock VerticalAlignment="Center"
                                                    Text=" / " />
                                         <TextBlock VerticalAlignment="Center"

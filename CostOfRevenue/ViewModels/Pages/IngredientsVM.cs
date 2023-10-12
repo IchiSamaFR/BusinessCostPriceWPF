@@ -126,7 +126,7 @@ namespace CostOfRevenue.ViewModels.Pages
             _modifiedId = ingredient.Id;
             SelectedUnitType = ingredient.Unit;
             SelectedName = ingredient.Name;
-            SelectedPrice = ingredient.Price;
+            SelectedPrice = ingredient.UnitPrice;
 
             var content = new IngredientAddDialog();
             content.DataContext = this;
@@ -148,7 +148,7 @@ namespace CostOfRevenue.ViewModels.Pages
                     {
                         ingredient.Name = SelectedName;
                         ingredient.Unit = SelectedUnitType;
-                        ingredient.Price = SelectedPrice ?? 0;
+                        ingredient.UnitPrice = SelectedPrice ?? 0;
                     }
                     else
                     {
