@@ -37,7 +37,7 @@ namespace CostOfRevenue.ViewModels.Windows
             },
             new NavigationViewItem()
             {
-                Content = "Stock",
+                Content = "Inventaire",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Archive24 },
                 TargetPageType = typeof(Views.Pages.StockPage)
             }

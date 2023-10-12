@@ -44,6 +44,8 @@ namespace CostOfRevenue
                 services.AddSingleton<IngredientsVM>();
                 services.AddSingleton<RecipesPage>();
                 services.AddSingleton<RecipesVM>();
+                services.AddSingleton<StockVM>();
+                services.AddSingleton<StockPage>();
             }).Build();
 
         public static T GetService<T>()
