@@ -168,7 +168,7 @@ namespace CostOfRevenue.ViewModels.Pages
         public async void RemoveIngredient(Ingredient ingredient)
         {
             RemovedIngredient = ingredient;
-            RemovedFromRecipes = DataService.Recipes.Where(r => r.Ingredients.Any(i => i.Id == ingredient.Id)).ToList();
+            RemovedFromRecipes = DataService.GetLastRecipes.Where(r => r.Ingredients.Any(i => i.Id == ingredient.Id)).ToList();
 
             UserControl content = RemovedFromRecipes.Any() ? new RemoveIngredientWithRecipeDialog() : new RemoveIngredientDialog();
             content.DataContext = this;

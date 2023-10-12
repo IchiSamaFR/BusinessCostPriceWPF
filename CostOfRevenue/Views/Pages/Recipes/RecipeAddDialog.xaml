@@ -87,7 +87,7 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <ui:Button Content="Ajout"
-                           Grid.Column="3" Margin="10 0 0 0" 
+                           Grid.Column="1" Margin="10 0 0 0" 
                            Command="{Binding AddIngredientToRecipeCommand}"/>
                 </Grid>
                 <ListView ItemsSource="{Binding SelectedRecipeIngredients, Mode=TwoWay}" Grid.Row="1"

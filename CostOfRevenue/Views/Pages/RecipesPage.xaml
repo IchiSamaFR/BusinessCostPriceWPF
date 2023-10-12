@@ -7,6 +7,7 @@
       xmlns:models="clr-namespace:CostOfRevenue.Models"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:converter="clr-namespace:CostOfRevenue.Helpers"
+         xmlns:exui="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       Title="RecipesPage" Name="ingredientsPage"
       d:DataContext="{d:DesignInstance local:RecipesPage, IsDesignTimeCreatable=False}"
       d:DesignHeight="450"
@@ -84,12 +85,10 @@
                                    VerticalAlignment="Center"
                                    Margin="0 0 10 0"
                                    Text="Coût Unit." />
-                        <StackPanel Orientation="Horizontal"
-                                    Visibility="Hidden"
-                                    Grid.Column="4">
-                            <ui:Button Icon="{ui:SymbolIcon Pen24}" Margin="0 0 4 0"/>
-                            <ui:Button Icon="{ui:SymbolIcon Delete24}"/>
-                        </StackPanel>
+
+                        <Menu Visibility="Hidden" Grid.Column="4">
+                            <ui:MenuItem Icon="{ui:SymbolIcon MoreVertical24}"/>
+                        </Menu>
                     </Grid>
                     <ListView Grid.Row="1"
                               ItemsSource="{Binding ViewModel.ShowedRecipes, Mode=TwoWay}"
@@ -125,15 +124,20 @@
                                         <TextBlock VerticalAlignment="Center"
                                                    Text="{Binding Unit, Mode=OneWay, Converter={StaticResource EnumUnitToDescription}, ConverterParameter=true}" />
                                     </StackPanel>
-                                    <StackPanel Orientation="Horizontal"
-                                                Grid.Column="4">
-                                        <ui:Button Icon="{ui:SymbolIcon Pen24}" Margin="0 0 4 0"
-                                               Command="{Binding ViewModel.UpdateRecipeCommand, ElementName=ingredientsPage}"
-                                               CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"/>
-                                        <ui:Button Icon="{ui:SymbolIcon Delete24}"
-                                               Command="{Binding ViewModel.RemoveRecipeCommand, ElementName=ingredientsPage}"
-                                               CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"/>
-                                    </StackPanel>
+                                    <Menu Background="Transparent" Grid.Column="4">
+                                        <ui:MenuItem Icon="{ui:SymbolIcon MoreVertical24}">
+                                            <MenuItem Header="Exporter" 
+                                                      Command="{Binding ViewModel.ExportRecipeCommand, ElementName=ingredientsPage}"
+                                                      CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"/>
+                                            <MenuItem Header="Modifier" 
+                                                      Command="{Binding ViewModel.UpdateRecipeCommand, ElementName=ingredientsPage}"
+                                                      CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"/>
+                                            <Separator />
+                                            <MenuItem Header="Supprimer" 
+                                                      Command="{Binding ViewModel.RemoveRecipeCommand, ElementName=ingredientsPage}"
+                                                      CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"/>
+                                        </ui:MenuItem>
+                                    </Menu>
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
