@@ -8,11 +8,12 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="{Binding ViewModel.ApplicationTitle, Mode=OneWay}"
     Width="1100" MinWidth="760"
-    Height="650" MinHeight="650"
+    Height="650" MinHeight="100"
     d:DataContext="{d:DesignInstance local:MainWindow,
                                      IsDesignTimeCreatable=True}"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    d:Background="Red"
     ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
     ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
     ExtendsContentIntoTitleBar="True"
@@ -34,7 +35,7 @@
         
         <ui:NavigationView
             x:Name="NavigationView"
-            Padding="42,0,42,0"
+            Padding="42,32,42,32"
             Margin="0 46 0 0"
             FooterMenuItemsSource="{Binding ViewModel.FooterMenuItems, Mode=OneWay}"
             FrameMargin="0"
@@ -43,13 +44,10 @@
             OpenPaneLength="210"
             PaneDisplayMode="Left"
             IsBackButtonVisible="Collapsed">
-            <ui:NavigationView.Header>
-                <ui:BreadcrumbBar x:Name="BreadcrumbBar" Margin="0,28,0,20" />
-            </ui:NavigationView.Header>
             <ui:NavigationView.ContentOverlay>
-                <Grid>
+                <StackPanel>
                     <ui:SnackbarPresenter x:Name="SnackbarPresenter" />
-                </Grid>
+                </StackPanel>
             </ui:NavigationView.ContentOverlay>
         </ui:NavigationView>
 

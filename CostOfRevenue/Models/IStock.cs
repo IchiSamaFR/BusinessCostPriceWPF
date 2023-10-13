@@ -14,6 +14,7 @@ namespace CostOfRevenue.Models
         string Name { get; }
         Enums.Unit Unit { get; }
         float UnitPrice { get; }
-        float StockQuantity { get; }
+        DateTime Date { get; }
+        float StockQuantity { get; set; }
     }
 }

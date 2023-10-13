@@ -8,29 +8,24 @@
       xmlns:models="clr-namespace:CostOfRevenue.Models"
       xmlns:converter="clr-namespace:CostOfRevenue.Helpers"
       mc:Ignorable="d" 
+      ScrollViewer.CanContentScroll="False"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="StockPage">
-    
+
     <Page.Resources>
         <converter:DecimalConverter x:Key="DecimalConverter"/>
         <converter:PriceToString x:Key="PriceToString"/>
         <converter:EnumUnitToDescription x:Key="EnumUnitToDescription"/>
     </Page.Resources>
-    
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
 
-        <ui:Card>
+    <Grid VerticalAlignment="Top">
+        <ui:Card VerticalAlignment="Stretch">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" MaxWidth="240" />
@@ -50,7 +45,7 @@
                                Grid.Column="1"
                                VerticalAlignment="Stretch"/>
                     </Grid>
-                    
+
                     <StackPanel Orientation="Horizontal" Grid.Column="2">
                         <ui:Button Content="Sauvegarder" Margin="0 0 10 0"
                                    Command="{Binding ViewModel.SaveCommand}"/>
@@ -59,62 +54,56 @@
                     </StackPanel>
                 </Grid>
 
-                <Grid Grid.Row="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <Grid Grid.Row="0" Margin="12,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition MinWidth="160" Width="*"/>
-                            <ColumnDefinition MinWidth="100" Width="*"/>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0"
+                <Grid Margin="12,4" Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition MinWidth="160" Width="*"/>
+                        <ColumnDefinition MinWidth="100" Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0"
                                VerticalAlignment="Center"
                                Margin="0 0 10 0"
                                Text="Produit" />
-                        <TextBlock Grid.Column="1"
+                    <TextBlock Grid.Column="1"
                                VerticalAlignment="Center"
                                Margin="0 0 10 0"
                                Text="Quantité" />
 
-                        <Menu Visibility="Hidden" Grid.Column="0">
-                            <ui:MenuItem Icon="{ui:SymbolIcon MoreVertical24}"/>
-                        </Menu>
-                    </Grid>
-                    
-                    <ListView Grid.Row="1"
-                          ItemsSource="{Binding ViewModel.ShowedIngredients, Mode=TwoWay}"
-                          ScrollViewer.HorizontalScrollBarVisibility="Auto">
-                        <ListView.ItemTemplate>
-                            <DataTemplate DataType="{x:Type models:Ingredient}">
-                                <Grid Margin="8,0" >
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition MinWidth="160" Width="*"/>
-                                        <ColumnDefinition MinWidth="100" Width="*"/>
-                                        <ColumnDefinition Width="2*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0"
-                                           FontWeight="Bold"
-                                           VerticalAlignment="Center"
-                                           Margin="0 0 10 0"
-                                           Text="{Binding Name, Mode=OneWay}" />
-                                    <StackPanel Orientation="Horizontal" Grid.Column="1"
-                                                Margin="0 0 10 0">
-                                        <TextBox VerticalAlignment="Center" Margin="0 0 10 0" Width="80"
-                                             Text="{Binding StockQuantity, Converter={StaticResource DecimalConverter}}"/>
-                                        <TextBlock VerticalAlignment="Center"
-                                               Text="{Binding Unit, Mode=OneWay, Converter={StaticResource EnumUnitToDescription}, ConverterParameter=true}" />
-                                    </StackPanel>
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                    <Menu Visibility="Hidden" Grid.Column="0">
+                        <ui:MenuItem Icon="{ui:SymbolIcon MoreVertical24}"/>
+                    </Menu>
                 </Grid>
+
+                <ListView ItemsSource="{Binding ViewModel.AllStocks, Mode=TwoWay}" Grid.Row="2"
+                          VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                    <ListView.ItemTemplate>
+                        <DataTemplate DataType="{x:Type models:IStock}">
+                            <Grid Margin="8,0" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition MinWidth="160" Width="*"/>
+                                    <ColumnDefinition MinWidth="100" Width="*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Orientation="Horizontal"
+                                           Margin="0 0 10 0">
+                                    <ui:SymbolIcon Symbol="{Binding IconString}" Width="24" Height="24" Margin="0 0 10 0"/>
+                                    <TextBlock FontWeight="Bold"
+                                           VerticalAlignment="Center"
+                                           Text="{Binding Name, Mode=OneWay}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Grid.Column="1"
+                                                Margin="0 0 10 0">
+                                    <TextBox VerticalAlignment="Center" Margin="0 0 10 0" Width="80"
+                                             Text="{Binding StockQuantity, Converter={StaticResource DecimalConverter}}"/>
+                                    <TextBlock VerticalAlignment="Center"
+                                               Text="{Binding Unit, Mode=OneWay, Converter={StaticResource EnumUnitToDescription}, ConverterParameter=true}" />
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </Grid>
         </ui:Card>
     </Grid>

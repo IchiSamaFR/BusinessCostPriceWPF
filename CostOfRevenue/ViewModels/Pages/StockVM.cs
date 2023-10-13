@@ -19,10 +19,10 @@ namespace CostOfRevenue.ViewModels.Pages
         private Dictionary<string, float> _ingredientsBaseStock = new Dictionary<string, float>();
 
         [ObservableProperty]
-        private IEnumerable<Ingredient> _showedIngredients;
+        private IEnumerable<IStock> _showedStocks;
 
         [ObservableProperty]
-        private IEnumerable<Ingredient> _allIngredients;
+        private IEnumerable<IStock> _allStocks;
 
         [ObservableProperty]
         private string _nameToFind = string.Empty;
@@ -32,9 +32,9 @@ namespace CostOfRevenue.ViewModels.Pages
             if (!_isInitialized)
                 InitializeViewModel();
 
-            AllIngredients = DataService.GetLastIngredients;
+            AllStocks = DataService.GetLastIStock;
             _ingredientsBaseStock.Clear();
-            AllIngredients.Foreach(i => _ingredientsBaseStock.Add(i.Id, i.StockQuantity));
+            AllStocks.Foreach(i => _ingredientsBaseStock.Add(i.Id, i.StockQuantity));
             SearchByText();
         }
 
@@ -50,13 +50,13 @@ namespace CostOfRevenue.ViewModels.Pages
         [RelayCommand]
         public void Save()
         {
-            foreach (var ingredient in ShowedIngredients)
+            foreach (var stock in ShowedStocks)
             {
-                var baseStock = _ingredientsBaseStock[ingredient.Id];
-                if(ingredient.StockQuantity != baseStock && ingredient.Date != DateTime.Now.Date)
+                var baseStock = _ingredientsBaseStock[stock.Id];
+                if(stock.StockQuantity != baseStock && stock.Date != DateTime.Now.Date)
                 {
-                    DataService.Ingredients.Add(new Ingredient(ingredient.Id, ingredient.Name, ingredient.Unit, ingredient.UnitPrice, DateTime.Now, ingredient.StockQuantity));
-                    ingredient.StockQuantity = baseStock;
+                    DataService.Ingredients.Add(new Ingredient(stock.Id, stock.Name, stock.Unit, stock.UnitPrice, DateTime.Now, stock.StockQuantity));
+                    stock.StockQuantity = baseStock;
                 }
             }
 
@@ -82,7 +82,7 @@ namespace CostOfRevenue.ViewModels.Pages
                 outputFile.WriteLine($"Nom;Stock;Prix Unitaire;Prix Total");
                 float total = 0;
 
-                foreach (var ingredient in AllIngredients)
+                foreach (var ingredient in AllStocks)
                 {
                     outputFile.WriteLine($"{ingredient.Name};{ingredient.StockQuantity};{ingredient.UnitPrice};{ingredient.UnitPrice * ingredient.StockQuantity}");
                     total += ingredient.UnitPrice * ingredient.StockQuantity;
@@ -95,7 +95,7 @@ namespace CostOfRevenue.ViewModels.Pages
         [RelayCommand]
         public void SearchByText()
         {
-            ShowedIngredients = AllIngredients.Where(i => i.Name.ToLower().Contains(NameToFind.ToLower()));
+            ShowedStocks = AllStocks.Where(i => i.Name.ToLower().Contains(NameToFind.ToLower()));
         }
     }
 }
