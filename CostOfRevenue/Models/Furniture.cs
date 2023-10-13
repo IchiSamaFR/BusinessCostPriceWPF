@@ -5,15 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Wpf.Ui.Common;
-using Wpf.Ui.Controls;
 
 namespace CostOfRevenue.Models
 {
-    public partial class Ingredient : ObservableObject, IIngredient, IStock
+    public partial class Furniture : ObservableObject, IStock
     {
         [JsonIgnore]
-        public string IconString { get; } = "DocumentOnePage24";
+        public string IconString { get; } = "Box24";
 
         [ObservableProperty]
         private string _id;
@@ -29,7 +27,7 @@ namespace CostOfRevenue.Models
         private float _stockQuantity;
 
         [JsonConstructor]
-        public Ingredient(string id, string name, Enums.Unit unit, float unitPrice, DateTime date, float stockQuantity)
+        public Furniture(string id, string name, Enums.Unit unit, float unitPrice, DateTime date, float stockQuantity)
         {
             _id = id;
             _name = name;
@@ -38,20 +36,13 @@ namespace CostOfRevenue.Models
             _date = date.Date;
             _stockQuantity = stockQuantity;
         }
-        public Ingredient(string id, string name, Enums.Unit unit, float unitPrice, DateTime date)
+        public Furniture(string id, string name, Enums.Unit unit, float unitPrice, DateTime date)
         {
             _id = id;
             _name = name;
             _unit = unit;
             _unitPrice = unitPrice;
             _date = date.Date;
-        }
-        public Ingredient(string id, string name, Enums.Unit unit, float unitPrice)
-        {
-            _id = id;
-            _name = name;
-            _unit = unit;
-            _unitPrice = unitPrice;
         }
     }
 }

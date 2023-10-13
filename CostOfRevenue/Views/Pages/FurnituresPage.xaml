@@ -1,22 +1,18 @@
-﻿<Page x:Class="CostOfRevenue.Views.Pages.RecipesPage"
+﻿<Page x:Class="CostOfRevenue.Views.Pages.FurnituresPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:CostOfRevenue.Views.Pages"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:models="clr-namespace:CostOfRevenue.Models"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:CostOfRevenue.Views.Pages"
       xmlns:converter="clr-namespace:CostOfRevenue.Helpers"
-         xmlns:exui="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      Title="RecipesPage" Name="page"
-      d:DataContext="{d:DesignInstance local:RecipesPage, IsDesignTimeCreatable=False}"
-      d:DesignHeight="450"
-      d:DesignWidth="800"
+      mc:Ignorable="d"
       ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
       ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-      ScrollViewer.CanContentScroll="False"
-      mc:Ignorable="d">
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="FurnituresPage" Name="page">
 
     <Page.Resources>
         <converter:DecimalConverter x:Key="DecimalConverter"/>
@@ -39,6 +35,7 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" MaxWidth="240" />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
@@ -56,52 +53,44 @@
                     </Grid>
                     <ui:Button Content="Ajout"
                            Grid.Column="3" Margin="10 0 0 0" 
-                           Command="{Binding ViewModel.AddRecipeCommand}"/>
+                           Command="{Binding ViewModel.AddFurnitureCommand}"/>
                 </Grid>
-
                 <Grid Grid.Row="1" Margin="0 10 0 0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Grid Grid.Row="0"  Margin="12,4">
+                    <Grid Grid.Row="0" Margin="12,4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition MinWidth="160" Width="*"/>
-                            <ColumnDefinition MinWidth="80" Width="*"/>
-                            <ColumnDefinition MinWidth="80" MaxWidth="100"/>
+                            <ColumnDefinition MinWidth="100" Width="*"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0"
                                    VerticalAlignment="Center"
                                    Margin="0 0 10 0"
-                                   Text="Produit" />
+                                   Text="Fourniture" />
                         <TextBlock Grid.Column="1"
                                    VerticalAlignment="Center"
                                    Margin="0 0 10 0"
-                                   Text="Coût" />
-                        <TextBlock Grid.Column="2"
-                                   VerticalAlignment="Center"
-                                   Margin="0 0 10 0"
                                    Text="Coût Unit." />
-
                         <Menu Visibility="Hidden" Grid.Column="4">
                             <ui:MenuItem Icon="{ui:SymbolIcon MoreVertical24}"/>
                         </Menu>
                     </Grid>
                     <ListView Grid.Row="1"
-                              ItemsSource="{Binding ViewModel.ShowedRecipes, Mode=TwoWay}"
+                              ItemsSource="{Binding ViewModel.ShowedFurnitures, Mode=TwoWay}"
                               ScrollViewer.HorizontalScrollBarVisibility="Auto">
                         <ListView.ItemTemplate>
-                            <DataTemplate DataType="{x:Type models:Ingredient}">
+                            <DataTemplate DataType="{x:Type models:Furniture}">
                                 <Grid Margin="8,0" >
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition MinWidth="160" Width="*"/>
-                                        <ColumnDefinition MinWidth="80" Width="*"/>
-                                        <ColumnDefinition MinWidth="80" MaxWidth="100"/>
+                                        <ColumnDefinition MinWidth="100" Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
@@ -110,12 +99,7 @@
                                                VerticalAlignment="Center"
                                                Margin="0 0 10 0"
                                                Text="{Binding Name, Mode=OneWay}" />
-                                    <TextBlock Grid.Column="1"
-                                               VerticalAlignment="Center"
-                                               Margin="0 0 10 0"
-                                               Text="{Binding RecipePrice, Mode=OneWay, Converter={StaticResource PriceToString}, ConverterParameter='0.00'}" />
-
-                                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
                                         <TextBlock VerticalAlignment="Center"
                                                    Text="{Binding UnitPrice, Mode=OneWay, Converter={StaticResource PriceToString}, ConverterParameter='0.00'}" />
                                         <TextBlock VerticalAlignment="Center"
@@ -123,17 +107,15 @@
                                         <TextBlock VerticalAlignment="Center"
                                                    Text="{Binding Unit, Mode=OneWay, Converter={StaticResource EnumUnitToDescription}, ConverterParameter=true}" />
                                     </StackPanel>
+
                                     <Menu Background="Transparent" Grid.Column="4">
                                         <ui:MenuItem Icon="{ui:SymbolIcon MoreVertical24}">
-                                            <MenuItem Header="Exporter" 
-                                                      Command="{Binding ViewModel.ExportRecipeCommand, ElementName=page}"
-                                                      CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"/>
                                             <MenuItem Header="Modifier" 
-                                                      Command="{Binding ViewModel.UpdateRecipeCommand, ElementName=page}"
+                                                      Command="{Binding ViewModel.UpdateFurnitureCommand, ElementName=page}"
                                                       CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"/>
                                             <Separator />
                                             <MenuItem Header="Supprimer" 
-                                                      Command="{Binding ViewModel.RemoveRecipeCommand, ElementName=page}"
+                                                      Command="{Binding ViewModel.RemoveFurnitureCommand, ElementName=page}"
                                                       CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"/>
                                         </ui:MenuItem>
                                     </Menu>

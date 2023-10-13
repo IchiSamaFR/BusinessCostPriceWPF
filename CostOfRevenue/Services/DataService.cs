@@ -13,11 +13,12 @@ namespace CostOfRevenue.Services
 {
     public static class DataService
     {
-        private static string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "CostOfRevenue");
+        private static string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "CostOfRevenue");
         public static IIngredient DeletedIngredient { get; } = new Ingredient("0", "Supprimé", Resources.Enums.Unit.kilogram, 0);
 
         public static ObservableCollection<Ingredient> Ingredients = new ObservableCollection<Ingredient>();
         public static ObservableCollection<Recipe> Recipes = new ObservableCollection<Recipe>();
+        public static ObservableCollection<Furniture> Furnitures = new ObservableCollection<Furniture>();
         public static IEnumerable<Ingredient> GetLastIngredients
         {
             get
@@ -39,12 +40,27 @@ namespace CostOfRevenue.Services
                 return GetLastIngredients.Select(t => t as IIngredient).Concat(GetLastRecipes.Select(t => t as IIngredient));
             }
         }
+        public static IEnumerable<Furniture> GetLastFurnitures
+        {
+            get
+            {
+                return Furnitures.GroupBy(p => p.Id).Select(g => g.OrderByDescending(p => p.Date).FirstOrDefault());
+            }
+        }
+        public static IEnumerable<IStock> GetLastIStock
+        {
+            get
+            {
+                return GetLastIngredients.Select(t => t as IStock).Concat(GetLastFurnitures.Select(t => t as IStock));
+            }
+        }
 
 
         public static void Initialize()
         {
             Ingredients = DeserializeData<ObservableCollection<Ingredient>>(nameof(Ingredients)) ?? new ObservableCollection<Ingredient>();
             Recipes = DeserializeData<ObservableCollection<Recipe>>(nameof(Recipes)) ?? new ObservableCollection<Recipe>();
+            Furnitures = DeserializeData<ObservableCollection<Furniture>>(nameof(Furnitures)) ?? new ObservableCollection<Furniture>();
         }
 
         public static void Remove(Ingredient ingredient)
@@ -73,6 +89,19 @@ namespace CostOfRevenue.Services
             }
             RemoveIngredientFromRecipes(recipe);
         }
+        public static void Remove(Furniture furniture)
+        {
+            while (true)
+            {
+                var tmp = Furnitures.FirstOrDefault(i => i.Id == furniture.Id);
+                if (tmp == null)
+                {
+                    break;
+                }
+                Furnitures.Remove(tmp);
+            }
+        }
+
         public static void RemoveIngredientFromRecipes(IIngredient ingredient)
         {
             foreach (var recipe in Recipes.Where(r => r.RecipeIngredients.Any(i => i.Id == ingredient.Id)))
@@ -91,6 +120,10 @@ namespace CostOfRevenue.Services
         public static void SaveRecipes()
         {
             SerializeData(Recipes, nameof(Recipes));
+        }
+        public static void SaveFurnitures()
+        {
+            SerializeData(Furnitures, nameof(Furnitures));
         }
 
         public static T DeserializeData<T>(string jsonFile)

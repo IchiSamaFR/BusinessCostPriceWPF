@@ -25,6 +25,12 @@ namespace CostOfRevenue.ViewModels.Windows
             },
             new NavigationViewItem()
             {
+                Content = "Fournitures",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.Box24 },
+                TargetPageType = typeof(Views.Pages.FurnituresPage)
+            },
+            new NavigationViewItem()
+            {
                 Content = "Ingrédients",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.DocumentOnePage24 },
                 TargetPageType = typeof(Views.Pages.IngredientsPage)

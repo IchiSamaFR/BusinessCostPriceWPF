@@ -29,7 +29,7 @@
                     <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <ui:TextBox PlaceholderText="Nom de la recette..."
+                <ui:TextBox PlaceholderText="Nom..."
                         Text="{Binding SelectedName}"/>
                 <Grid Grid.Column="1" Margin="20 0 0 0">
                     <Grid.ColumnDefinitions>

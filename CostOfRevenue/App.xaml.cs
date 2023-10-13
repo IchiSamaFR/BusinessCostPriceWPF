@@ -40,10 +40,15 @@ namespace CostOfRevenue
                 services.AddSingleton<SettingsPage>();
                 services.AddSingleton<SettingsVM>();
 
+                services.AddSingleton<FurnituresPage>();
+                services.AddSingleton<FurnituresVM>();
+
                 services.AddSingleton<IngredientsPage>();
                 services.AddSingleton<IngredientsVM>();
+
                 services.AddSingleton<RecipesPage>();
                 services.AddSingleton<RecipesVM>();
+
                 services.AddSingleton<StockVM>();
                 services.AddSingleton<StockPage>();
             }).Build();

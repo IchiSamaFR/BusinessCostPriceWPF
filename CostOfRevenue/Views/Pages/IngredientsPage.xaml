@@ -15,7 +15,7 @@
       ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
       ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-      ScrollViewer.CanContentScroll="False" Name="ingredientsPage"
+      ScrollViewer.CanContentScroll="False" Name="page"
       mc:Ignorable="d">
 
     <Page.Resources>
@@ -24,7 +24,7 @@
         <converter:EnumUnitToDescription x:Key="EnumUnitToDescription"/>
     </Page.Resources>
 
-    <Grid Grid.IsSharedSizeScope="True">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -115,11 +115,11 @@
                                     <Menu Background="Transparent" Grid.Column="4">
                                         <ui:MenuItem Icon="{ui:SymbolIcon MoreVertical24}">
                                             <MenuItem Header="Modifier" 
-                                                      Command="{Binding ViewModel.UpdateIngredientCommand, ElementName=ingredientsPage}"
+                                                      Command="{Binding ViewModel.UpdateIngredientCommand, ElementName=page}"
                                                       CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"/>
                                             <Separator />
                                             <MenuItem Header="Supprimer" 
-                                                      Command="{Binding ViewModel.RemoveIngredientCommand, ElementName=ingredientsPage}"
+                                                      Command="{Binding ViewModel.RemoveIngredientCommand, ElementName=page}"
                                                       CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}"/>
                                         </ui:MenuItem>
                                     </Menu>

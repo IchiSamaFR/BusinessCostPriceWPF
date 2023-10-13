@@ -41,6 +41,7 @@ namespace CostOfRevenue.Views.Windows
             Focus();
             DataService.SaveIngredients();
             DataService.SaveRecipes();
+            DataService.SaveFurnitures();
 
             base.OnClosing(e);
         }

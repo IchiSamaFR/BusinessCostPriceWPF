@@ -14,7 +14,7 @@
     </UserControl.Resources>
     <Grid Margin="1">
         <StackPanel>
-            <ui:TextBox PlaceholderText="Matière première..."
+            <ui:TextBox PlaceholderText="Nom..."
                             Text="{Binding SelectedName}"/>
             <ComboBox ItemsSource="{Binding UnitsType}"
                       SelectedValue="{Binding SelectedUnitType}"

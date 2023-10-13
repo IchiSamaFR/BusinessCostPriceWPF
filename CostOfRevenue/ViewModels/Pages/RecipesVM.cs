@@ -115,6 +115,7 @@ namespace CostOfRevenue.ViewModels.Pages
             SelectedName = string.Empty;
             SelectedQuantity = 0;
             SelectedUnitType = Enums.Unit.kilogram;
+
             SelectedIngredient = null;
             SelectedRecipeIngredients.Clear();
 
@@ -154,6 +155,8 @@ namespace CostOfRevenue.ViewModels.Pages
             SelectedQuantity = recipe.RecipeQuantity;
             SelectedCharges = recipe.Charges;
             SelectedUnitType = recipe.Unit;
+
+            SelectedIngredient = null;
             SelectedRecipeIngredients.Clear();
             SelectedRecipeIngredients.AddRange(recipe.RecipeIngredients);
 

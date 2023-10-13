@@ -15,7 +15,7 @@
     </UserControl.Resources>
     <Grid Margin="1">
         <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
-            <ui:TextBlock Text="Voulez vous supprimer l'ingrédient "/>
+            <ui:TextBlock Text="Voulez vous supprimer "/>
             <ui:TextBlock Text="{Binding RemovedIngredient.Name}" FontWeight="Bold"/>
             <ui:TextBlock Text=" ?"/>
         </StackPanel>
