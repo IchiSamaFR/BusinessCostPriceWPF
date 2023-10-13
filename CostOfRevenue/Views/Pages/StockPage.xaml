@@ -20,31 +20,49 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <ui:Card>
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                
-                <StackPanel Orientation="Horizontal" Grid.Column="1">
-                    <ui:Button Content="Enregistrer"/>
-                    <ui:Button Content="Exporter" Margin="10 0 0 0"/>
-                </StackPanel>
-            </Grid>
-        </ui:Card>
-        <ListView Grid.Row="1" Margin="0 10 0 0"
-                  ItemsSource="{Binding ViewModel.Ingredients, Mode=TwoWay}"
-                  ScrollViewer.HorizontalScrollBarVisibility="Auto">
-            <ListView.ItemTemplate>
-                <DataTemplate DataType="{x:Type models:Ingredient}">
-                    <Grid Margin="8,0" >
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" MaxWidth="240" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <ui:TextBox Text="{Binding ViewModel.NameToFind}"
+                                Margin="0 0 10 0"
+                                PlaceholderText="Rechercher"/>
+                        <ui:Button Icon="{ui:SymbolIcon Search24}" Command="{Binding ViewModel.SearchByTextCommand}"
+                               Grid.Column="1"
+                               VerticalAlignment="Stretch"/>
+                    </Grid>
+                    
+                    <StackPanel Orientation="Horizontal" Grid.Column="2">
+                        <ui:Button Content="Exporter"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Margin="12,4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition MinWidth="160" Width="*"/>
                             <ColumnDefinition MinWidth="100" Width="*"/>
@@ -52,19 +70,49 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0"
-                                   FontWeight="Bold"
-                                   VerticalAlignment="Center"
-                                   Margin="0 0 10 0"
-                                   Text="{Binding Name, Mode=OneWay}" />
-                        <StackPanel Orientation="Horizontal" Grid.Column="1">
-                            <TextBox VerticalAlignment="Center" Margin="0 0 10 0" Width="80"
-                                     Text="{Binding StockQuantity, Converter={StaticResource DecimalConverter}}"/>
-                            <TextBlock VerticalAlignment="Center"
-                                       Text="{Binding Unit, Mode=OneWay, Converter={StaticResource EnumUnitToDescription}, ConverterParameter=true}" />
-                        </StackPanel>
+                               VerticalAlignment="Center"
+                               Margin="0 0 10 0"
+                               Text="Produit" />
+                        <TextBlock Grid.Column="1"
+                               VerticalAlignment="Center"
+                               Margin="0 0 10 0"
+                               Text="Quantité" />
+
+                        <Menu Visibility="Hidden" Grid.Column="0">
+                            <ui:MenuItem Icon="{ui:SymbolIcon MoreVertical24}"/>
+                        </Menu>
                     </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                    
+                    <ListView Grid.Row="1"
+                          ItemsSource="{Binding ViewModel.ShowedIngredients, Mode=TwoWay}"
+                          ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                        <ListView.ItemTemplate>
+                            <DataTemplate DataType="{x:Type models:Ingredient}">
+                                <Grid Margin="8,0" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition MinWidth="160" Width="*"/>
+                                        <ColumnDefinition MinWidth="100" Width="*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0"
+                                           FontWeight="Bold"
+                                           VerticalAlignment="Center"
+                                           Margin="0 0 10 0"
+                                           Text="{Binding Name, Mode=OneWay}" />
+                                    <StackPanel Orientation="Horizontal" Grid.Column="1"
+                                                Margin="0 0 10 0">
+                                        <TextBox VerticalAlignment="Center" Margin="0 0 10 0" Width="80"
+                                             Text="{Binding StockQuantity, Converter={StaticResource DecimalConverter}}"/>
+                                        <TextBlock VerticalAlignment="Center"
+                                               Text="{Binding Unit, Mode=OneWay, Converter={StaticResource EnumUnitToDescription}, ConverterParameter=true}" />
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </Grid>
+        </ui:Card>
     </Grid>
 </Page>

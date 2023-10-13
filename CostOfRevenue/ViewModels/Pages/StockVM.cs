@@ -17,24 +17,28 @@ namespace CostOfRevenue.ViewModels.Pages
         private Dictionary<string, float> _ingredientsBaseStock = new Dictionary<string, float>();
 
         [ObservableProperty]
-        private IEnumerable<Ingredient> _ingredients;
+        private IEnumerable<Ingredient> _showedIngredients;
 
         [ObservableProperty]
-        private bool _isEditable;
+        private IEnumerable<Ingredient> _allIngredients;
+
+        [ObservableProperty]
+        private string _nameToFind = string.Empty;
 
         public void OnNavigatedTo()
         {
             if (!_isInitialized)
                 InitializeViewModel();
 
-            Ingredients = DataService.GetLastIngredients.ToList();
+            AllIngredients = DataService.GetLastIngredients;
             _ingredientsBaseStock.Clear();
-            Ingredients.Foreach(i => _ingredientsBaseStock.Add(i.Id, i.StockQuantity));
+            AllIngredients.Foreach(i => _ingredientsBaseStock.Add(i.Id, i.StockQuantity));
+            SearchByText();
         }
 
         public void OnNavigatedFrom()
         {
-            IsEditable = false;
+            Save();
         }
 
         private void InitializeViewModel()
@@ -43,7 +47,7 @@ namespace CostOfRevenue.ViewModels.Pages
 
         public void Save()
         {
-            foreach (var ingredient in Ingredients)
+            foreach (var ingredient in ShowedIngredients)
             {
                 var baseStock = _ingredientsBaseStock[ingredient.Id];
                 if(ingredient.StockQuantity != baseStock && ingredient.Date != DateTime.Now.Date)
@@ -54,6 +58,12 @@ namespace CostOfRevenue.ViewModels.Pages
             }
 
             DataService.SaveIngredients();
+        }
+
+        [RelayCommand]
+        public void SearchByText()
+        {
+            ShowedIngredients = AllIngredients.Where(i => i.Name.ToLower().Contains(NameToFind.ToLower()));
         }
     }
 }
