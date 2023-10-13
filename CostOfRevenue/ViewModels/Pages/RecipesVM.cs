@@ -234,6 +234,7 @@ namespace CostOfRevenue.ViewModels.Pages
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Texte CSV|*.csv";
             saveFileDialog.Title = "Export de la recette";
+            saveFileDialog.FileName = $"recette_{recipe.Name}_{DateTime.Now.ToString("dd-MM-yyyy")}.csv";
             saveFileDialog.ShowDialog();
 
             if(saveFileDialog.FileName == string.Empty)

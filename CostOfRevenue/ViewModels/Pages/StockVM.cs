@@ -1,8 +1,10 @@
 ﻿using CostOfRevenue.Models;
 using CostOfRevenue.Resources;
 using CostOfRevenue.Services;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,6 +47,7 @@ namespace CostOfRevenue.ViewModels.Pages
         {
         }
 
+        [RelayCommand]
         public void Save()
         {
             foreach (var ingredient in ShowedIngredients)
@@ -58,6 +61,35 @@ namespace CostOfRevenue.ViewModels.Pages
             }
 
             DataService.SaveIngredients();
+        }
+
+        [RelayCommand]
+        public void Export()
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Texte CSV|*.csv";
+            saveFileDialog.Title = "Export de l'inventaire";
+            saveFileDialog.FileName = $"inventaire_{DateTime.Now.ToString("dd-MM-yyyy")}.csv";
+            saveFileDialog.ShowDialog();
+
+            if (saveFileDialog.FileName == string.Empty)
+            {
+                return;
+            }
+
+            using (StreamWriter outputFile = new StreamWriter(saveFileDialog.FileName, false, Encoding.UTF8))
+            {
+                outputFile.WriteLine($"Nom;Stock;Prix Unitaire;Prix Total");
+                float total = 0;
+
+                foreach (var ingredient in AllIngredients)
+                {
+                    outputFile.WriteLine($"{ingredient.Name};{ingredient.StockQuantity};{ingredient.UnitPrice};{ingredient.UnitPrice * ingredient.StockQuantity}");
+                    total += ingredient.UnitPrice * ingredient.StockQuantity;
+                }
+                outputFile.WriteLine(string.Empty);
+                outputFile.WriteLine($";;Prix Total;{total}");
+            }
         }
 
         [RelayCommand]

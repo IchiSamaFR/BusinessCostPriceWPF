@@ -3,7 +3,9 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
+using CostOfRevenue.Services;
 using CostOfRevenue.ViewModels.Windows;
+using System.ComponentModel;
 using Wpf.Ui.Controls;
 
 namespace CostOfRevenue.Views.Windows
@@ -32,6 +34,15 @@ namespace CostOfRevenue.Views.Windows
             contentDialogService.SetContentPresenter(RootContentDialog);
 
             NavigationView.SetServiceProvider(serviceProvider);
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            Focus();
+            DataService.SaveIngredients();
+            DataService.SaveRecipes();
+
+            base.OnClosing(e);
         }
     }
 }
