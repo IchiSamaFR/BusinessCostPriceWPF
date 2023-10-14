@@ -55,7 +55,14 @@ namespace CostOfRevenue.ViewModels.Pages
                 var baseStock = _ingredientsBaseStock[stock.Id];
                 if(stock.StockQuantity != baseStock && stock.Date != DateTime.Now.Date)
                 {
-                    DataService.Ingredients.Add(new Ingredient(stock.Id, stock.Name, stock.Unit, stock.UnitPrice, DateTime.Now, stock.StockQuantity));
+                    if(stock is Ingredient)
+                    {
+                        DataService.Ingredients.Add(new Ingredient(stock.Id, stock.Name, stock.Unit, stock.UnitPrice, DateTime.Now, stock.StockQuantity));
+                    }
+                    else if (stock is Furniture)
+                    {
+                        DataService.Furnitures.Add(new Furniture(stock.Id, stock.Name, stock.Unit, stock.UnitPrice, DateTime.Now, stock.StockQuantity));
+                    }
                     stock.StockQuantity = baseStock;
                 }
             }
@@ -80,12 +87,12 @@ namespace CostOfRevenue.ViewModels.Pages
             using (StreamWriter outputFile = new StreamWriter(saveFileDialog.FileName, false, Encoding.UTF8))
             {
                 outputFile.WriteLine($"Nom;Stock;Prix Unitaire;Prix Total");
-                float total = 0;
+                decimal total = 0;
 
                 foreach (var ingredient in AllStocks)
                 {
-                    outputFile.WriteLine($"{ingredient.Name};{ingredient.StockQuantity};{ingredient.UnitPrice};{ingredient.UnitPrice * ingredient.StockQuantity}");
-                    total += ingredient.UnitPrice * ingredient.StockQuantity;
+                    outputFile.WriteLine($"{ingredient.Name};{ingredient.StockQuantity};{ingredient.UnitPrice};{ingredient.UnitPrice * (decimal)ingredient.StockQuantity}");
+                    total += ingredient.UnitPrice * (decimal)ingredient.StockQuantity;
                 }
                 outputFile.WriteLine(string.Empty);
                 outputFile.WriteLine($";;Prix Total;{total}");

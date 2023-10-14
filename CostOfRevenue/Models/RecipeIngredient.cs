@@ -29,11 +29,11 @@ namespace CostOfRevenue.Models
             }
         }
 
-        public float Price
+        public decimal Price
         {
             get
             {
-                return Ingredient.UnitPrice * Quantity;
+                return Ingredient.UnitPrice * (decimal)Quantity;
             }
         }
 

@@ -13,7 +13,7 @@ namespace CostOfRevenue.Models
         string Id { get; }
         string Name { get; }
         Enums.Unit Unit { get; }
-        float UnitPrice { get; }
+        decimal UnitPrice { get; }
         DateTime Date { get; }
         float StockQuantity { get; set; }
     }

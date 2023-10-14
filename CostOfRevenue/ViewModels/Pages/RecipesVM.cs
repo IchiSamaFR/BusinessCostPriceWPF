@@ -29,7 +29,7 @@ namespace CostOfRevenue.ViewModels.Pages
         private float _selectedQuantity = 0;
 
         [ObservableProperty]
-        private float _selectedCharges = 0;
+        private decimal _selectedCharges = 0;
         
         [ObservableProperty]
         private List<Enums.Unit> _unitsType = new List<Enums.Unit>();

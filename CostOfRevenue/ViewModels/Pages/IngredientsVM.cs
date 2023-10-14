@@ -33,7 +33,7 @@ namespace CostOfRevenue.ViewModels.Pages
         private string _selectedName = string.Empty;
 
         [ObservableProperty]
-        private float? _selectedPrice = null;
+        private decimal? _selectedPrice = null;
         #endregion
 
         #region -- RemoveDialogBox --

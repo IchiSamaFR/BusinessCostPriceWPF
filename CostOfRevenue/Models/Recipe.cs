@@ -26,7 +26,7 @@ namespace CostOfRevenue.Models
         [ObservableProperty]
         private float _recipeQuantity;
         [ObservableProperty]
-        private float _charges;
+        private decimal _charges;
         [ObservableProperty]
         private DateTime _date;
 
@@ -35,7 +35,7 @@ namespace CostOfRevenue.Models
         private List<RecipeIngredient> _recipeIngredients;
 
         [JsonIgnore]
-        public float RecipePriceNoFee
+        public decimal RecipePriceNoFee
         {
             get
             {
@@ -43,7 +43,7 @@ namespace CostOfRevenue.Models
             }
         }
         [JsonIgnore]
-        public float RecipePrice
+        public decimal RecipePrice
         {
             get
             {
@@ -51,11 +51,11 @@ namespace CostOfRevenue.Models
             }
         }
         [JsonIgnore]
-        public float UnitPrice
+        public decimal UnitPrice
         {
             get
             {
-                return RecipePrice / RecipeQuantity;
+                return RecipePrice / (decimal)RecipeQuantity;
             }
         }
         [JsonIgnore]
@@ -67,7 +67,7 @@ namespace CostOfRevenue.Models
             }
         }
 
-        public Recipe(string id, string name, DateTime date, float recipeQuantity, float charges, Enums.Unit unit, IEnumerable<RecipeIngredient> ingredients)
+        public Recipe(string id, string name, DateTime date, float recipeQuantity, decimal charges, Enums.Unit unit, IEnumerable<RecipeIngredient> ingredients)
         {
             _id = id;
             _name = name;
