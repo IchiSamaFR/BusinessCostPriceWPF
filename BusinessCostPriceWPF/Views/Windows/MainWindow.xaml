@@ -1,0 +1,56 @@
+﻿<ui:FluentWindow
+    x:Class="BusinessCostPriceWPF.Views.Windows.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:BusinessCostPriceWPF.Views.Windows"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="{Binding ViewModel.ApplicationTitle, Mode=OneWay}"
+    Width="1100" MinWidth="760"
+    Height="650" MinHeight="100"
+    d:DataContext="{d:DesignInstance local:MainWindow,
+                                     IsDesignTimeCreatable=True}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    d:Background="Red"
+    ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+    ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    ExtendsContentIntoTitleBar="True"
+    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    WindowBackdropType="Mica"
+    WindowCornerPreference="Round"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    
+    <Grid>
+        <ui:TitleBar
+            x:Name="TitleBar"
+            Title="{Binding ViewModel.ApplicationTitle}"
+            Grid.Row="0">
+            <ui:TitleBar.Icon>
+                <ui:ImageIcon Source="pack://application:,,,/Assets/wpfui-icon-256.png" />
+            </ui:TitleBar.Icon>
+        </ui:TitleBar>
+        
+        <ui:NavigationView
+            x:Name="NavigationView"
+            Padding="42,32,42,32"
+            Margin="0 46 0 0"
+            FooterMenuItemsSource="{Binding ViewModel.FooterMenuItems, Mode=OneWay}"
+            FrameMargin="0"
+            IsPaneToggleVisible="True"
+            MenuItemsSource="{Binding ViewModel.MenuItems, Mode=OneWay}"
+            OpenPaneLength="210"
+            PaneDisplayMode="Left"
+            IsBackButtonVisible="Collapsed">
+            <ui:NavigationView.ContentOverlay>
+                <StackPanel>
+                    <ui:SnackbarPresenter x:Name="SnackbarPresenter" />
+                </StackPanel>
+            </ui:NavigationView.ContentOverlay>
+        </ui:NavigationView>
+
+        <ContentPresenter x:Name="RootContentDialog" Grid.Row="0" />
+    </Grid>
+</ui:FluentWindow>
