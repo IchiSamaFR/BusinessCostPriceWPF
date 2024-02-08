@@ -55,6 +55,10 @@ namespace CostOfRevenue.Models
         {
             get
             {
+                if(RecipeQuantity == 0)
+                {
+                    return 0;
+                }
                 return RecipePrice / (decimal)RecipeQuantity;
             }
         }
