@@ -1,4 +1,5 @@
-﻿using BusinessCostPriceWPF.ViewModels.Pages;
+﻿using BusinessCostPriceWPF.ViewModels.Pages.Dashboard;
+using BusinessCostPriceWPF.ViewModels.Pages.Login;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,18 +14,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Wpf.Ui.Controls;
 
-namespace BusinessCostPriceWPF.Views.Pages
+namespace BusinessCostPriceWPF.Views.Pages.Login
 {
     /// <summary>
-    /// Logique d'interaction pour StockPage.xaml
+    /// Logique d'interaction pour LoginView.xaml
     /// </summary>
-    public partial class StockPage : INavigableView<StockVM>
+    public partial class LoginView : UserControl
     {
-        public StockVM ViewModel { get; }
+        public LoginVM ViewModel { get; }
 
-        public StockPage(StockVM viewModel)
+        public LoginView(LoginVM viewModel)
         {
             ViewModel = viewModel;
             DataContext = this;

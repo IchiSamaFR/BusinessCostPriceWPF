@@ -3,7 +3,12 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
+using BusinessCostPriceWPF.Services.API;
+using BusinessCostPriceWPF.Views.Pages;
+using BusinessCostPriceWPF.Views.Pages.Login;
+using BusinessCostPriceWPF.Views.Windows;
 using System.Collections.ObjectModel;
+using System.Windows.Navigation;
 using Wpf.Ui.Common;
 using Wpf.Ui.Controls;
 
@@ -15,37 +20,40 @@ namespace BusinessCostPriceWPF.ViewModels.Windows
         private string _applicationTitle = "Business Cost Price";
 
         [ObservableProperty]
+        private bool _isLogged;
+
+        [ObservableProperty]
         private ObservableCollection<object> _menuItems = new()
         {
             new NavigationViewItem()
             {
                 Content = "Accueil",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Home24 },
-                TargetPageType = typeof(Views.Pages.DashboardPage)
+                TargetPageType = typeof(HomePage)
             },
             new NavigationViewItem()
             {
                 Content = "Fournitures",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Box24 },
-                TargetPageType = typeof(Views.Pages.FurnituresPage)
+                TargetPageType = typeof(FurnituresPage)
             },
             new NavigationViewItem()
             {
                 Content = "Ingrédients",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.DocumentOnePage24 },
-                TargetPageType = typeof(Views.Pages.IngredientsPage)
+                TargetPageType = typeof(IngredientsPage)
             },
             new NavigationViewItem()
             {
                 Content = "Recettes",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Notebook24 },
-                TargetPageType = typeof(Views.Pages.RecipesPage)
+                TargetPageType = typeof(RecipesPage)
             },
             new NavigationViewItem()
             {
                 Content = "Inventaire",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Archive24 },
-                TargetPageType = typeof(Views.Pages.StockPage)
+                TargetPageType = typeof(StockPage)
             }
         };
 
@@ -56,7 +64,7 @@ namespace BusinessCostPriceWPF.ViewModels.Windows
             {
                 Content = "Paramètres",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Settings24 },
-                TargetPageType = typeof(Views.Pages.SettingsPage)
+                TargetPageType = typeof(SettingsPage)
             }
         };
 
@@ -65,5 +73,25 @@ namespace BusinessCostPriceWPF.ViewModels.Windows
         {
             new MenuItem { Header = "Home", Tag = "tray_home" }
         };
+
+        [ObservableProperty]
+        private LoginView _loginView;
+
+        private IServiceProvider _serviceProvider;
+        public MainWindowVM(LoginView loginView, IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+            _loginView = loginView;
+            _loginView.ViewModel.OnLogged += OnLogged;
+        }
+        private void OnLogged()
+        {
+            IsLogged = true;
+            if (IsLogged)
+            {
+                var nav = (INavigationService)_serviceProvider.GetService(typeof(INavigationService));
+                nav.Navigate(typeof(HomePage));
+            }
+        }
     }
 }

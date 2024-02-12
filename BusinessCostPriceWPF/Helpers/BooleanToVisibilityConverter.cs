@@ -7,7 +7,7 @@ namespace BusinessCostPriceWPF.Helpers
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (parameter != null && parameter.ToString() == "invert")
+            if (parameter != null && parameter.ToString().ToLower() == "invert")
             {
                 return value as bool? == false ? Visibility.Visible : Visibility.Collapsed;
             }

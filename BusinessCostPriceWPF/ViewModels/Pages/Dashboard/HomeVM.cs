@@ -3,9 +3,9 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-namespace BusinessCostPriceWPF.ViewModels.Pages
+namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
 {
-    public partial class DashboardVM : ObservableObject
+    public partial class HomeVM : ObservableObject
     {
 
     }

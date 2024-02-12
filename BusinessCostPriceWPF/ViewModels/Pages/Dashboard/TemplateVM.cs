@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using Wpf.Ui.Controls;
 
-namespace BusinessCostPriceWPF.ViewModels.Pages
+namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
 {
     public partial class TemplateVM : ObservableObject, INavigationAware
     {

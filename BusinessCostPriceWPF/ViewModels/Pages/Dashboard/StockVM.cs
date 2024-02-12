@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Wpf.Ui.Controls;
 
-namespace BusinessCostPriceWPF.ViewModels.Pages
+namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
 {
     public partial class StockVM : ObservableObject, INavigationAware
     {

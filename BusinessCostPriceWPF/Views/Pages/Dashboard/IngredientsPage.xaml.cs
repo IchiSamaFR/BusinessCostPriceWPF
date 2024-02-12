@@ -1,4 +1,4 @@
-﻿using BusinessCostPriceWPF.ViewModels.Pages;
+﻿using BusinessCostPriceWPF.ViewModels.Pages.Dashboard;
 using Wpf.Ui.Controls;
 
 namespace BusinessCostPriceWPF.Views.Pages

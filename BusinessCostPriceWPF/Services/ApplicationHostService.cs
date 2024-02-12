@@ -62,7 +62,6 @@ namespace BusinessCostPriceWPF.Services
                 return;
             }
 
-            navigationWindow.NavigationView.Navigate(typeof(DashboardPage));
         }
     }
 }

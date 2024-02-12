@@ -5,15 +5,18 @@ using BusinessCostPriceWPF.Views.Pages.Dialogs;
 using BusinessCostPriceWPF.Views.Pages.Ingredients;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Wpf.Ui.Controls;
 
-namespace BusinessCostPriceWPF.ViewModels.Pages
+namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
 {
-    public partial class FurnituresVM : ObservableObject, INavigationAware
+    public partial class IngredientsVM : ObservableObject, INavigationAware
     {
         private bool _isInitialized = false;
 
@@ -33,10 +36,12 @@ namespace BusinessCostPriceWPF.ViewModels.Pages
         private decimal? _selectedPrice = null;
         #endregion
 
-
         #region -- RemoveDialogBox --
         [ObservableProperty]
-        private Furniture _removedIngredient;
+        private IIngredient _removedIngredient;
+
+        [ObservableProperty]
+        private IEnumerable<Recipe> _removedFromRecipes;
         #endregion
 
 
@@ -44,20 +49,20 @@ namespace BusinessCostPriceWPF.ViewModels.Pages
         private string _nameToFind = string.Empty;
 
         [ObservableProperty]
-        private IEnumerable<Furniture> _showedFurnitures;
+        private IEnumerable<Ingredient> _showedIngredients;
 
         private readonly IContentDialogService _contentDialogService;
 
-        public FurnituresVM(IContentDialogService contentDialogService)
+        public IngredientsVM(IContentDialogService contentDialogService)
         {
             _contentDialogService = contentDialogService;
         }
+
 
         public void OnNavigatedTo()
         {
             if (!_isInitialized)
                 InitializeViewModel();
-
         }
 
         public void OnNavigatedFrom()
@@ -81,10 +86,10 @@ namespace BusinessCostPriceWPF.ViewModels.Pages
         }
 
         [RelayCommand]
-        public async void AddFurniture()
+        public async void AddIngredient()
         {
             _modifiedId = string.Empty;
-            SelectedUnitType = Enums.Unit.piece;
+            SelectedUnitType = Enums.Unit.kilogram;
             SelectedName = string.Empty;
             SelectedPrice = null;
 
@@ -104,24 +109,24 @@ namespace BusinessCostPriceWPF.ViewModels.Pages
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    DataService.Furnitures.Add(new Furniture(Guid.NewGuid().ToString(), SelectedName, SelectedUnitType, SelectedPrice ?? 0, DateTime.Now));
+                    DataService.Ingredients.Add(new Ingredient(Guid.NewGuid().ToString(), SelectedName, SelectedUnitType, SelectedPrice ?? 0, DateTime.Now));
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
                 default:
                     break;
             }
-            DataService.SaveFurnitures();
+            DataService.SaveIngredients();
             SearchByText();
         }
 
         [RelayCommand]
-        public async void UpdateFurniture(Furniture furniture)
+        public async void UpdateIngredient(Ingredient ingredient)
         {
-            _modifiedId = furniture.Id;
-            SelectedUnitType = furniture.Unit;
-            SelectedName = furniture.Name;
-            SelectedPrice = furniture.UnitPrice;
+            _modifiedId = ingredient.Id;
+            SelectedUnitType = ingredient.Unit;
+            SelectedName = ingredient.Name;
+            SelectedPrice = ingredient.UnitPrice;
 
             var content = new IngredientAddDialog();
             content.DataContext = this;
@@ -139,15 +144,15 @@ namespace BusinessCostPriceWPF.ViewModels.Pages
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    if (furniture.Date.Date == DateTime.Now.Date)
+                    if (ingredient.Date.Date == DateTime.Now.Date)
                     {
-                        furniture.Name = SelectedName;
-                        furniture.Unit = SelectedUnitType;
-                        furniture.UnitPrice = SelectedPrice ?? 0;
+                        ingredient.Name = SelectedName;
+                        ingredient.Unit = SelectedUnitType;
+                        ingredient.UnitPrice = SelectedPrice ?? 0;
                     }
                     else
                     {
-                        DataService.Furnitures.Add(new Furniture(_modifiedId, SelectedName, SelectedUnitType, SelectedPrice ?? 0, DateTime.Now));
+                        DataService.Ingredients.Add(new Ingredient(_modifiedId, SelectedName, SelectedUnitType, SelectedPrice ?? 0, DateTime.Now));
                     }
                     break;
                 case ContentDialogResult.Secondary:
@@ -155,22 +160,23 @@ namespace BusinessCostPriceWPF.ViewModels.Pages
                 default:
                     break;
             }
-            DataService.SaveFurnitures();
+            DataService.SaveIngredients();
             SearchByText();
         }
 
         [RelayCommand]
-        public async void RemoveFurniture(Furniture furniture)
+        public async void RemoveIngredient(Ingredient ingredient)
         {
-            RemovedIngredient = furniture;
+            RemovedIngredient = ingredient;
+            RemovedFromRecipes = DataService.GetLastRecipes.Where(r => r.Ingredients.Any(i => i.Id == ingredient.Id)).ToList();
 
-            UserControl content = new RemoveIngredientDialog();
+            UserControl content = RemovedFromRecipes.Any() ? new RemoveIngredientWithRecipeDialog() : new RemoveIngredientDialog();
             content.DataContext = this;
 
             var result = await _contentDialogService.ShowSimpleDialogAsync(
                 new SimpleContentDialogCreateOptions()
                 {
-                    Title = "Supprimer une fourniture",
+                    Title = "Supprimer un ingrédient",
                     Content = content,
                     PrimaryButtonText = "Supprimer",
                     CloseButtonText = "Annuler",
@@ -180,21 +186,22 @@ namespace BusinessCostPriceWPF.ViewModels.Pages
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    DataService.Remove(furniture);
+                    DataService.Remove(ingredient);
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
                 default:
                     break;
             }
-            DataService.SaveFurnitures();
+            DataService.SaveIngredients();
             SearchByText();
         }
 
         [RelayCommand]
         public void SearchByText()
         {
-            ShowedFurnitures = DataService.GetLastFurnitures.Where(i => i.Name.ToLower().Contains(NameToFind.ToLower()));
+            ShowedIngredients = DataService.GetLastIngredients.Where(i => i.Name.ToLower().Contains(NameToFind.ToLower()));
         }
+
     }
 }

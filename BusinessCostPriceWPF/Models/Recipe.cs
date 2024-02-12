@@ -1,6 +1,6 @@
 ﻿using BusinessCostPriceWPF.Resources;
 using BusinessCostPriceWPF.Services;
-using BusinessCostPriceWPF.ViewModels.Pages;
+using BusinessCostPriceWPF.ViewModels.Pages.Dashboard;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

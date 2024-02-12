@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:BusinessCostPriceWPF.Views.Windows"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:converter="clr-namespace:BusinessCostPriceWPF.Helpers"
     Title="{Binding ViewModel.ApplicationTitle, Mode=OneWay}"
     Width="1100" MinWidth="760"
     Height="650" MinHeight="100"
@@ -13,7 +14,7 @@
                                      IsDesignTimeCreatable=True}"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    d:Background="Red"
+    d:Background="Black"
     ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
     ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
     ExtendsContentIntoTitleBar="True"
@@ -23,7 +24,15 @@
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     
+    <ui:FluentWindow.Resources>
+        <converter:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </ui:FluentWindow.Resources>
+    
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         <ui:TitleBar
             x:Name="TitleBar"
             Title="{Binding ViewModel.ApplicationTitle}"
@@ -34,9 +43,9 @@
         </ui:TitleBar>
         
         <ui:NavigationView
+            Grid.Row="1"
             x:Name="NavigationView"
             Padding="42,32,42,32"
-            Margin="0 46 0 0"
             FooterMenuItemsSource="{Binding ViewModel.FooterMenuItems, Mode=OneWay}"
             FrameMargin="0"
             IsPaneToggleVisible="True"
@@ -50,6 +59,11 @@
                 </StackPanel>
             </ui:NavigationView.ContentOverlay>
         </ui:NavigationView>
+
+        <ContentPresenter 
+            Grid.Row="1"
+            Content="{Binding ViewModel.LoginView}" 
+            Visibility="{Binding ViewModel.IsLogged, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=invert}"/>
 
         <ContentPresenter x:Name="RootContentDialog" Grid.Row="0" />
     </Grid>

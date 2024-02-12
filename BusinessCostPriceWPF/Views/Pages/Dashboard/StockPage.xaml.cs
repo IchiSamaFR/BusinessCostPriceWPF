@@ -1,4 +1,4 @@
-﻿using BusinessCostPriceWPF.ViewModels.Pages;
+﻿using BusinessCostPriceWPF.ViewModels.Pages.Dashboard;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,13 +18,13 @@ using Wpf.Ui.Controls;
 namespace BusinessCostPriceWPF.Views.Pages
 {
     /// <summary>
-    /// Logique d'interaction pour RecipesPage.xaml
+    /// Logique d'interaction pour StockPage.xaml
     /// </summary>
-    public partial class RecipesPage : INavigableView<RecipesVM>
+    public partial class StockPage : INavigableView<StockVM>
     {
-        public RecipesVM ViewModel { get; }
+        public StockVM ViewModel { get; }
 
-        public RecipesPage(RecipesVM viewModel)
+        public StockPage(StockVM viewModel)
         {
             ViewModel = viewModel;
             DataContext = this;

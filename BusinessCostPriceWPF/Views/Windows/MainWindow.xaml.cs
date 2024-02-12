@@ -4,7 +4,9 @@
 // All Rights Reserved.
 
 using BusinessCostPriceWPF.Services;
+using BusinessCostPriceWPF.Services.API;
 using BusinessCostPriceWPF.ViewModels.Windows;
+using BusinessCostPriceWPF.Views.Pages;
 using System.ComponentModel;
 using Wpf.Ui.Controls;
 
@@ -34,6 +36,9 @@ namespace BusinessCostPriceWPF.Views.Windows
             contentDialogService.SetContentPresenter(RootContentDialog);
 
             NavigationView.SetServiceProvider(serviceProvider);
+
+            //APIService.BaseUrl = @"https://businesscostpriceapi.azurewebsites.net/";
+            APIService.BaseUrl = @"http://localhost:5281/";
         }
 
         protected override void OnClosing(CancelEventArgs e)

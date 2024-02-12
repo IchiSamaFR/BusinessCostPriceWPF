@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using Wpf.Ui.Controls;
 
-namespace BusinessCostPriceWPF.ViewModels.Pages
+namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
 {
     public partial class RecipesVM : ObservableObject, INavigationAware
     {

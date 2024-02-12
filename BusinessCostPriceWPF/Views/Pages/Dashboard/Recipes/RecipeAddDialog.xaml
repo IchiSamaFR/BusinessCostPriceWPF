@@ -7,7 +7,7 @@
              xmlns:converter="clr-namespace:BusinessCostPriceWPF.Helpers"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              xmlns:models="clr-namespace:BusinessCostPriceWPF.Models"
-             xmlns:pages="clr-namespace:BusinessCostPriceWPF.ViewModels.Pages"
+             xmlns:pages="clr-namespace:BusinessCostPriceWPF.ViewModels.Pages.Dashboard"
              mc:Ignorable="d" Name="recipesDialog"
              d:DataContext="{d:DesignInstance pages:RecipesVM, IsDesignTimeCreatable=False}"
              MinWidth="560" Height="360">

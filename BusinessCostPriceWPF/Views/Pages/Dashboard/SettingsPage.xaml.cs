@@ -3,16 +3,16 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-using BusinessCostPriceWPF.ViewModels.Pages;
+using BusinessCostPriceWPF.ViewModels.Pages.Dashboard;
 using Wpf.Ui.Controls;
 
 namespace BusinessCostPriceWPF.Views.Pages
 {
-    public partial class DashboardPage : INavigableView<DashboardVM>
+    public partial class SettingsPage : INavigableView<SettingsVM>
     {
-        public DashboardVM ViewModel { get; }
+        public SettingsVM ViewModel { get; }
 
-        public DashboardPage(DashboardVM viewModel)
+        public SettingsPage(SettingsVM viewModel)
         {
             ViewModel = viewModel;
             DataContext = this;

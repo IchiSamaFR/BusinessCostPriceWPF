@@ -4,9 +4,11 @@
 // All Rights Reserved.
 
 using BusinessCostPriceWPF.Services;
-using BusinessCostPriceWPF.ViewModels.Pages;
+using BusinessCostPriceWPF.ViewModels.Pages.Dashboard;
+using BusinessCostPriceWPF.ViewModels.Pages.Login;
 using BusinessCostPriceWPF.ViewModels.Windows;
 using BusinessCostPriceWPF.Views.Pages;
+using BusinessCostPriceWPF.Views.Pages.Login;
 using BusinessCostPriceWPF.Views.Windows;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,8 +37,11 @@ namespace BusinessCostPriceWPF
                 services.AddSingleton<ISnackbarService, SnackbarService>();
                 services.AddSingleton<IContentDialogService, ContentDialogService>();
 
-                services.AddSingleton<DashboardPage>();
-                services.AddSingleton<DashboardVM>();
+                services.AddSingleton<LoginView>();
+                services.AddSingleton<LoginVM>();
+
+                services.AddSingleton<HomePage>();
+                services.AddSingleton<HomeVM>();
                 services.AddSingleton<SettingsPage>();
                 services.AddSingleton<SettingsVM>();
 
