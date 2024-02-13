@@ -84,13 +84,15 @@ namespace BusinessCostPriceWPF.ViewModels.Windows
             _loginView = loginView;
             _loginView.ViewModel.OnLogged += OnLogged;
         }
-        private void OnLogged()
+        private async void OnLogged()
         {
             IsLogged = APIService.IsLogged;
             if (IsLogged)
             {
                 var nav = (INavigationService)_serviceProvider.GetService(typeof(INavigationService));
                 nav.Navigate(typeof(HomePage));
+
+                var tmp = await new APIService().GetIngredientsAsync(0);
             }
         }
     }

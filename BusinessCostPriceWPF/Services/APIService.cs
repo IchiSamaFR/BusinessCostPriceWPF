@@ -12,6 +12,7 @@
 
 namespace BusinessCostPriceWPF.Services.API
 {
+    using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using System.Net.Http;
     using System.Net.Http.Headers;
@@ -127,7 +128,8 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return await response_.Content.ReadFromJsonAsync<AuthenticateDTO>();
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            return JsonConvert.DeserializeObject<AuthenticateDTO>(responseData_);
                         }
                         else
                         {
@@ -203,7 +205,8 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return await response_.Content.ReadFromJsonAsync<AuthenticateDTO>();
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            return JsonConvert.DeserializeObject<AuthenticateDTO>(responseData_);
                         }
                         else
                         {
@@ -357,7 +360,8 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return await response_.Content.ReadFromJsonAsync<List<FurnitureDTO>>();
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            return JsonConvert.DeserializeObject<List<FurnitureDTO>>(responseData_);
                         }
                         else
                         {
@@ -435,7 +439,8 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return await response_.Content.ReadFromJsonAsync<FurnitureDTO>();
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            return JsonConvert.DeserializeObject<FurnitureDTO>(responseData_);
                         }
                         else
                         {
@@ -513,7 +518,8 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return await response_.Content.ReadFromJsonAsync<List<FurnitureStockInfoDTO>>();
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            return JsonConvert.DeserializeObject<List<FurnitureStockInfoDTO>>(responseData_);
                         }
                         else
                         {
@@ -589,7 +595,8 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return await response_.Content.ReadFromJsonAsync<FurnitureDTO>();
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            return JsonConvert.DeserializeObject<FurnitureDTO>(responseData_);
                         }
                         else
                         {
@@ -665,7 +672,8 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return await response_.Content.ReadFromJsonAsync<FurnitureStockInfoDTO>();
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            return JsonConvert.DeserializeObject<FurnitureStockInfoDTO>(responseData_);
                         }
                         else
                         {
@@ -741,7 +749,8 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return await response_.Content.ReadFromJsonAsync<FurnitureDTO>();
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            return JsonConvert.DeserializeObject<FurnitureDTO>(responseData_);
                         }
                         else
                         {
@@ -897,7 +906,8 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return await response_.Content.ReadFromJsonAsync<List<IngredientDTO>>();
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            return JsonConvert.DeserializeObject<List<IngredientDTO>>(responseData_);
                         }
                         else
                         {
@@ -975,7 +985,8 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return await response_.Content.ReadFromJsonAsync<IngredientDTO>();
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            return JsonConvert.DeserializeObject<IngredientDTO>(responseData_);
                         }
                         else
                         {
@@ -1053,7 +1064,8 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return await response_.Content.ReadFromJsonAsync<List<IngredientPriceInfoDTO>>();
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            return JsonConvert.DeserializeObject<List<IngredientPriceInfoDTO>>(responseData_);
                         }
                         else
                         {
@@ -1131,7 +1143,8 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return await response_.Content.ReadFromJsonAsync<List<IngredientStockInfoDTO>>();
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            return JsonConvert.DeserializeObject<List<IngredientStockInfoDTO>>(responseData_);
                         }
                         else
                         {
@@ -1207,7 +1220,8 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return await response_.Content.ReadFromJsonAsync<IngredientDTO>();
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            return JsonConvert.DeserializeObject<IngredientDTO>(responseData_);
                         }
                         else
                         {
@@ -1283,7 +1297,8 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return await response_.Content.ReadFromJsonAsync<IngredientPriceInfoDTO>();
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            return JsonConvert.DeserializeObject<IngredientPriceInfoDTO>(responseData_);
                         }
                         else
                         {
@@ -1359,7 +1374,8 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return await response_.Content.ReadFromJsonAsync<IngredientStockInfoDTO>();
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            return JsonConvert.DeserializeObject<IngredientStockInfoDTO>(responseData_);
                         }
                         else
                         {
@@ -1435,7 +1451,8 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return await response_.Content.ReadFromJsonAsync<IngredientDTO>();
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            return JsonConvert.DeserializeObject<IngredientDTO>(responseData_);
                         }
                         else
                         {
@@ -1591,7 +1608,8 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return await response_.Content.ReadFromJsonAsync<List<RecipeDTO>>();
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            return JsonConvert.DeserializeObject<List<RecipeDTO>>(responseData_);
                         }
                         else
                         {
@@ -1669,7 +1687,8 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return await response_.Content.ReadFromJsonAsync<RecipeDTO>();
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            return JsonConvert.DeserializeObject<RecipeDTO>(responseData_);
                         }
                         else
                         {
@@ -1747,7 +1766,8 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return await response_.Content.ReadFromJsonAsync<List<RecipeIngredientDTO>>();
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            return JsonConvert.DeserializeObject<List<RecipeIngredientDTO>>(responseData_);
                         }
                         else
                         {
@@ -1823,7 +1843,8 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return await response_.Content.ReadFromJsonAsync<RecipeDTO>();
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            return JsonConvert.DeserializeObject<RecipeDTO>(responseData_);
                         }
                         else
                         {
@@ -1899,7 +1920,8 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return await response_.Content.ReadFromJsonAsync<RecipeIngredientDTO>();
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            return JsonConvert.DeserializeObject<RecipeIngredientDTO>(responseData_);
                         }
                         else
                         {
@@ -1975,7 +1997,8 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return await response_.Content.ReadFromJsonAsync<RecipeDTO>();
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            return JsonConvert.DeserializeObject<RecipeDTO>(responseData_);
                         }
                         else
                         {
@@ -2051,7 +2074,8 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return await response_.Content.ReadFromJsonAsync<RecipeIngredientDTO>();
+                            var responseData_ = await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            return JsonConvert.DeserializeObject<RecipeIngredientDTO>(responseData_);
                         }
                         else
                         {

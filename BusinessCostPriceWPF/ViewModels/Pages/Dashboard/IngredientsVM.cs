@@ -1,6 +1,7 @@
 ﻿using BusinessCostPriceWPF.Models;
 using BusinessCostPriceWPF.Resources;
 using BusinessCostPriceWPF.Services;
+using BusinessCostPriceWPF.Services.API;
 using BusinessCostPriceWPF.Views.Pages.Dialogs;
 using BusinessCostPriceWPF.Views.Pages.Ingredients;
 using System;
@@ -38,10 +39,10 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
 
         #region -- RemoveDialogBox --
         [ObservableProperty]
-        private IIngredient _removedIngredient;
+        private Ingredient _removedIngredient;
 
         [ObservableProperty]
-        private IEnumerable<Recipe> _removedFromRecipes;
+        private ObservableCollection<RecipeDTO> _removedFromRecipes = new ObservableCollection<RecipeDTO>();
         #endregion
 
 
@@ -49,7 +50,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         private string _nameToFind = string.Empty;
 
         [ObservableProperty]
-        private IEnumerable<Ingredient> _showedIngredients;
+        private ObservableCollection<IngredientDTO> _showedIngredients = new ObservableCollection<IngredientDTO>();
 
         private readonly IContentDialogService _contentDialogService;
 
@@ -63,11 +64,13 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         {
             if (!_isInitialized)
                 InitializeViewModel();
+            InitDatas();
         }
 
         public void OnNavigatedFrom()
         {
         }
+
 
         private void InitializeViewModel()
         {
@@ -83,6 +86,12 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             SelectedUnitType = Enums.Unit.kilogram;
             SelectedName = string.Empty;
             SelectedPrice = null;
+        }
+
+        private async void InitDatas()
+        {
+            ShowedIngredients.Clear();
+            ShowedIngredients.AddRange(await new APIService().GetIngredientsAsync(0));
         }
 
         [RelayCommand]
@@ -168,7 +177,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         public async void RemoveIngredient(Ingredient ingredient)
         {
             RemovedIngredient = ingredient;
-            RemovedFromRecipes = DataService.GetLastRecipes.Where(r => r.Ingredients.Any(i => i.Id == ingredient.Id)).ToList();
+            //RemovedFromRecipes = DataService.GetLastRecipes.Where(r => r.Ingredients.Any(i => i.Id == ingredient.Id)).ToList();
 
             UserControl content = RemovedFromRecipes.Any() ? new RemoveIngredientWithRecipeDialog() : new RemoveIngredientDialog();
             content.DataContext = this;
@@ -186,7 +195,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    DataService.Remove(ingredient);
+                    //DataService.Remove(ingredient);
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
@@ -200,7 +209,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         [RelayCommand]
         public void SearchByText()
         {
-            ShowedIngredients = DataService.GetLastIngredients.Where(i => i.Name.ToLower().Contains(NameToFind.ToLower()));
+            //ShowedIngredients = DataService.GetLastIngredients.Where(i => i.Name.ToLower().Contains(NameToFind.ToLower()));
         }
 
     }
