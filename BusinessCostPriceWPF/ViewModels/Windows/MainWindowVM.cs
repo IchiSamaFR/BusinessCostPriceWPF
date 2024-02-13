@@ -86,7 +86,7 @@ namespace BusinessCostPriceWPF.ViewModels.Windows
         }
         private void OnLogged()
         {
-            IsLogged = true;
+            IsLogged = APIService.IsLogged;
             if (IsLogged)
             {
                 var nav = (INavigationService)_serviceProvider.GetService(typeof(INavigationService));

@@ -75,7 +75,7 @@ namespace BusinessCostPriceWPF.Services.API
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task RegisterAsync(AuthenticateDTO body)
+        public virtual System.Threading.Tasks.Task<AuthenticateDTO> RegisterAsync(AuthenticateDTO body)
         {
             return RegisterAsync(body, System.Threading.CancellationToken.None);
         }
@@ -83,7 +83,7 @@ namespace BusinessCostPriceWPF.Services.API
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task RegisterAsync(AuthenticateDTO body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<AuthenticateDTO> RegisterAsync(AuthenticateDTO body, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -127,7 +127,7 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
+                            return await response_.Content.ReadFromJsonAsync<AuthenticateDTO>();
                         }
                         else
                         {
@@ -303,7 +303,7 @@ namespace BusinessCostPriceWPF.Services.API
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task GetFurnituresAsync(int? page)
+        public virtual System.Threading.Tasks.Task<List<FurnitureDTO>> GetFurnituresAsync(int? page)
         {
             return GetFurnituresAsync(page, System.Threading.CancellationToken.None);
         }
@@ -311,7 +311,7 @@ namespace BusinessCostPriceWPF.Services.API
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task GetFurnituresAsync(int? page, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<List<FurnitureDTO>> GetFurnituresAsync(int? page, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -357,7 +357,7 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
+                            return await response_.Content.ReadFromJsonAsync<List<FurnitureDTO>>();
                         }
                         else
                         {
@@ -381,7 +381,7 @@ namespace BusinessCostPriceWPF.Services.API
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task GetFurnitureAsync(int? furnitureId)
+        public virtual System.Threading.Tasks.Task<FurnitureDTO> GetFurnitureAsync(int? furnitureId)
         {
             return GetFurnitureAsync(furnitureId, System.Threading.CancellationToken.None);
         }
@@ -389,7 +389,7 @@ namespace BusinessCostPriceWPF.Services.API
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task GetFurnitureAsync(int? furnitureId, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<FurnitureDTO> GetFurnitureAsync(int? furnitureId, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -435,7 +435,7 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
+                            return await response_.Content.ReadFromJsonAsync<FurnitureDTO>();
                         }
                         else
                         {
@@ -459,7 +459,7 @@ namespace BusinessCostPriceWPF.Services.API
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task GetFurnitureStockInfosAsync(int? furnitureId)
+        public virtual System.Threading.Tasks.Task<List<FurnitureStockInfoDTO>> GetFurnitureStockInfosAsync(int? furnitureId)
         {
             return GetFurnitureStockInfosAsync(furnitureId, System.Threading.CancellationToken.None);
         }
@@ -467,7 +467,7 @@ namespace BusinessCostPriceWPF.Services.API
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task GetFurnitureStockInfosAsync(int? furnitureId, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<List<FurnitureStockInfoDTO>> GetFurnitureStockInfosAsync(int? furnitureId, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -513,7 +513,7 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
+                            return await response_.Content.ReadFromJsonAsync<List<FurnitureStockInfoDTO>>();
                         }
                         else
                         {
@@ -537,7 +537,7 @@ namespace BusinessCostPriceWPF.Services.API
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task AddFurnitureAsync(FurnitureDTO body)
+        public virtual System.Threading.Tasks.Task<FurnitureDTO> AddFurnitureAsync(FurnitureDTO body)
         {
             return AddFurnitureAsync(body, System.Threading.CancellationToken.None);
         }
@@ -545,7 +545,7 @@ namespace BusinessCostPriceWPF.Services.API
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task AddFurnitureAsync(FurnitureDTO body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<FurnitureDTO> AddFurnitureAsync(FurnitureDTO body, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -589,7 +589,7 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
+                            return await response_.Content.ReadFromJsonAsync<FurnitureDTO>();
                         }
                         else
                         {
@@ -613,7 +613,7 @@ namespace BusinessCostPriceWPF.Services.API
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task AddFurnitureStockAsync(FurnitureStockInfoDTO body)
+        public virtual System.Threading.Tasks.Task<FurnitureStockInfoDTO> AddFurnitureStockAsync(FurnitureStockInfoDTO body)
         {
             return AddFurnitureStockAsync(body, System.Threading.CancellationToken.None);
         }
@@ -621,7 +621,7 @@ namespace BusinessCostPriceWPF.Services.API
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task AddFurnitureStockAsync(FurnitureStockInfoDTO body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<FurnitureStockInfoDTO> AddFurnitureStockAsync(FurnitureStockInfoDTO body, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -665,7 +665,7 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
+                            return await response_.Content.ReadFromJsonAsync<FurnitureStockInfoDTO>();
                         }
                         else
                         {
@@ -689,7 +689,7 @@ namespace BusinessCostPriceWPF.Services.API
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task UpdateFurnitureAsync(FurnitureDTO body)
+        public virtual System.Threading.Tasks.Task<FurnitureDTO> UpdateFurnitureAsync(FurnitureDTO body)
         {
             return UpdateFurnitureAsync(body, System.Threading.CancellationToken.None);
         }
@@ -697,7 +697,7 @@ namespace BusinessCostPriceWPF.Services.API
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task UpdateFurnitureAsync(FurnitureDTO body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<FurnitureDTO> UpdateFurnitureAsync(FurnitureDTO body, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -741,7 +741,7 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
+                            return await response_.Content.ReadFromJsonAsync<FurnitureDTO>();
                         }
                         else
                         {
@@ -843,7 +843,7 @@ namespace BusinessCostPriceWPF.Services.API
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task GetIngredientsAsync(int? page)
+        public virtual System.Threading.Tasks.Task<List<IngredientDTO>> GetIngredientsAsync(int? page)
         {
             return GetIngredientsAsync(page, System.Threading.CancellationToken.None);
         }
@@ -851,7 +851,7 @@ namespace BusinessCostPriceWPF.Services.API
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task GetIngredientsAsync(int? page, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<List<IngredientDTO>> GetIngredientsAsync(int? page, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -897,7 +897,7 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
+                            return await response_.Content.ReadFromJsonAsync<List<IngredientDTO>>();
                         }
                         else
                         {
@@ -921,7 +921,7 @@ namespace BusinessCostPriceWPF.Services.API
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task GetIngredientAsync(int? ingredientId)
+        public virtual System.Threading.Tasks.Task<IngredientDTO> GetIngredientAsync(int? ingredientId)
         {
             return GetIngredientAsync(ingredientId, System.Threading.CancellationToken.None);
         }
@@ -929,7 +929,7 @@ namespace BusinessCostPriceWPF.Services.API
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task GetIngredientAsync(int? ingredientId, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<IngredientDTO> GetIngredientAsync(int? ingredientId, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -975,7 +975,7 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
+                            return await response_.Content.ReadFromJsonAsync<IngredientDTO>();
                         }
                         else
                         {
@@ -999,7 +999,7 @@ namespace BusinessCostPriceWPF.Services.API
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task GetIngredientPriceDetailsAsync(int? ingredientId)
+        public virtual System.Threading.Tasks.Task<List<IngredientPriceInfoDTO>> GetIngredientPriceDetailsAsync(int? ingredientId)
         {
             return GetIngredientPriceDetailsAsync(ingredientId, System.Threading.CancellationToken.None);
         }
@@ -1007,7 +1007,7 @@ namespace BusinessCostPriceWPF.Services.API
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task GetIngredientPriceDetailsAsync(int? ingredientId, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<List<IngredientPriceInfoDTO>> GetIngredientPriceDetailsAsync(int? ingredientId, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1053,7 +1053,7 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
+                            return await response_.Content.ReadFromJsonAsync<List<IngredientPriceInfoDTO>>();
                         }
                         else
                         {
@@ -1077,7 +1077,7 @@ namespace BusinessCostPriceWPF.Services.API
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task GetIngredientStockDetailsAsync(int? ingredientId)
+        public virtual System.Threading.Tasks.Task<List<IngredientStockInfoDTO>> GetIngredientStockDetailsAsync(int? ingredientId)
         {
             return GetIngredientStockDetailsAsync(ingredientId, System.Threading.CancellationToken.None);
         }
@@ -1085,7 +1085,7 @@ namespace BusinessCostPriceWPF.Services.API
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task GetIngredientStockDetailsAsync(int? ingredientId, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<List<IngredientStockInfoDTO>> GetIngredientStockDetailsAsync(int? ingredientId, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1131,7 +1131,7 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
+                            return await response_.Content.ReadFromJsonAsync<List<IngredientStockInfoDTO>>();
                         }
                         else
                         {
@@ -1155,7 +1155,7 @@ namespace BusinessCostPriceWPF.Services.API
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task AddIngredientAsync(IngredientDTO body)
+        public virtual System.Threading.Tasks.Task<IngredientDTO> AddIngredientAsync(IngredientDTO body)
         {
             return AddIngredientAsync(body, System.Threading.CancellationToken.None);
         }
@@ -1163,7 +1163,7 @@ namespace BusinessCostPriceWPF.Services.API
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task AddIngredientAsync(IngredientDTO body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<IngredientDTO> AddIngredientAsync(IngredientDTO body, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1207,7 +1207,7 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
+                            return await response_.Content.ReadFromJsonAsync<IngredientDTO>();
                         }
                         else
                         {
@@ -1231,7 +1231,7 @@ namespace BusinessCostPriceWPF.Services.API
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task AddIngredientPriceAsync(IngredientPriceInfoDTO body)
+        public virtual System.Threading.Tasks.Task<IngredientPriceInfoDTO> AddIngredientPriceAsync(IngredientPriceInfoDTO body)
         {
             return AddIngredientPriceAsync(body, System.Threading.CancellationToken.None);
         }
@@ -1239,7 +1239,7 @@ namespace BusinessCostPriceWPF.Services.API
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task AddIngredientPriceAsync(IngredientPriceInfoDTO body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<IngredientPriceInfoDTO> AddIngredientPriceAsync(IngredientPriceInfoDTO body, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1283,7 +1283,7 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
+                            return await response_.Content.ReadFromJsonAsync<IngredientPriceInfoDTO>();
                         }
                         else
                         {
@@ -1307,7 +1307,7 @@ namespace BusinessCostPriceWPF.Services.API
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task AddIngredientStockAsync(IngredientStockInfoDTO body)
+        public virtual System.Threading.Tasks.Task<IngredientStockInfoDTO> AddIngredientStockAsync(IngredientStockInfoDTO body)
         {
             return AddIngredientStockAsync(body, System.Threading.CancellationToken.None);
         }
@@ -1315,7 +1315,7 @@ namespace BusinessCostPriceWPF.Services.API
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task AddIngredientStockAsync(IngredientStockInfoDTO body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<IngredientStockInfoDTO> AddIngredientStockAsync(IngredientStockInfoDTO body, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1359,7 +1359,7 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
+                            return await response_.Content.ReadFromJsonAsync<IngredientStockInfoDTO>();
                         }
                         else
                         {
@@ -1383,7 +1383,7 @@ namespace BusinessCostPriceWPF.Services.API
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task UpdateIngredientAsync(IngredientDTO body)
+        public virtual System.Threading.Tasks.Task<IngredientDTO> UpdateIngredientAsync(IngredientDTO body)
         {
             return UpdateIngredientAsync(body, System.Threading.CancellationToken.None);
         }
@@ -1391,7 +1391,7 @@ namespace BusinessCostPriceWPF.Services.API
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task UpdateIngredientAsync(IngredientDTO body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<IngredientDTO> UpdateIngredientAsync(IngredientDTO body, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1435,7 +1435,7 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
+                            return await response_.Content.ReadFromJsonAsync<IngredientDTO>();
                         }
                         else
                         {
@@ -1537,7 +1537,7 @@ namespace BusinessCostPriceWPF.Services.API
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task GetRecipesAsync(int? page)
+        public virtual System.Threading.Tasks.Task<List<RecipeDTO>> GetRecipesAsync(int? page)
         {
             return GetRecipesAsync(page, System.Threading.CancellationToken.None);
         }
@@ -1545,7 +1545,7 @@ namespace BusinessCostPriceWPF.Services.API
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task GetRecipesAsync(int? page, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<List<RecipeDTO>> GetRecipesAsync(int? page, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1591,7 +1591,7 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
+                            return await response_.Content.ReadFromJsonAsync<List<RecipeDTO>>();
                         }
                         else
                         {
@@ -1615,7 +1615,7 @@ namespace BusinessCostPriceWPF.Services.API
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task GetRecipeAsync(int? recipeId)
+        public virtual System.Threading.Tasks.Task<RecipeDTO> GetRecipeAsync(int? recipeId)
         {
             return GetRecipeAsync(recipeId, System.Threading.CancellationToken.None);
         }
@@ -1623,7 +1623,7 @@ namespace BusinessCostPriceWPF.Services.API
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task GetRecipeAsync(int? recipeId, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<RecipeDTO> GetRecipeAsync(int? recipeId, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1669,7 +1669,7 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
+                            return await response_.Content.ReadFromJsonAsync<RecipeDTO>();
                         }
                         else
                         {
@@ -1693,15 +1693,15 @@ namespace BusinessCostPriceWPF.Services.API
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task GetRecipeIngredientAsync(int? recipeId)
+        public virtual System.Threading.Tasks.Task<List<RecipeIngredientDTO>> GetRecipeIngredientsAsync(int? recipeId)
         {
-            return GetRecipeIngredientAsync(recipeId, System.Threading.CancellationToken.None);
+            return GetRecipeIngredientsAsync(recipeId, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task GetRecipeIngredientAsync(int? recipeId, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<List<RecipeIngredientDTO>> GetRecipeIngredientsAsync(int? recipeId, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1713,8 +1713,8 @@ namespace BusinessCostPriceWPF.Services.API
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "Recipes/GetRecipeIngredient"
-                    urlBuilder_.Append("Recipes/GetRecipeIngredient");
+                    // Operation Path: "Recipes/GetRecipeIngredients"
+                    urlBuilder_.Append("Recipes/GetRecipeIngredients");
                     urlBuilder_.Append('?');
                     if (recipeId != null)
                     {
@@ -1747,7 +1747,7 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
+                            return await response_.Content.ReadFromJsonAsync<List<RecipeIngredientDTO>>();
                         }
                         else
                         {
@@ -1771,7 +1771,7 @@ namespace BusinessCostPriceWPF.Services.API
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task AddRecipeAsync(RecipeDTO body)
+        public virtual System.Threading.Tasks.Task<RecipeDTO> AddRecipeAsync(RecipeDTO body)
         {
             return AddRecipeAsync(body, System.Threading.CancellationToken.None);
         }
@@ -1779,7 +1779,7 @@ namespace BusinessCostPriceWPF.Services.API
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task AddRecipeAsync(RecipeDTO body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<RecipeDTO> AddRecipeAsync(RecipeDTO body, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1823,7 +1823,7 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
+                            return await response_.Content.ReadFromJsonAsync<RecipeDTO>();
                         }
                         else
                         {
@@ -1847,7 +1847,7 @@ namespace BusinessCostPriceWPF.Services.API
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task AddRecipeIngredientAsync(RecipeIngredientDTO body)
+        public virtual System.Threading.Tasks.Task<RecipeIngredientDTO> AddRecipeIngredientAsync(RecipeIngredientDTO body)
         {
             return AddRecipeIngredientAsync(body, System.Threading.CancellationToken.None);
         }
@@ -1855,7 +1855,7 @@ namespace BusinessCostPriceWPF.Services.API
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task AddRecipeIngredientAsync(RecipeIngredientDTO body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<RecipeIngredientDTO> AddRecipeIngredientAsync(RecipeIngredientDTO body, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1899,7 +1899,7 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
+                            return await response_.Content.ReadFromJsonAsync<RecipeIngredientDTO>();
                         }
                         else
                         {
@@ -1923,7 +1923,7 @@ namespace BusinessCostPriceWPF.Services.API
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task UpdateRecipeAsync(RecipeDTO body)
+        public virtual System.Threading.Tasks.Task<RecipeDTO> UpdateRecipeAsync(RecipeDTO body)
         {
             return UpdateRecipeAsync(body, System.Threading.CancellationToken.None);
         }
@@ -1931,7 +1931,7 @@ namespace BusinessCostPriceWPF.Services.API
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task UpdateRecipeAsync(RecipeDTO body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<RecipeDTO> UpdateRecipeAsync(RecipeDTO body, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1975,7 +1975,7 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
+                            return await response_.Content.ReadFromJsonAsync<RecipeDTO>();
                         }
                         else
                         {
@@ -1999,7 +1999,7 @@ namespace BusinessCostPriceWPF.Services.API
 
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task UpdateRecipeIngredientAsync(RecipeIngredientDTO body)
+        public virtual System.Threading.Tasks.Task<RecipeIngredientDTO> UpdateRecipeIngredientAsync(RecipeIngredientDTO body)
         {
             return UpdateRecipeIngredientAsync(body, System.Threading.CancellationToken.None);
         }
@@ -2007,7 +2007,7 @@ namespace BusinessCostPriceWPF.Services.API
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task UpdateRecipeIngredientAsync(RecipeIngredientDTO body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<RecipeIngredientDTO> UpdateRecipeIngredientAsync(RecipeIngredientDTO body, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -2051,7 +2051,7 @@ namespace BusinessCostPriceWPF.Services.API
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
+                            return await response_.Content.ReadFromJsonAsync<RecipeIngredientDTO>();
                         }
                         else
                         {
@@ -2341,246 +2341,6 @@ namespace BusinessCostPriceWPF.Services.API
         }
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class AuthenticateDTO
-    {
-        [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Email { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Password { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("token", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Token { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class AuthenticateUpdateDTO
-    {
-        [Newtonsoft.Json.JsonProperty("password", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Password { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("newPassword", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string NewPassword { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("token", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Token { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class FurnitureDTO
-    {
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Id { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Name { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("unit", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public Unit Unit { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("unitPrice", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double UnitPrice { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("stockQuantity", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double StockQuantity { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class FurnitureStockInfoDTO
-    {
-        [Newtonsoft.Json.JsonProperty("furnitureId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int FurnitureId { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("date", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset Date { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("stockQuantity", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double StockQuantity { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class IIngredient
-    {
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Id { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Name { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("unit", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public Unit Unit { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("unitPrice", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double UnitPrice { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class IngredientDTO
-    {
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Id { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Name { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("unit", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public Unit Unit { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("unitPrice", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double UnitPrice { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("stockQuantity", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double StockQuantity { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class IngredientPriceInfoDTO
-    {
-        [Newtonsoft.Json.JsonProperty("ingredientId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int IngredientId { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("date", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset Date { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("unitPrice", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double UnitPrice { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class IngredientStockInfoDTO
-    {
-        [Newtonsoft.Json.JsonProperty("ingredientId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int IngredientId { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("date", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset Date { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("stockQuantity", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double StockQuantity { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class RecipeDTO
-    {
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Id { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Name { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("unit", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public Unit Unit { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("recipeQuantity", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double RecipeQuantity { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("charges", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double Charges { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("unitPrice", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double UnitPrice { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("recipePriceNoFee", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double RecipePriceNoFee { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("recipePrice", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double RecipePrice { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class RecipeIngredientDTO
-    {
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Id { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("quantity", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double Quantity { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("recipeId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int RecipeId { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("ingredientRecipeId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int IngredientRecipeId { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("ingredientId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int IngredientId { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("iIngredient", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public IIngredient IIngredient { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("price", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double Price { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum Unit
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"kilogram")]
-        Kilogram = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"liter")]
-        Liter = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"piece")]
-        Piece = 2,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"dozen")]
-        Dozen = 3,
-
-    }
-
-
-
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ApiException : System.Exception
-    {
-        public int StatusCode { get; private set; }
-
-        public string Response { get; private set; }
-
-        public System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> Headers { get; private set; }
-
-        public ApiException(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Exception innerException)
-            : base(message + "\n\nStatus: " + statusCode + "\nResponse: \n" + ((response == null) ? "(null)" : response.Substring(0, response.Length >= 512 ? 512 : response.Length)), innerException)
-        {
-            StatusCode = statusCode;
-            Response = response;
-            Headers = headers;
-        }
-
-        public override string ToString()
-        {
-            return string.Format("HTTP Response: \n\n{0}\n\n{1}", Response, base.ToString());
-        }
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ApiException<TResult> : ApiException
-    {
-        public TResult Result { get; private set; }
-
-        public ApiException(string message, int statusCode, string response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, TResult result, System.Exception innerException)
-            : base(message, statusCode, response, headers, innerException)
-        {
-            Result = result;
-        }
-    }
 }
 
 #pragma warning restore 108
