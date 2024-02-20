@@ -65,6 +65,6 @@
             Content="{Binding ViewModel.LoginView}" 
             Visibility="{Binding ViewModel.IsLogged, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=invert}"/>
 
-        <ContentPresenter x:Name="RootContentDialog" Grid.Row="0" />
+        <ContentPresenter x:Name="RootContentDialog" Grid.Row="0" Grid.RowSpan="2"/>
     </Grid>
 </ui:FluentWindow>

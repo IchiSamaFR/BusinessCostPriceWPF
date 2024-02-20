@@ -22,24 +22,24 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         private bool _isInitialized = false;
 
         #region -- DialogBox --
-        private string _modifiedId;
+        private int _modifiedId;
 
         [ObservableProperty]
-        private List<Enums.Unit> _unitsType = new List<Enums.Unit>();
+        private List<Unit> _unitsType = new List<Unit>();
 
         [ObservableProperty]
-        private Enums.Unit _selectedUnitType = Enums.Unit.kilogram;
+        private Unit _selectedUnitType = Unit.Kilogram;
 
         [ObservableProperty]
         private string _selectedName = string.Empty;
 
         [ObservableProperty]
-        private decimal? _selectedPrice = null;
+        private double? _selectedPrice = null;
         #endregion
 
         #region -- RemoveDialogBox --
         [ObservableProperty]
-        private Ingredient _removedIngredient;
+        private IngredientDTO _removedIngredient;
 
         [ObservableProperty]
         private ObservableCollection<RecipeDTO> _removedFromRecipes = new ObservableCollection<RecipeDTO>();
@@ -51,6 +51,9 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
 
         [ObservableProperty]
         private ObservableCollection<IngredientDTO> _showedIngredients = new ObservableCollection<IngredientDTO>();
+
+        [ObservableProperty]
+        private ObservableCollection<IngredientPriceInfoDTO> _showedIngredientPrices = new ObservableCollection<IngredientPriceInfoDTO>();
 
         private readonly IContentDialogService _contentDialogService;
 
@@ -74,7 +77,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
 
         private void InitializeViewModel()
         {
-            UnitsType = new List<Enums.Unit>() { Enums.Unit.kilogram, Enums.Unit.liter, Enums.Unit.piece, Enums.Unit.dozen };
+            UnitsType = new List<Unit>() { Unit.Kilogram, Unit.Liter, Unit.Piece, Unit.Dozen };
 
             ClearSelection();
             SearchByText();
@@ -83,7 +86,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         private void ClearSelection()
         {
             NameToFind = string.Empty;
-            SelectedUnitType = Enums.Unit.kilogram;
+            SelectedUnitType = Unit.Kilogram;
             SelectedName = string.Empty;
             SelectedPrice = null;
         }
@@ -97,8 +100,8 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         [RelayCommand]
         public async void AddIngredient()
         {
-            _modifiedId = string.Empty;
-            SelectedUnitType = Enums.Unit.kilogram;
+            _modifiedId = 0;
+            SelectedUnitType = Unit.Kilogram;
             SelectedName = string.Empty;
             SelectedPrice = null;
 
@@ -118,7 +121,13 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    DataService.Ingredients.Add(new Ingredient(Guid.NewGuid().ToString(), SelectedName, SelectedUnitType, SelectedPrice ?? 0, DateTime.Now));
+                    var ing = await new APIService().AddIngredientAsync(new IngredientDTO()
+                    {
+                        Name = SelectedName,
+                        Unit = SelectedUnitType,
+                        UnitPrice = SelectedPrice ?? 0
+                    });
+                    ShowedIngredients.Add(ing);
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
@@ -130,12 +139,15 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         }
 
         [RelayCommand]
-        public async void UpdateIngredient(Ingredient ingredient)
+        public async void UpdateIngredient(IngredientDTO ingredient)
         {
             _modifiedId = ingredient.Id;
             SelectedUnitType = ingredient.Unit;
             SelectedName = ingredient.Name;
             SelectedPrice = ingredient.UnitPrice;
+
+            ShowedIngredientPrices.Clear();
+            ShowedIngredientPrices.AddRange(await new APIService().GetIngredientPriceDetailsAsync(ingredient.Id));
 
             var content = new IngredientAddDialog();
             content.DataContext = this;
@@ -153,16 +165,20 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    if (ingredient.Date.Date == DateTime.Now.Date)
+                    var ingPrice = await new APIService().AddIngredientPriceAsync(new IngredientPriceInfoDTO()
                     {
-                        ingredient.Name = SelectedName;
-                        ingredient.Unit = SelectedUnitType;
-                        ingredient.UnitPrice = SelectedPrice ?? 0;
+                        IngredientId = ingredient.Id,
+                        UnitPrice = SelectedPrice ?? 0
+                    });
+                    if(ShowedIngredientPrices.LastOrDefault()?.Date.Date == DateTime.Today.Date)
+                    {
+                        ShowedIngredientPrices.LastOrDefault().UnitPrice = ingPrice.UnitPrice;
                     }
                     else
                     {
-                        DataService.Ingredients.Add(new Ingredient(_modifiedId, SelectedName, SelectedUnitType, SelectedPrice ?? 0, DateTime.Now));
+                        ShowedIngredientPrices.Add(ingPrice);
                     }
+                    ingredient.UnitPrice = ingPrice.UnitPrice;
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
@@ -174,7 +190,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         }
 
         [RelayCommand]
-        public async void RemoveIngredient(Ingredient ingredient)
+        public async void RemoveIngredient(IngredientDTO ingredient)
         {
             RemovedIngredient = ingredient;
             //RemovedFromRecipes = DataService.GetLastRecipes.Where(r => r.Ingredients.Any(i => i.Id == ingredient.Id)).ToList();
@@ -195,6 +211,8 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             switch (result)
             {
                 case ContentDialogResult.Primary:
+                    await new APIService().RemoveIngredientAsync(ingredient.Id);
+                    ShowedIngredients.Remove(RemovedIngredient);
                     //DataService.Remove(ingredient);
                     break;
                 case ContentDialogResult.Secondary:

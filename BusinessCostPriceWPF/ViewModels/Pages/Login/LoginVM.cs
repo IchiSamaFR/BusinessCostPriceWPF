@@ -20,6 +20,14 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Login
         [ObservableProperty]
         private bool _isLogging;
 
+        public LoginVM()
+        {
+#if DEBUG
+            MailAdress = "mytempmail@et.et";
+            Password = "This-Password3";
+#endif
+        }
+
         [RelayCommand]
         public async void Log()
         {

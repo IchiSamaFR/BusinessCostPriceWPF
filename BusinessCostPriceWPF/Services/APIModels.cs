@@ -73,35 +73,38 @@ namespace BusinessCostPriceWPF.Services.API
     public partial class IIngredient
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Id { get; set; }
+        public virtual int Id { get; set; }
 
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
 
         [Newtonsoft.Json.JsonProperty("unit", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public Unit Unit { get; set; }
+        public virtual Unit Unit { get; set; }
 
         [Newtonsoft.Json.JsonProperty("unitPrice", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double UnitPrice { get; set; }
+        public virtual double UnitPrice { get; set; }
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class IngredientDTO
+    public partial class IngredientDTO : IIngredient
     {
+        [Newtonsoft.Json.JsonIgnore]
+        public string IconString { get; } = "DocumentOnePage24";
+
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Id { get; set; }
+        public override int Id { get; set; }
 
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Name { get; set; }
+        public override string Name { get; set; }
 
         [Newtonsoft.Json.JsonProperty("unit", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public Unit Unit { get; set; }
+        public override Unit Unit { get; set; }
 
         [Newtonsoft.Json.JsonProperty("unitPrice", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double UnitPrice { get; set; }
+        public override double UnitPrice { get; set; }
 
         [Newtonsoft.Json.JsonProperty("stockQuantity", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double StockQuantity { get; set; }
@@ -137,17 +140,20 @@ namespace BusinessCostPriceWPF.Services.API
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class RecipeDTO
+    public partial class RecipeDTO : IIngredient
     {
+        [Newtonsoft.Json.JsonIgnore]
+        public string IconString { get; } = "Notebook24";
+
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int Id { get; set; }
+        public override int Id { get; set; }
 
         [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Name { get; set; }
+        public override string Name { get; set; }
 
         [Newtonsoft.Json.JsonProperty("unit", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public Unit Unit { get; set; }
+        public override Unit Unit { get; set; }
 
         [Newtonsoft.Json.JsonProperty("recipeQuantity", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double RecipeQuantity { get; set; }
@@ -156,7 +162,7 @@ namespace BusinessCostPriceWPF.Services.API
         public double Charges { get; set; }
 
         [Newtonsoft.Json.JsonProperty("unitPrice", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public double UnitPrice { get; set; }
+        public override double UnitPrice { get; set; }
 
         [Newtonsoft.Json.JsonProperty("recipePriceNoFee", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double RecipePriceNoFee { get; set; }
@@ -178,18 +184,30 @@ namespace BusinessCostPriceWPF.Services.API
         [Newtonsoft.Json.JsonProperty("recipeId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int RecipeId { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("ingredientRecipeId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int IngredientRecipeId { get; set; }
+        [Newtonsoft.Json.JsonProperty("ingredientRecipeId", Required = Newtonsoft.Json.Required.AllowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? IngredientRecipeId { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("ingredientId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int IngredientId { get; set; }
+        [Newtonsoft.Json.JsonProperty("ingredientId", Required = Newtonsoft.Json.Required.AllowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? IngredientId { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("iIngredient", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("iIngredient", Required = Newtonsoft.Json.Required.AllowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public IIngredient IIngredient { get; set; }
 
         [Newtonsoft.Json.JsonProperty("price", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double Price { get; set; }
 
+        public RecipeIngredientDTO ToSend()
+        {
+            return new RecipeIngredientDTO()
+            {
+                Id = Id,
+                RecipeId = RecipeId,
+                IngredientId = IngredientId,
+                IngredientRecipeId = IngredientRecipeId,
+                Price = Price,
+                Quantity = Quantity,
+            };
+        }
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]

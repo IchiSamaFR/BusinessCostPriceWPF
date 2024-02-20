@@ -1,4 +1,5 @@
 ﻿using BusinessCostPriceWPF.Resources;
+using BusinessCostPriceWPF.Services.API;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -18,17 +19,17 @@ namespace BusinessCostPriceWPF.Helpers
             {
                 lower = parameter.ToString().ToLower() == "true";
             }
-            if(value is Enums.Unit)
+            if(value is Unit)
             {
-                switch ((Enums.Unit)value)
+                switch ((Unit)value)
                 {
-                    case Enums.Unit.kilogram:
+                    case Unit.Kilogram:
                         return lower ? "Kg" : "Kilogramme";
-                    case Enums.Unit.liter:
+                    case Unit.Liter:
                         return lower ? "L" : "Litre";
-                    case Enums.Unit.piece:
+                    case Unit.Piece:
                         return lower ? "Pce" : "Pièce";
-                    case Enums.Unit.dozen:
+                    case Unit.Dozen:
                         return lower ? "Dz" : "Douzaine";
                     default:
                         break;

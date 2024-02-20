@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:BusinessCostPriceWPF.Views.Pages.Recipes"
              xmlns:converter="clr-namespace:BusinessCostPriceWPF.Helpers"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:apiModels="clr-namespace:BusinessCostPriceWPF.Services.API"
              xmlns:models="clr-namespace:BusinessCostPriceWPF.Models"
              xmlns:pages="clr-namespace:BusinessCostPriceWPF.ViewModels.Pages.Dashboard"
              mc:Ignorable="d" Name="recipesDialog"
@@ -93,7 +94,7 @@
                 <ListView ItemsSource="{Binding SelectedRecipeIngredients, Mode=TwoWay}" Grid.Row="1"
                         ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <ListView.ItemTemplate>
-                        <DataTemplate DataType="{x:Type models:Ingredient}">
+                        <DataTemplate DataType="{x:Type apiModels:RecipeIngredientDTO}">
                             <Grid Margin="8,0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*" />
@@ -111,15 +112,15 @@
                                    FontWeight="Bold"
                                    VerticalAlignment="Center"
                                    Margin="0 0 10 0"
-                                   Text="{Binding Ingredient.Name, Mode=OneWay}" />
+                                   Text="{Binding IIngredient.Name, Mode=OneWay}" />
                                 <StackPanel Grid.Column="2" Orientation="Horizontal">
                                     <TextBlock VerticalAlignment="Center"
-                                               Text="{Binding Ingredient.UnitPrice, Mode=OneWay, Converter={StaticResource PriceToString}, ConverterParameter='0.00'}" />
+                                               Text="{Binding IIngredient.UnitPrice, Mode=OneWay, Converter={StaticResource PriceToString}, ConverterParameter='0.00'}" />
                                     <TextBlock VerticalAlignment="Center"
                                                Text=" / " />
                                     <TextBlock VerticalAlignment="Center"
                                                Margin="0 0 10 0"
-                                               Text="{Binding Ingredient.Unit, Mode=OneWay, Converter={StaticResource EnumUnitToDescription}, ConverterParameter=true}" />
+                                               Text="{Binding IIngredient.Unit, Mode=OneWay, Converter={StaticResource EnumUnitToDescription}, ConverterParameter=true}" />
                                 </StackPanel>
                                 <ui:TextBox Grid.Column="3"
                                             Text="{Binding Quantity}"
