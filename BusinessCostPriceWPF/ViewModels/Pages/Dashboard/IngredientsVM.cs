@@ -34,7 +34,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         private string _selectedName = string.Empty;
 
         [ObservableProperty]
-        private double? _selectedPrice = null;
+        private double _selectedPrice = 0;
         #endregion
 
         #region -- RemoveDialogBox --
@@ -82,20 +82,24 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             ClearSelection();
             SearchByText();
         }
+        private async void InitDatas()
+        {
+            ReloadIngredients();
+        }
+        private async void ReloadIngredients()
+        {
+            ShowedIngredients.Clear();
+            ShowedIngredients.AddRange(await new APIService().GetIngredientsAsync(0));
+        }
 
         private void ClearSelection()
         {
             NameToFind = string.Empty;
             SelectedUnitType = Unit.Kilogram;
             SelectedName = string.Empty;
-            SelectedPrice = null;
+            SelectedPrice = 0;
         }
 
-        private async void InitDatas()
-        {
-            ShowedIngredients.Clear();
-            ShowedIngredients.AddRange(await new APIService().GetIngredientsAsync(0));
-        }
 
         [RelayCommand]
         public async void AddIngredient()
@@ -103,7 +107,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             _modifiedId = 0;
             SelectedUnitType = Unit.Kilogram;
             SelectedName = string.Empty;
-            SelectedPrice = null;
+            SelectedPrice = 0;
 
             var content = new IngredientAddDialog();
             content.DataContext = this;
@@ -121,21 +125,20 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    var ing = await new APIService().AddIngredientAsync(new IngredientDTO()
+                    await new APIService().AddIngredientAsync(new IngredientDTO()
                     {
                         Name = SelectedName,
                         Unit = SelectedUnitType,
-                        UnitPrice = SelectedPrice ?? 0
+                        UnitPrice = SelectedPrice
                     });
-                    ShowedIngredients.Add(ing);
+                    ReloadIngredients();
+                    SearchByText();
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
                 default:
                     break;
             }
-            DataService.SaveIngredients();
-            SearchByText();
         }
 
         [RelayCommand]
@@ -165,28 +168,33 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    var ingPrice = await new APIService().AddIngredientPriceAsync(new IngredientPriceInfoDTO()
+                    var addedIngredient = await new APIService().UpdateIngredientAsync(new IngredientDTO()
                     {
-                        IngredientId = ingredient.Id,
-                        UnitPrice = SelectedPrice ?? 0
+                        Id = ingredient.Id,
+                        Name = SelectedName,
+                        UnitPrice = SelectedPrice,
+                        Unit = SelectedUnitType
                     });
-                    if(ShowedIngredientPrices.LastOrDefault()?.Date.Date == DateTime.Today.Date)
+                    if (ShowedIngredientPrices.LastOrDefault()?.Date.Date == DateTime.Today.Date)
                     {
-                        ShowedIngredientPrices.LastOrDefault().UnitPrice = ingPrice.UnitPrice;
+                        ShowedIngredientPrices.LastOrDefault().UnitPrice = addedIngredient.UnitPrice;
                     }
                     else
                     {
-                        ShowedIngredientPrices.Add(ingPrice);
+                        ShowedIngredientPrices.Add(new IngredientPriceInfoDTO()
+                        {
+                            Date = DateTime.Now.Date,
+                            UnitPrice = addedIngredient.UnitPrice
+                        });
                     }
-                    ingredient.UnitPrice = ingPrice.UnitPrice;
+                    ReloadIngredients();
+                    SearchByText();
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
                 default:
                     break;
             }
-            DataService.SaveIngredients();
-            SearchByText();
         }
 
         [RelayCommand]
@@ -212,16 +220,14 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             {
                 case ContentDialogResult.Primary:
                     await new APIService().RemoveIngredientAsync(ingredient.Id);
-                    ShowedIngredients.Remove(RemovedIngredient);
-                    //DataService.Remove(ingredient);
+                    ReloadIngredients();
+                    SearchByText();
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
                 default:
                     break;
             }
-            DataService.SaveIngredients();
-            SearchByText();
         }
 
         [RelayCommand]

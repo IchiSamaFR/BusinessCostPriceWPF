@@ -1,10 +1,12 @@
 ﻿using BusinessCostPriceWPF.Models;
 using BusinessCostPriceWPF.Resources;
 using BusinessCostPriceWPF.Services;
+using BusinessCostPriceWPF.Services.API;
 using BusinessCostPriceWPF.Views.Pages.Dialogs;
 using BusinessCostPriceWPF.Views.Pages.Ingredients;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,25 +20,25 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         private bool _isInitialized = false;
 
         #region -- DialogBox --
-        private string _modifiedId;
+        private int _modifiedId;
 
         [ObservableProperty]
-        private List<Enums.Unit> _unitsType = new List<Enums.Unit>();
+        private List<Unit> _unitsType = new List<Unit>();
 
         [ObservableProperty]
-        private Enums.Unit _selectedUnitType = Enums.Unit.kilogram;
+        private Unit _selectedUnitType = Unit.Kilogram;
 
         [ObservableProperty]
         private string _selectedName = string.Empty;
 
         [ObservableProperty]
-        private decimal? _selectedPrice = null;
+        private double? _selectedPrice = null;
         #endregion
 
 
         #region -- RemoveDialogBox --
         [ObservableProperty]
-        private Furniture _removedIngredient;
+        private FurnitureDTO _removedIngredient;
         #endregion
 
 
@@ -44,7 +46,10 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         private string _nameToFind = string.Empty;
 
         [ObservableProperty]
-        private IEnumerable<Furniture> _showedFurnitures;
+        private ObservableCollection<FurnitureDTO> _showedFurnitures = new ObservableCollection<FurnitureDTO>();
+
+        [ObservableProperty]
+        private ObservableCollection<FurnitureStockInfoDTO> _showedFurnitureStocks = new ObservableCollection<FurnitureStockInfoDTO>();
 
         private readonly IContentDialogService _contentDialogService;
 
@@ -57,7 +62,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         {
             if (!_isInitialized)
                 InitializeViewModel();
-
+            InitDatas();
         }
 
         public void OnNavigatedFrom()
@@ -66,16 +71,25 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
 
         private void InitializeViewModel()
         {
-            UnitsType = new List<Enums.Unit>() { Enums.Unit.kilogram, Enums.Unit.liter, Enums.Unit.piece, Enums.Unit.dozen };
+            UnitsType = new List<Unit>() { Unit.Kilogram, Unit.Liter, Unit.Piece, Unit.Dozen };
 
             ClearSelection();
             SearchByText();
+        }
+        private async void InitDatas()
+        {
+            ReloadFurnitures();
+        }
+        private async void ReloadFurnitures()
+        {
+            ShowedFurnitures.Clear();
+            ShowedFurnitures.AddRange(await new APIService().GetFurnituresAsync(0));
         }
 
         private void ClearSelection()
         {
             NameToFind = string.Empty;
-            SelectedUnitType = Enums.Unit.kilogram;
+            SelectedUnitType = Unit.Kilogram;
             SelectedName = string.Empty;
             SelectedPrice = null;
         }
@@ -83,8 +97,8 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         [RelayCommand]
         public async void AddFurniture()
         {
-            _modifiedId = string.Empty;
-            SelectedUnitType = Enums.Unit.piece;
+            _modifiedId = 0;
+            SelectedUnitType = Unit.Piece;
             SelectedName = string.Empty;
             SelectedPrice = null;
 
@@ -104,19 +118,24 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    DataService.Furnitures.Add(new Furniture(Guid.NewGuid().ToString(), SelectedName, SelectedUnitType, SelectedPrice ?? 0, DateTime.Now));
+                    await new APIService().AddFurnitureAsync(new FurnitureDTO()
+                    {
+                        Name = SelectedName,
+                        Unit = SelectedUnitType,
+                        UnitPrice = SelectedPrice ?? 0
+                    });
+                    ReloadFurnitures();
+                    SearchByText();
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
                 default:
                     break;
             }
-            DataService.SaveFurnitures();
-            SearchByText();
         }
 
         [RelayCommand]
-        public async void UpdateFurniture(Furniture furniture)
+        public async void UpdateFurniture(FurnitureDTO furniture)
         {
             _modifiedId = furniture.Id;
             SelectedUnitType = furniture.Unit;
@@ -139,28 +158,24 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    if (furniture.Date.Date == DateTime.Now.Date)
+                    var ingPrice = await new APIService().UpdateFurnitureAsync(new FurnitureDTO()
                     {
-                        furniture.Name = SelectedName;
-                        furniture.Unit = SelectedUnitType;
-                        furniture.UnitPrice = SelectedPrice ?? 0;
-                    }
-                    else
-                    {
-                        DataService.Furnitures.Add(new Furniture(_modifiedId, SelectedName, SelectedUnitType, SelectedPrice ?? 0, DateTime.Now));
-                    }
+                        Id = furniture.Id,
+                        Name = SelectedName,
+                        UnitPrice = SelectedPrice ?? 0,
+                    });
+                    ReloadFurnitures();
+                    SearchByText();
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
                 default:
                     break;
             }
-            DataService.SaveFurnitures();
-            SearchByText();
         }
 
         [RelayCommand]
-        public async void RemoveFurniture(Furniture furniture)
+        public async void RemoveFurniture(FurnitureDTO furniture)
         {
             RemovedIngredient = furniture;
 
@@ -180,21 +195,21 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    DataService.Remove(furniture);
+                    await new APIService().RemoveFurnitureAsync(furniture.Id);
+                    ReloadFurnitures();
+                    SearchByText();
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
                 default:
                     break;
             }
-            DataService.SaveFurnitures();
-            SearchByText();
         }
 
         [RelayCommand]
         public void SearchByText()
         {
-            ShowedFurnitures = DataService.GetLastFurnitures.Where(i => i.Name.ToLower().Contains(NameToFind.ToLower()));
+            //ShowedFurnitures = DataService.GetLastFurnitures.Where(i => i.Name.ToLower().Contains(NameToFind.ToLower()));
         }
     }
 }

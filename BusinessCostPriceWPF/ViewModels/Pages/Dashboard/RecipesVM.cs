@@ -104,10 +104,16 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
 
         private async void InitDatas()
         {
+            ReloadRecipes();
+            _availableIngredients.Clear();
+            _availableIngredients.AddRange(await new APIService().GetIngredientsAsync(0));
+            _availableRecipeIngredients.Clear();
+            _availableRecipeIngredients.AddRange(await new APIService().GetRecipesAsync(0));
+        }
+        private async void ReloadRecipes()
+        {
             ShowedRecipes.Clear();
             ShowedRecipes.AddRange(await new APIService().GetRecipesAsync(0));
-            _availableIngredients.AddRange(await new APIService().GetIngredientsAsync(0));
-            _availableRecipeIngredients.AddRange(await new APIService().GetRecipesAsync(0));
         }
 
         private void ClearSelection()
@@ -153,16 +159,17 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
                     });
                     foreach (var item in SelectedRecipeIngredients)
                     {
-                        var ing = await new APIService().AddRecipeIngredientAsync(item);
+                        item.RecipeId = recipe.Id;
+                        await new APIService().AddRecipeIngredientAsync(item);
                     }
+                    ReloadRecipes();
+                    SearchByText();
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
                 default:
                     break;
             }
-            DataService.SaveRecipes();
-            SearchByText();
         }
 
         [RelayCommand]
@@ -178,7 +185,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             SelectedIngredient = null;
             SelectedRecipeIngredients.Clear();
             SelectedRecipeIngredients.AddRange(await new APIService().GetRecipeIngredientsAsync(recipe.Id));
-            _baseSelectedRecipeIngredients = SelectedRecipeIngredients.ToList();
+            _baseSelectedRecipeIngredients = SelectedRecipeIngredients.Select(ri => ri.ToSend()).ToList();
 
             var content = new RecipeAddDialog();
             content.DataContext = this;
@@ -208,19 +215,24 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
                         await new APIService().RemoveRecipeIngredientAsync(item.Id);
                     }
 
-                    foreach (var item in SelectedRecipeIngredients.Where(selIng => !_baseSelectedRecipeIngredients.Any(baseIng => baseIng.Id == selIng.Id)))
+                    foreach (var item in SelectedRecipeIngredients.Where(selIng => _baseSelectedRecipeIngredients.Any(baseIng => baseIng.Id == selIng.Id && baseIng.Quantity != selIng.Quantity)))
+                    {
+                        await new APIService().UpdateRecipeIngredientAsync(item);
+                    }
+
+                    foreach (var item in SelectedRecipeIngredients.Where(selIng => selIng.Id == 0))
                     {
                         item.RecipeId = recipe.Id;
                         await new APIService().AddRecipeIngredientAsync(item);
                     }
+                    ReloadRecipes();
+                    SearchByText();
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
                 default:
                     break;
             }
-            DataService.SaveRecipes();
-            SearchByText();
         }
 
         [RelayCommand]
@@ -245,14 +257,14 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             {
                 case ContentDialogResult.Primary:
                     await new APIService().RemoveRecipeAsync(recipe.Id);
+                    ReloadRecipes();
+                    SearchByText();
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
                 default:
                     break;
             }
-            DataService.SaveRecipes();
-            SearchByText();
         }
 
         [RelayCommand]

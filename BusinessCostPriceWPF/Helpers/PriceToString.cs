@@ -20,6 +20,10 @@ namespace BusinessCostPriceWPF.Helpers
             {
                 return ((float)value).ToString(parameter.ToString()) + "€";
             }
+            if (value is double)
+            {
+                return ((double)value).ToString(parameter.ToString()) + "€";
+            }
             return value?.ToString() + "€";
         }
 
@@ -32,6 +36,10 @@ namespace BusinessCostPriceWPF.Helpers
             if (value is float)
             {
                 return ((float)value).ToString(parameter.ToString()) + "€";
+            }
+            if (value is double)
+            {
+                return ((double)value).ToString(parameter.ToString()) + "€";
             }
             return value?.ToString() + "€";
         }
