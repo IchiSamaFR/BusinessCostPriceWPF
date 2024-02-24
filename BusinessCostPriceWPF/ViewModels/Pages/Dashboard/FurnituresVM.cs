@@ -46,10 +46,14 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         private string _nameToFind = string.Empty;
 
         [ObservableProperty]
-        private ObservableCollection<FurnitureDTO> _showedFurnitures = new ObservableCollection<FurnitureDTO>();
-
-        [ObservableProperty]
-        private ObservableCollection<FurnitureStockInfoDTO> _showedFurnitureStocks = new ObservableCollection<FurnitureStockInfoDTO>();
+        private ObservableCollection<FurnitureDTO> _furnitures = new ObservableCollection<FurnitureDTO>();
+        public IEnumerable<FurnitureDTO> ShowedFurnitures
+        {
+            get
+            {
+                return Furnitures.Where(i => i.Name.ToLower().Contains(NameToFind.ToLower())).OrderBy(i => i.Name);
+            }
+        }
 
         private readonly IContentDialogService _contentDialogService;
 
@@ -74,7 +78,6 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             UnitsType = new List<Unit>() { Unit.Kilogram, Unit.Liter, Unit.Piece, Unit.Dozen };
 
             ClearSelection();
-            SearchByText();
         }
         private async void InitDatas()
         {
@@ -82,8 +85,9 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         }
         private async void ReloadFurnitures()
         {
-            ShowedFurnitures.Clear();
-            ShowedFurnitures.AddRange(await new APIService().GetFurnituresAsync(0));
+            Furnitures = new ObservableCollection<FurnitureDTO>();
+            Furnitures.CollectionChanged += (a, e) => SearchByText();
+            Furnitures.AddRange(await new APIService().GetFurnituresAsync(0));
         }
 
         private void ClearSelection()
@@ -118,14 +122,13 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    await new APIService().AddFurnitureAsync(new FurnitureDTO()
+                    var newFurniture = await new APIService().AddFurnitureAsync(new FurnitureDTO()
                     {
                         Name = SelectedName,
                         Unit = SelectedUnitType,
                         UnitPrice = SelectedPrice ?? 0
                     });
-                    ReloadFurnitures();
-                    SearchByText();
+                    Furnitures.Add(newFurniture);
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
@@ -158,14 +161,14 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    var ingPrice = await new APIService().UpdateFurnitureAsync(new FurnitureDTO()
+                    var newFurniture = await new APIService().UpdateFurnitureAsync(new FurnitureDTO()
                     {
                         Id = furniture.Id,
                         Name = SelectedName,
                         UnitPrice = SelectedPrice ?? 0,
                     });
-                    ReloadFurnitures();
-                    SearchByText();
+                    Furnitures.Remove(furniture);
+                    Furnitures.Add(newFurniture);
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
@@ -196,8 +199,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             {
                 case ContentDialogResult.Primary:
                     await new APIService().RemoveFurnitureAsync(furniture.Id);
-                    ReloadFurnitures();
-                    SearchByText();
+                    Furnitures.Remove(furniture);
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
@@ -209,7 +211,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         [RelayCommand]
         public void SearchByText()
         {
-            //ShowedFurnitures = DataService.GetLastFurnitures.Where(i => i.Name.ToLower().Contains(NameToFind.ToLower()));
+            OnPropertyChanged(nameof(ShowedFurnitures));
         }
     }
 }

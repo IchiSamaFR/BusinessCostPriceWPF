@@ -41,9 +41,14 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <ui:TextBox Text="{Binding ViewModel.NameToFind}"
+                        <ui:TextBox Text="{Binding ViewModel.NameToFind, UpdateSourceTrigger=PropertyChanged}"
                                 Margin="0 0 10 0"
-                                PlaceholderText="Rechercher"/>
+                                PlaceholderText="Rechercher"
+                                AcceptsReturn="False">
+                            <TextBox.InputBindings>
+                                <KeyBinding Key="Enter" Command="{Binding ViewModel.SearchByTextCommand}" />
+                            </TextBox.InputBindings>
+                        </ui:TextBox>
                         <ui:Button Icon="{ui:SymbolIcon Search24}" Command="{Binding ViewModel.SearchByTextCommand}"
                                Grid.Column="1"
                                VerticalAlignment="Stretch"/>
@@ -71,7 +76,7 @@
                         <ui:MenuItem Icon="{ui:SymbolIcon MoreVertical24}"/>
                     </Menu>
                 </Grid>
-                <ListView ItemsSource="{Binding ViewModel.ShowedFurnitures, Mode=TwoWay}" Grid.Row="2"
+                <ListView ItemsSource="{Binding ViewModel.ShowedFurnitures, Mode=OneWay}" Grid.Row="2"
                           VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible">
                     <ListView.ItemTemplate>
                         <DataTemplate DataType="{x:Type models:Furniture}">
