@@ -15,9 +15,11 @@ namespace BusinessCostPriceWPF.Views.Windows
     public partial class MainWindow
     {
         public MainWindowVM ViewModel { get; }
+        private ExceptionService _exceptionService { get; }
 
         public MainWindow(
             MainWindowVM viewModel,
+            ExceptionService exceptionService,
             INavigationService navigationService,
             IServiceProvider serviceProvider,
             ISnackbarService snackbarService,
@@ -39,6 +41,8 @@ namespace BusinessCostPriceWPF.Views.Windows
 
             //APIService.BaseUrl = @"https://businesscostpriceapi.azurewebsites.net/";
             APIService.BaseUrl = @"http://localhost:5281/";
+
+            _exceptionService = exceptionService;
         }
 
         protected override void OnClosing(CancelEventArgs e)

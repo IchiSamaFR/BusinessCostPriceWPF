@@ -17,13 +17,25 @@
     </UserControl.Resources>
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBox Text="{Binding ViewModel.MailAdress}" Width="200" Margin="0 5"
-                     IsEnabled="{Binding ViewModel.IsLogging, Converter={StaticResource BooleanInvertConverter}}"/>
-            <TextBox Text="{Binding ViewModel.Password}" Width="200" Margin="0 5"
-                     IsEnabled="{Binding ViewModel.IsLogging, Converter={StaticResource BooleanInvertConverter}}"/>
-            <ui:Button Content="Connexion" Width="100" Margin="0 5"
+            <ui:TextBox Icon="{ui:SymbolIcon Person24}" IconPlacement="Left"
+                        Text="{Binding ViewModel.MailAdress, UpdateSourceTrigger=PropertyChanged}" Width="260" Margin="0 5"
+                        PlaceholderText="Identifiant"
+                        IsEnabled="{Binding ViewModel.IsLogging, Converter={StaticResource BooleanInvertConverter}}"/>
+
+            <ui:PasswordBox Icon="{ui:SymbolIcon Password24}" IconPlacement="Left"
+                            Text="{Binding ViewModel.Password, UpdateSourceTrigger=PropertyChanged}" Width="260" Margin="0 5"
+                            PlaceholderText="Mot de passe"
+                            IsEnabled="{Binding ViewModel.IsLogging, Converter={StaticResource BooleanInvertConverter}}"/>
+
+            <StackPanel Orientation="Horizontal" Margin="0 5">
+                <ui:Button Content="Connexion" Width="125"
                        Command="{Binding ViewModel.LogCommand}"
-                     IsEnabled="{Binding ViewModel.IsLogging, Converter={StaticResource BooleanInvertConverter}}"/>
+                       Appearance="Primary"
+                       IsEnabled="{Binding ViewModel.IsLogging, Converter={StaticResource BooleanInvertConverter}}"/>
+                <ui:Button Content="Inscription" Width="125" Margin="10 0 0 0"
+                       Command="{Binding ViewModel.RegisterCommand}"
+                       IsEnabled="{Binding ViewModel.IsLogging, Converter={StaticResource BooleanInvertConverter}}"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </UserControl>

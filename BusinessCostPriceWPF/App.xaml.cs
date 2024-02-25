@@ -4,6 +4,7 @@
 // All Rights Reserved.
 
 using BusinessCostPriceWPF.Services;
+using BusinessCostPriceWPF.Services.API;
 using BusinessCostPriceWPF.ViewModels.Pages.Dashboard;
 using BusinessCostPriceWPF.ViewModels.Pages.Login;
 using BusinessCostPriceWPF.ViewModels.Windows;
@@ -30,6 +31,8 @@ namespace BusinessCostPriceWPF
             .ConfigureServices((context, services) =>
             {
                 services.AddHostedService<ApplicationHostService>();
+
+                services.AddSingleton<ExceptionService>();
 
                 services.AddSingleton<MainWindow>();
                 services.AddSingleton<MainWindowVM>();

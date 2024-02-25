@@ -41,7 +41,7 @@
                 <ui:ImageIcon Source="pack://application:,,,/Assets/wpfui-icon-256.png" />
             </ui:TitleBar.Icon>
         </ui:TitleBar>
-        
+
         <ui:NavigationView
             Grid.Row="1"
             x:Name="NavigationView"
@@ -53,11 +53,6 @@
             OpenPaneLength="210"
             PaneDisplayMode="Left"
             IsBackButtonVisible="Collapsed">
-            <ui:NavigationView.ContentOverlay>
-                <StackPanel>
-                    <ui:SnackbarPresenter x:Name="SnackbarPresenter" />
-                </StackPanel>
-            </ui:NavigationView.ContentOverlay>
         </ui:NavigationView>
 
         <ContentPresenter 
@@ -66,5 +61,7 @@
             Visibility="{Binding ViewModel.IsLogged, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=invert}"/>
 
         <ContentPresenter x:Name="RootContentDialog" Grid.Row="0" Grid.RowSpan="2"/>
+
+        <ui:SnackbarPresenter x:Name="SnackbarPresenter" Grid.RowSpan="2"/>
     </Grid>
 </ui:FluentWindow>
