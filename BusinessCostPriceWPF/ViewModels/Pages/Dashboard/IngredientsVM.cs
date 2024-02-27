@@ -140,13 +140,20 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    var addedIngredient = await new APIService().AddIngredientAsync(new IngredientDTO()
+                    try
                     {
-                        Name = SelectedName,
-                        Unit = SelectedUnitType,
-                        UnitPrice = SelectedPrice
-                    });
-                    Ingredients.Add(addedIngredient);
+                        var addedIngredient = await new APIService().AddIngredientAsync(new IngredientDTO()
+                        {
+                            Name = SelectedName,
+                            Unit = SelectedUnitType,
+                            UnitPrice = SelectedPrice
+                        });
+                        Ingredients.Add(addedIngredient);
+                    }
+                    catch (ApiException ex)
+                    {
+                        ExceptionService.ShowError("Erreur lors de l'ajout d'un ingrédient", ex.Response);
+                    }
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
@@ -182,27 +189,34 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    var addedIngredient = await new APIService().UpdateIngredientAsync(new IngredientDTO()
+                    try
                     {
-                        Id = ingredient.Id,
-                        Name = SelectedName,
-                        UnitPrice = SelectedPrice,
-                        Unit = SelectedUnitType
-                    });
-                    if (IngredientPrices.LastOrDefault()?.Date.Date == DateTime.Today.Date)
-                    {
-                        IngredientPrices.LastOrDefault().UnitPrice = addedIngredient.UnitPrice;
-                    }
-                    else
-                    {
-                        IngredientPrices.Add(new IngredientPriceInfoDTO()
+                        var addedIngredient = await new APIService().UpdateIngredientAsync(new IngredientDTO()
                         {
-                            Date = DateTime.Now.Date,
-                            UnitPrice = addedIngredient.UnitPrice
+                            Id = ingredient.Id,
+                            Name = SelectedName,
+                            UnitPrice = SelectedPrice,
+                            Unit = SelectedUnitType
                         });
+                        if (IngredientPrices.LastOrDefault()?.Date.Date == DateTime.Today.Date)
+                        {
+                            IngredientPrices.LastOrDefault().UnitPrice = addedIngredient.UnitPrice;
+                        }
+                        else
+                        {
+                            IngredientPrices.Add(new IngredientPriceInfoDTO()
+                            {
+                                Date = DateTime.Now.Date,
+                                UnitPrice = addedIngredient.UnitPrice
+                            });
+                        }
+                        Ingredients.Remove(ingredient);
+                        Ingredients.Add(addedIngredient);
                     }
-                    Ingredients.Remove(ingredient);
-                    Ingredients.Add(addedIngredient);
+                    catch (ApiException ex)
+                    {
+                        ExceptionService.ShowError("Erreur lors de la modification d'un ingrédient", ex.Response);
+                    }
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
@@ -233,8 +247,15 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    await new APIService().RemoveIngredientAsync(ingredient.Id);
-                    Ingredients.Remove(ingredient);
+                    try
+                    {
+                        await new APIService().RemoveIngredientAsync(ingredient.Id);
+                        Ingredients.Remove(ingredient);
+                    }
+                    catch (ApiException ex)
+                    {
+                        ExceptionService.ShowError("Erreur lors de la suppression d'un ingrédient", ex.Response);
+                    }
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:

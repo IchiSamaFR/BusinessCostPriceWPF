@@ -5,9 +5,11 @@
 
 using BusinessCostPriceWPF.Services.API;
 using BusinessCostPriceWPF.Views.Pages;
+using BusinessCostPriceWPF.Views.Pages.Dashboard;
 using BusinessCostPriceWPF.Views.Pages.Login;
 using BusinessCostPriceWPF.Views.Windows;
 using System.Collections.ObjectModel;
+using System.Drawing.Printing;
 using System.Windows.Navigation;
 using Wpf.Ui.Common;
 using Wpf.Ui.Controls;
@@ -65,6 +67,12 @@ namespace BusinessCostPriceWPF.ViewModels.Windows
                 Content = "Paramètres",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.Settings24 },
                 TargetPageType = typeof(SettingsPage)
+            },
+            new NavigationViewItem()
+            {
+                Content = "Se déconnecter",
+                Icon = new SymbolIcon { Symbol = SymbolRegular.Person24 },
+                TargetPageType = typeof(UserPage)
             }
         };
 
@@ -83,6 +91,7 @@ namespace BusinessCostPriceWPF.ViewModels.Windows
             _serviceProvider = serviceProvider;
             _loginView = loginView;
             _loginView.ViewModel.OnLogged += OnLogged;
+            
         }
         private async void OnLogged()
         {

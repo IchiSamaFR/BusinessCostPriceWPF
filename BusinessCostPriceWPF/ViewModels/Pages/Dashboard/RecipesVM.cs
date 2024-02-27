@@ -158,19 +158,28 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    var recipe = await new APIService().AddRecipeAsync(new RecipeDTO()
+                    try
                     {
-                        Name = SelectedName,
-                        RecipeQuantity = SelectedQuantity,
-                        Charges = SelectedCharges,
-                        Unit = SelectedUnitType
-                    });
-                    foreach (var item in SelectedRecipeIngredients)
-                    {
-                        item.RecipeId = recipe.Id;
-                        await new APIService().AddRecipeIngredientAsync(item);
+                        var recipe = await new APIService().AddRecipeAsync(new RecipeDTO()
+                        {
+                            Name = SelectedName,
+                            RecipeQuantity = SelectedQuantity,
+                            Charges = SelectedCharges,
+                            Unit = SelectedUnitType
+                        });
+
+                        foreach (var item in SelectedRecipeIngredients)
+                        {
+                            item.RecipeId = recipe.Id;
+                            await new APIService().AddRecipeIngredientAsync(item);
+                        }
+
+                        Recipes.Add(await new APIService().GetRecipeAsync(recipe.Id));
                     }
-                    Recipes.Add(await new APIService().GetRecipeAsync(recipe.Id));
+                    catch (ApiException ex)
+                    {
+                        ExceptionService.ShowError("Erreur lors de l'ajout d'une recette", ex.Response);
+                    }
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
@@ -211,32 +220,39 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    var addedRecipe = await new APIService().UpdateRecipeAsync(new RecipeDTO()
+                    try
                     {
-                        Id = recipe.Id,
-                        Name = SelectedName,
-                        Unit = SelectedUnitType,
-                        Charges = SelectedCharges,
-                        RecipeQuantity = SelectedQuantity
-                    });
+                        var addedRecipe = await new APIService().UpdateRecipeAsync(new RecipeDTO()
+                        {
+                            Id = recipe.Id,
+                            Name = SelectedName,
+                            Unit = SelectedUnitType,
+                            Charges = SelectedCharges,
+                            RecipeQuantity = SelectedQuantity
+                        });
 
-                    foreach (var item in _baseSelectedRecipeIngredients.Where(baseIng => !SelectedRecipeIngredients.Any(selIng => selIng.Id == baseIng.Id)))
-                    {
-                        await new APIService().RemoveRecipeIngredientAsync(item.Id);
-                    }
+                        foreach (var item in _baseSelectedRecipeIngredients.Where(baseIng => !SelectedRecipeIngredients.Any(selIng => selIng.Id == baseIng.Id)))
+                        {
+                            await new APIService().RemoveRecipeIngredientAsync(item.Id);
+                        }
 
-                    foreach (var item in SelectedRecipeIngredients.Where(selIng => _baseSelectedRecipeIngredients.Any(baseIng => baseIng.Id == selIng.Id && baseIng.Quantity != selIng.Quantity)))
-                    {
-                        await new APIService().UpdateRecipeIngredientAsync(item);
-                    }
+                        foreach (var item in SelectedRecipeIngredients.Where(selIng => _baseSelectedRecipeIngredients.Any(baseIng => baseIng.Id == selIng.Id && baseIng.Quantity != selIng.Quantity)))
+                        {
+                            await new APIService().UpdateRecipeIngredientAsync(item);
+                        }
 
-                    foreach (var item in SelectedRecipeIngredients.Where(selIng => selIng.Id == 0))
-                    {
-                        item.RecipeId = recipe.Id;
-                        await new APIService().AddRecipeIngredientAsync(item);
+                        foreach (var item in SelectedRecipeIngredients.Where(selIng => selIng.Id == 0))
+                        {
+                            item.RecipeId = recipe.Id;
+                            await new APIService().AddRecipeIngredientAsync(item);
+                        }
+                        Recipes.Remove(recipe);
+                        Recipes.Add(await new APIService().GetRecipeAsync(recipe.Id));
                     }
-                    Recipes.Remove(recipe);
-                    Recipes.Add(await new APIService().GetRecipeAsync(addedRecipe.Id));
+                    catch (ApiException ex)
+                    {
+                        ExceptionService.ShowError("Erreur lors de la modification d'une recette", ex.Response);
+                    }
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
@@ -266,8 +282,15 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    await new APIService().RemoveRecipeAsync(recipe.Id);
-                    Recipes.Remove(recipe);
+                    try
+                    {
+                        await new APIService().RemoveRecipeAsync(recipe.Id);
+                        Recipes.Remove(recipe);
+                    }
+                    catch (ApiException ex)
+                    {
+                        ExceptionService.ShowError("Erreur lors de la suppression d'une recette", ex.Response);
+                    }
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:

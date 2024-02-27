@@ -122,13 +122,20 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    var newFurniture = await new APIService().AddFurnitureAsync(new FurnitureDTO()
+                    try
                     {
-                        Name = SelectedName,
-                        Unit = SelectedUnitType,
-                        UnitPrice = SelectedPrice ?? 0
-                    });
-                    Furnitures.Add(newFurniture);
+                        var newFurniture = await new APIService().AddFurnitureAsync(new FurnitureDTO()
+                        {
+                            Name = SelectedName,
+                            Unit = SelectedUnitType,
+                            UnitPrice = SelectedPrice ?? 0
+                        });
+                        Furnitures.Add(newFurniture);
+                    }
+                    catch (ApiException ex)
+                    {
+                        ExceptionService.ShowError("Erreur lors de l'ajout d'une fourniture", ex.Response);
+                    }
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
@@ -161,14 +168,21 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    var newFurniture = await new APIService().UpdateFurnitureAsync(new FurnitureDTO()
+                    try
                     {
-                        Id = furniture.Id,
-                        Name = SelectedName,
-                        UnitPrice = SelectedPrice ?? 0,
-                    });
-                    Furnitures.Remove(furniture);
-                    Furnitures.Add(newFurniture);
+                        var newFurniture = await new APIService().UpdateFurnitureAsync(new FurnitureDTO()
+                        {
+                            Id = furniture.Id,
+                            Name = SelectedName,
+                            UnitPrice = SelectedPrice ?? 0,
+                        });
+                        Furnitures.Remove(furniture);
+                        Furnitures.Add(newFurniture);
+                    }
+                    catch (ApiException ex)
+                    {
+                        ExceptionService.ShowError("Erreur lors de la modification d'une fourniture", ex.Response);
+                    }
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:
@@ -198,8 +212,15 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             switch (result)
             {
                 case ContentDialogResult.Primary:
-                    await new APIService().RemoveFurnitureAsync(furniture.Id);
-                    Furnitures.Remove(furniture);
+                    try
+                    {
+                        await new APIService().RemoveFurnitureAsync(furniture.Id);
+                        Furnitures.Remove(furniture);
+                    }
+                    catch (ApiException ex)
+                    {
+                        ExceptionService.ShowError("Erreur lors de la suppression d'une fourniture", ex.Response);
+                    }
                     break;
                 case ContentDialogResult.Secondary:
                 case ContentDialogResult.None:

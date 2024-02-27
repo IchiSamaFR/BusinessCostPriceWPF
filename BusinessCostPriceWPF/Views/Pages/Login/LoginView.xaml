@@ -22,18 +22,18 @@
                         PlaceholderText="Identifiant"
                         IsEnabled="{Binding ViewModel.IsLogging, Converter={StaticResource BooleanInvertConverter}}"/>
 
-            <ui:PasswordBox Icon="{ui:SymbolIcon Password24}" IconPlacement="Left"
-                            Text="{Binding ViewModel.Password, UpdateSourceTrigger=PropertyChanged}" Width="260" Margin="0 5"
+            <ui:PasswordBox Icon="{ui:SymbolIcon Password24}" IconPlacement="Left" Name="passwordBox"
+                            Text="{Binding ViewModel.PasswordText, UpdateSourceTrigger=PropertyChanged}" Width="260" Margin="0 5"
                             PlaceholderText="Mot de passe"
                             IsEnabled="{Binding ViewModel.IsLogging, Converter={StaticResource BooleanInvertConverter}}"/>
 
             <StackPanel Orientation="Horizontal" Margin="0 5">
                 <ui:Button Content="Connexion" Width="125"
-                       Command="{Binding ViewModel.LogCommand}"
+                       Command="{Binding ViewModel.LogCommand}" CommandParameter="{Binding ElementName=passwordBox}"
                        Appearance="Primary"
                        IsEnabled="{Binding ViewModel.IsLogging, Converter={StaticResource BooleanInvertConverter}}"/>
                 <ui:Button Content="Inscription" Width="125" Margin="10 0 0 0"
-                       Command="{Binding ViewModel.RegisterCommand}"
+                       Command="{Binding ViewModel.RegisterCommand}" CommandParameter="{Binding ElementName=passwordBox}"
                        IsEnabled="{Binding ViewModel.IsLogging, Converter={StaticResource BooleanInvertConverter}}"/>
             </StackPanel>
         </StackPanel>

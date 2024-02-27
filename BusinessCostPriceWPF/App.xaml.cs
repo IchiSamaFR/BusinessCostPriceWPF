@@ -9,6 +9,7 @@ using BusinessCostPriceWPF.ViewModels.Pages.Dashboard;
 using BusinessCostPriceWPF.ViewModels.Pages.Login;
 using BusinessCostPriceWPF.ViewModels.Windows;
 using BusinessCostPriceWPF.Views.Pages;
+using BusinessCostPriceWPF.Views.Pages.Dashboard;
 using BusinessCostPriceWPF.Views.Pages.Login;
 using BusinessCostPriceWPF.Views.Windows;
 using Microsoft.Extensions.Configuration;
@@ -47,6 +48,8 @@ namespace BusinessCostPriceWPF
                 services.AddSingleton<HomeVM>();
                 services.AddSingleton<SettingsPage>();
                 services.AddSingleton<SettingsVM>();
+                services.AddSingleton<UserVM>();
+                services.AddSingleton<UserPage>();
 
                 services.AddSingleton<FurnituresPage>();
                 services.AddSingleton<FurnituresVM>();
