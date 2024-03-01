@@ -52,6 +52,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Login
                 });
 
                 APIService.JwtToken = result.Token;
+                ClearValues();
             }
             catch (ApiException ex)
             {
@@ -60,7 +61,6 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Login
 
             OnLogged.Invoke();
             IsLogging = false;
-            ClearValues();
         }
 
         [RelayCommand]
