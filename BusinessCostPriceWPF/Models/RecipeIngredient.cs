@@ -1,4 +1,5 @@
 ﻿using BusinessCostPriceWPF.Services;
+using BusinessCostPriceWPF.Services.API;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -11,42 +12,34 @@ namespace BusinessCostPriceWPF.Models
     public partial class RecipeIngredient : ObservableObject
     {
         [ObservableProperty]
-        private string _id;
-
+        private int _id;
         [ObservableProperty]
-        private float _quantity;
+        private double _quantity;
+        [ObservableProperty]
+        public IIngredient _ingredient;
+        [ObservableProperty]
+        public double _price;
 
-        [JsonIgnore]
-        public IIngredient Ingredient
+        public RecipeIngredient Fill(RecipeIngredientDTO recipeIngredient)
         {
-            get
+            Id = recipeIngredient.Id;
+            Quantity = recipeIngredient.Quantity;
+            Ingredient = recipeIngredient.IIngredient is IngredientDTO ? Models.Ingredient.Build(recipeIngredient.IIngredient as IngredientDTO) : Recipe.Build(recipeIngredient.IIngredient as RecipeDTO);
+            Price = recipeIngredient.Price;
+            return this;
+        }
+        public static RecipeIngredient Build(RecipeIngredientDTO recipeIngredient)
+        {
+            return new RecipeIngredient().Fill(recipeIngredient);
+        }
+        public static RecipeIngredientDTO BuildDTO(RecipeIngredient recipeIngredient)
+        {
+            return new RecipeIngredientDTO()
             {
-                if(Id == "0")
-                {
-                    return DataService.DeletedIngredient;
-                }
-                return DataService.GetLastIIngredients.FirstOrDefault(i => i.Id == Id);
-            }
-        }
-
-        public decimal Price
-        {
-            get
-            {
-                return Ingredient.UnitPrice * (decimal)Quantity;
-            }
-        }
-
-        [JsonConstructor]
-        public RecipeIngredient(string id, float quantity)
-        {
-            _id = id;
-            _quantity = quantity;
-        }
-        public RecipeIngredient(IIngredient ingredient)
-        {
-            _id = ingredient.Id;
-            _quantity = 0;
+                Id = recipeIngredient.Id,
+                Quantity = recipeIngredient.Quantity,
+                Price = recipeIngredient.Price
+            };
         }
     }
 }

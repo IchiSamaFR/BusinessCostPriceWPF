@@ -14,7 +14,6 @@ namespace BusinessCostPriceWPF.Services
     public static class DataService
     {
         private static string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BusinessCostPriceWPF");
-        public static IIngredient DeletedIngredient { get; } = new Ingredient("0", "Supprimé", Resources.Enums.Unit.kilogram, 0);
 
         public static ObservableCollection<Ingredient> Ingredients = new ObservableCollection<Ingredient>();
         public static ObservableCollection<Recipe> Recipes = new ObservableCollection<Recipe>();
@@ -23,14 +22,14 @@ namespace BusinessCostPriceWPF.Services
         {
             get
             {
-                return Ingredients.GroupBy(p => p.Id).Select(g => g.OrderByDescending(p => p.Date).FirstOrDefault());
+                return Ingredients.GroupBy(p => p.Id).Select(g => g.OrderByDescending(p => p.Id).FirstOrDefault());
             }
         }
         public static IEnumerable<Recipe> GetLastRecipes
         {
             get
             {
-                return Recipes.GroupBy(p => p.Id).Select(g => g.OrderByDescending(p => p.Date).FirstOrDefault());
+                return Recipes.GroupBy(p => p.Id).Select(g => g.OrderByDescending(p => p.Id).FirstOrDefault());
             }
         }
         public static IEnumerable<IIngredient> GetLastIIngredients
@@ -44,7 +43,7 @@ namespace BusinessCostPriceWPF.Services
         {
             get
             {
-                return Furnitures.GroupBy(p => p.Id).Select(g => g.OrderByDescending(p => p.Date).FirstOrDefault());
+                return Furnitures.GroupBy(p => p.Id).Select(g => g.OrderByDescending(p => p.Id).FirstOrDefault());
             }
         }
         public static IEnumerable<IStock> GetLastIStock
@@ -108,7 +107,7 @@ namespace BusinessCostPriceWPF.Services
             {
                 foreach (var recipeIngredient in recipe.RecipeIngredients.Where(i => i.Id == ingredient.Id))
                 {
-                    recipeIngredient.Id = DeletedIngredient.Id;
+                    //recipeIngredient.Id = DeletedIngredient.Id;
                 }
             }
         }

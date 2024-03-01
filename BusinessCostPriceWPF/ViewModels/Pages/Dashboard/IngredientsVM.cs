@@ -39,10 +39,10 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
 
         #region -- RemoveDialogBox --
         [ObservableProperty]
-        private IngredientDTO _removedIngredient;
+        private Ingredient _removedIngredient;
 
         [ObservableProperty]
-        private ObservableCollection<RecipeDTO> _removedFromRecipes = new ObservableCollection<RecipeDTO>();
+        private ObservableCollection<Recipe> _removedFromRecipes = new ObservableCollection<Recipe>();
         #endregion
 
 
@@ -50,11 +50,11 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         private string _nameToFind = string.Empty;
 
         [ObservableProperty]
-        private ObservableCollection<IngredientDTO> _ingredients = new ObservableCollection<IngredientDTO>();
+        private ObservableCollection<Ingredient> _ingredients = new ObservableCollection<Ingredient>();
         [ObservableProperty]
         private ObservableCollection<IngredientPriceInfoDTO> _ingredientPrices = new ObservableCollection<IngredientPriceInfoDTO>();
 
-        public IEnumerable<IngredientDTO> ShowedIngredients
+        public IEnumerable<Ingredient> ShowedIngredients
         {
             get
             {
@@ -102,9 +102,9 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         }
         private async void ReloadIngredients()
         {
-            Ingredients = new ObservableCollection<IngredientDTO>();
+            Ingredients = new ObservableCollection<Ingredient>();
             Ingredients.CollectionChanged += (a, e) => SearchByText();
-            Ingredients.AddRange(await new APIService().GetIngredientsAsync(0));
+            Ingredients.AddRange((await new APIService().GetIngredientsAsync(0)).Select(Ingredient.Build));
         }
 
         private void ClearSelection()
@@ -148,7 +148,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
                             Unit = SelectedUnitType,
                             UnitPrice = SelectedPrice
                         });
-                        Ingredients.Add(addedIngredient);
+                        Ingredients.Add(Ingredient.Build(addedIngredient));
                     }
                     catch (ApiException ex)
                     {
@@ -163,7 +163,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         }
 
         [RelayCommand]
-        public async void UpdateIngredient(IngredientDTO ingredient)
+        public async void UpdateIngredient(Ingredient ingredient)
         {
             _modifiedId = ingredient.Id;
             SelectedUnitType = ingredient.Unit;
@@ -210,8 +210,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
                                 UnitPrice = addedIngredient.UnitPrice
                             });
                         }
-                        Ingredients.Remove(ingredient);
-                        Ingredients.Add(addedIngredient);
+                        ingredient.Fill(addedIngredient);
                     }
                     catch (ApiException ex)
                     {
@@ -226,7 +225,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         }
 
         [RelayCommand]
-        public async void RemoveIngredient(IngredientDTO ingredient)
+        public async void RemoveIngredient(Ingredient ingredient)
         {
             RemovedIngredient = ingredient;
             //RemovedFromRecipes = DataService.GetLastRecipes.Where(r => r.Ingredients.Any(i => i.Id == ingredient.Id)).ToList();

@@ -1,5 +1,6 @@
 ﻿using BusinessCostPriceWPF.Resources;
 using BusinessCostPriceWPF.Services;
+using BusinessCostPriceWPF.Services.API;
 using BusinessCostPriceWPF.ViewModels.Pages.Dashboard;
 using Newtonsoft.Json;
 using System;
@@ -18,73 +19,57 @@ namespace BusinessCostPriceWPF.Models
         public string IconString { get; } = "Notebook24";
 
         [ObservableProperty]
-        private string _id;
+        private int _id;
         [ObservableProperty]
         private string _name;
         [ObservableProperty]
-        private Enums.Unit _unit;
+        private Unit _unit;
         [ObservableProperty]
-        private float _recipeQuantity;
+        private double _recipeQuantity;
         [ObservableProperty]
-        private decimal _charges;
+        private double _charges;
+
+
         [ObservableProperty]
-        private DateTime _date;
+        private double _unitPrice;
+        [ObservableProperty]
+        private double _recipePriceNoFee;
+        [ObservableProperty]
+        private double _recipePrice;
 
 
         [ObservableProperty]
         private List<RecipeIngredient> _recipeIngredients;
 
-        [JsonIgnore]
-        public decimal RecipePriceNoFee
+        public Recipe Fill(RecipeDTO recipe)
         {
-            get
+            Id = recipe.Id;
+            Name = recipe.Name;
+            Unit = recipe.Unit;
+            RecipeQuantity = recipe.RecipeQuantity;
+            Charges = recipe.Charges;
+            UnitPrice = recipe.UnitPrice;
+            RecipePriceNoFee = recipe.RecipePriceNoFee;
+            RecipePrice = recipe.RecipePrice;
+            return this;
+        }
+        public static Recipe Build(RecipeDTO recipe)
+        {
+            return new Recipe().Fill(recipe);
+        }
+        public static RecipeDTO BuildDTO(Recipe recipe)
+        {
+            return new RecipeDTO()
             {
-                return RecipeIngredients.Sum(r => r.Price);
-            }
-        }
-        [JsonIgnore]
-        public decimal RecipePrice
-        {
-            get
-            {
-                return RecipePriceNoFee * (1 + (Charges / 100));
-            }
-        }
-        [JsonIgnore]
-        public decimal UnitPrice
-        {
-            get
-            {
-                if(RecipeQuantity == 0)
-                {
-                    return 0;
-                }
-                return RecipePrice / (decimal)RecipeQuantity;
-            }
-        }
-        [JsonIgnore]
-        public List<IIngredient> Ingredients
-        {
-            get
-            {
-                return RecipeIngredients.Select(r => r.Ingredient).ToList();
-            }
-        }
-
-        public Recipe(string id, string name, DateTime date, float recipeQuantity, decimal charges, Enums.Unit unit, IEnumerable<RecipeIngredient> ingredients)
-        {
-            _id = id;
-            _name = name;
-            _unit = unit;
-            _recipeQuantity = recipeQuantity;
-            _charges = charges;
-            _date = date.Date;
-            _recipeIngredients = ingredients?.ToList();
-        }
-
-        public void SetIngredients(IEnumerable<RecipeIngredient> recipeIngredients)
-        {
-            RecipeIngredients = recipeIngredients.ToList();
+                Id = recipe.Id,
+                Name = recipe.Name,
+                Unit = recipe.Unit,
+                RecipeQuantity = recipe.RecipeQuantity,
+                Charges = recipe.Charges,
+                UnitPrice = recipe.UnitPrice,
+                RecipePriceNoFee = recipe.RecipePriceNoFee,
+                RecipePrice = recipe.RecipePrice,
+            };
         }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using BusinessCostPriceWPF.Models;
 using BusinessCostPriceWPF.Resources;
 using BusinessCostPriceWPF.Services;
+using BusinessCostPriceWPF.Services.API;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,13 +18,29 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
     {
         private bool _isInitialized = false;
 
-        private Dictionary<string, float> _ingredientsBaseStock = new Dictionary<string, float>();
+        private Dictionary<IStock, double> _ingredientsBaseStock = new Dictionary<IStock, double>();
 
-        [ObservableProperty]
-        private IEnumerable<IStock> _showedStocks;
+        private ObservableCollection<Ingredient> _availableIngredients = new ObservableCollection<Ingredient>();
+        private ObservableCollection<Furniture> _availableFurnitures = new ObservableCollection<Furniture>();
 
-        [ObservableProperty]
-        private IEnumerable<IStock> _allStocks;
+        public IEnumerable<IStock> ShowedStocks
+        {
+            get
+            {
+                return AllStocks.Where(i => i.Name.ToLower().Contains(NameToFind.ToLower()));
+            }
+        }
+
+        private List<IStock> AllStocks
+        {
+            get
+            {
+                var tmp = new List<IStock>();
+                _availableIngredients.Foreach(item => tmp.Add(item));
+                _availableFurnitures.Foreach(item => tmp.Add(item));
+                return tmp;
+            }
+        }
 
         [ObservableProperty]
         private string _nameToFind = string.Empty;
@@ -32,10 +50,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             if (!_isInitialized)
                 InitializeViewModel();
 
-            AllStocks = DataService.GetLastIStock;
-            _ingredientsBaseStock.Clear();
-            AllStocks.Foreach(i => _ingredientsBaseStock.Add(i.Id, i.StockQuantity));
-            SearchByText();
+            InitData();
         }
 
         public void OnNavigatedFrom()
@@ -47,27 +62,54 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         {
         }
 
-        [RelayCommand]
-        public void Save()
+        private async void InitData()
         {
-            foreach (var stock in ShowedStocks)
+            _availableIngredients.Clear();
+            _availableFurnitures.Clear();
+            _availableIngredients.AddRange((await new APIService().GetIngredientsAsync(0)).Select(Ingredient.Build));
+            _availableFurnitures.AddRange((await new APIService().GetFurnituresAsync(0)).Select(Furniture.Build));
+
+            _ingredientsBaseStock.Clear();
+            _availableIngredients.Foreach(item => _ingredientsBaseStock.Add(item, item.StockQuantity));
+            _availableFurnitures.Foreach(item => _ingredientsBaseStock.Add(item, item.StockQuantity));
+            SearchByText();
+        }
+
+        [RelayCommand]
+        public async void Save()
+        {
+            try
             {
-                var baseStock = _ingredientsBaseStock[stock.Id];
-                if(stock.StockQuantity != baseStock && stock.Date != DateTime.Now.Date)
+                foreach (var stock in ShowedStocks)
                 {
-                    if(stock is Ingredient)
+                    var baseStock = _ingredientsBaseStock[stock];
+                    if (stock.StockQuantity != baseStock)
                     {
-                        DataService.Ingredients.Add(new Ingredient(stock.Id, stock.Name, stock.Unit, stock.UnitPrice, DateTime.Now, stock.StockQuantity));
+                        if (stock is Ingredient)
+                        {
+                            var res = await new APIService().AddIngredientStockAsync(new IngredientStockInfoDTO()
+                            {
+                                IngredientId = stock.Id,
+                                StockQuantity = stock.StockQuantity
+                            });
+                            _ingredientsBaseStock[stock] = res.StockQuantity;
+                        }
+                        else if (stock is Furniture)
+                        {
+                            var res = await new APIService().AddFurnitureStockAsync(new FurnitureStockInfoDTO()
+                            {
+                                FurnitureId = stock.Id,
+                                StockQuantity = stock.StockQuantity
+                            });
+                            _ingredientsBaseStock[stock] = res.StockQuantity;
+                        }
                     }
-                    else if (stock is Furniture)
-                    {
-                        DataService.Furnitures.Add(new Furniture(stock.Id, stock.Name, stock.Unit, stock.UnitPrice, DateTime.Now, stock.StockQuantity));
-                    }
-                    stock.StockQuantity = baseStock;
                 }
             }
-
-            DataService.SaveIngredients();
+            catch (ApiException ex)
+            {
+                ExceptionService.ShowError("Erreur lors de la modification des stocks", ex.Response);
+            }
         }
 
         [RelayCommand]
@@ -87,12 +129,12 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             using (StreamWriter outputFile = new StreamWriter(saveFileDialog.FileName, false, Encoding.UTF8))
             {
                 outputFile.WriteLine($"Nom;Stock;Prix Unitaire;Prix Total");
-                decimal total = 0;
+                double total = 0;
 
                 foreach (var ingredient in AllStocks)
                 {
-                    outputFile.WriteLine($"{ingredient.Name};{ingredient.StockQuantity};{ingredient.UnitPrice};{ingredient.UnitPrice * (decimal)ingredient.StockQuantity}");
-                    total += ingredient.UnitPrice * (decimal)ingredient.StockQuantity;
+                    outputFile.WriteLine($"{ingredient.Name};{ingredient.StockQuantity};{ingredient.UnitPrice};{ingredient.UnitPrice * ingredient.StockQuantity}");
+                    total += ingredient.UnitPrice * ingredient.StockQuantity;
                 }
                 outputFile.WriteLine(string.Empty);
                 outputFile.WriteLine($";;Prix Total;{total}");
@@ -102,7 +144,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         [RelayCommand]
         public void SearchByText()
         {
-            ShowedStocks = AllStocks.Where(i => i.Name.ToLower().Contains(NameToFind.ToLower()));
+            OnPropertyChanged(nameof(ShowedStocks));
         }
     }
 }

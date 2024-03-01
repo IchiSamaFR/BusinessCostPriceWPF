@@ -75,7 +75,7 @@
                     </Menu>
                 </Grid>
 
-                <ListView ItemsSource="{Binding ViewModel.AllStocks, Mode=TwoWay}" Grid.Row="2"
+                <ListView ItemsSource="{Binding ViewModel.ShowedStocks, Mode=OneWay}" Grid.Row="2"
                           VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Visible">
                     <ListView.ItemTemplate>
                         <DataTemplate DataType="{x:Type models:IStock}">

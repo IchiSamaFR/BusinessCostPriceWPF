@@ -1,4 +1,5 @@
-﻿using BusinessCostPriceWPF.Resources;
+﻿using BusinessCostPriceWPF.Models;
+using BusinessCostPriceWPF.Resources;
 using BusinessCostPriceWPF.Services;
 using BusinessCostPriceWPF.Services.API;
 using BusinessCostPriceWPF.Views.Pages.Dialogs;
@@ -20,8 +21,8 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
     {
         private bool _isInitialized = false;
 
-        private ObservableCollection<IngredientDTO> _availableIngredients = new ObservableCollection<IngredientDTO>();
-        private ObservableCollection<RecipeDTO> _availableRecipeIngredients = new ObservableCollection<RecipeDTO>();
+        private ObservableCollection<Ingredient> _availableIngredients = new ObservableCollection<Ingredient>();
+        private ObservableCollection<Recipe> _availableRecipeIngredients = new ObservableCollection<Recipe>();
 
         #region -- DialogBox --
         private int _modifiedId;
@@ -65,16 +66,16 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         private IIngredient _removedIngredient;
 
         [ObservableProperty]
-        private ObservableCollection<RecipeDTO> _removedFromRecipes = new ObservableCollection<RecipeDTO>();
+        private ObservableCollection<Recipe> _removedFromRecipes = new ObservableCollection<Recipe>();
         #endregion
 
         [ObservableProperty]
         private string _nameToFind = string.Empty;
 
         [ObservableProperty]
-        private ObservableCollection<RecipeDTO> _recipes = new ObservableCollection<RecipeDTO>();
+        private ObservableCollection<Recipe> _recipes = new ObservableCollection<Recipe>();
 
-        public IEnumerable<RecipeDTO> ShowedRecipes
+        public IEnumerable<Recipe> ShowedRecipes
         {
             get
             {
@@ -113,15 +114,15 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         {
             ReloadRecipes();
             _availableIngredients.Clear();
-            _availableIngredients.AddRange(await new APIService().GetIngredientsAsync(0));
+            _availableIngredients.AddRange((await new APIService().GetIngredientsAsync(0)).Select(Ingredient.Build));
             _availableRecipeIngredients.Clear();
-            _availableRecipeIngredients.AddRange(await new APIService().GetRecipesAsync(0));
+            _availableRecipeIngredients.AddRange((await new APIService().GetRecipesAsync(0)).Select(Recipe.Build));
         }
         private async void ReloadRecipes()
         {
-            Recipes = new ObservableCollection<RecipeDTO>();
+            Recipes = new ObservableCollection<Recipe>();
             Recipes.CollectionChanged += (a, e) => SearchByText();
-            Recipes.AddRange(await new APIService().GetRecipesAsync(0));
+            Recipes.AddRange((await new APIService().GetRecipesAsync(0)).Select(Recipe.Build));
         }
 
         private void ClearSelection()
@@ -174,7 +175,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
                             await new APIService().AddRecipeIngredientAsync(item);
                         }
 
-                        Recipes.Add(await new APIService().GetRecipeAsync(recipe.Id));
+                        Recipes.Add(Recipe.Build(await new APIService().GetRecipeAsync(recipe.Id)));
                     }
                     catch (ApiException ex)
                     {
@@ -189,7 +190,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         }
 
         [RelayCommand]
-        public async void UpdateRecipe(RecipeDTO recipe)
+        public async void UpdateRecipe(Recipe recipe)
         {
             _modifiedId = recipe.Id;
             SelectedName = recipe.Name;
@@ -246,8 +247,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
                             item.RecipeId = recipe.Id;
                             await new APIService().AddRecipeIngredientAsync(item);
                         }
-                        Recipes.Remove(recipe);
-                        Recipes.Add(await new APIService().GetRecipeAsync(recipe.Id));
+                        recipe.Fill(addedRecipe);
                     }
                     catch (ApiException ex)
                     {
@@ -262,7 +262,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         }
 
         [RelayCommand]
-        public async void RemoveRecipe(RecipeDTO recipe)
+        public async void RemoveRecipe(Recipe recipe)
         {
             RemovedIngredient = recipe;
 
@@ -300,7 +300,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         }
 
         [RelayCommand]
-        public async void ExportRecipe(RecipeDTO recipe)
+        public async void ExportRecipe(Recipe recipe)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Texte CSV|*.csv";
@@ -337,9 +337,9 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             }
             var tmp = new RecipeIngredientDTO()
             {
-                IngredientId = SelectedIngredient is IngredientDTO ? SelectedIngredient.Id : null,
-                IngredientRecipeId = SelectedIngredient is RecipeDTO ? SelectedIngredient.Id : null,
-                IIngredient = SelectedIngredient
+                IngredientId = SelectedIngredient is Ingredient ? SelectedIngredient.Id : null,
+                IngredientRecipeId = SelectedIngredient is Recipe ? SelectedIngredient.Id : null,
+                IIngredient = SelectedIngredient is Ingredient ? Ingredient.BuildDTO(SelectedIngredient as Ingredient) : Recipe.BuildDTO(SelectedIngredient as Recipe),
             };
             SelectedRecipeIngredients.Add(tmp);
             SelectedIngredient = null;

@@ -1,4 +1,5 @@
 ﻿using BusinessCostPriceWPF.Resources;
+using BusinessCostPriceWPF.Services.API;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,9 @@ namespace BusinessCostPriceWPF.Models
 {
     public interface IIngredient
     {
-        string IconString { get; }
-        string Id { get; }
+        int Id { get; }
         string Name { get; }
-        Enums.Unit Unit { get; }
-        decimal UnitPrice { get; }
+        Unit Unit { get; }
+        double UnitPrice { get; }
     }
 }

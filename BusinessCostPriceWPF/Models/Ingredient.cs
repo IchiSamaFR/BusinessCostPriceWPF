@@ -1,4 +1,5 @@
 ﻿using BusinessCostPriceWPF.Resources;
+using BusinessCostPriceWPF.Services.API;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,42 +17,39 @@ namespace BusinessCostPriceWPF.Models
         public string IconString { get; } = "DocumentOnePage24";
 
         [ObservableProperty]
-        private string _id;
+        private int _id;
         [ObservableProperty]
         private string _name;
         [ObservableProperty]
-        private Enums.Unit _unit;
+        private Unit _unit;
         [ObservableProperty]
-        private decimal _unitPrice;
+        private double _unitPrice;
         [ObservableProperty]
-        private DateTime _date;
-        [ObservableProperty]
-        private float _stockQuantity;
+        private double _stockQuantity;
 
-        [JsonConstructor]
-        public Ingredient(string id, string name, Enums.Unit unit, decimal unitPrice, DateTime date, float stockQuantity)
+        public Ingredient Fill(IngredientDTO ingredient)
         {
-            _id = id;
-            _name = name;
-            _unit = unit;
-            _unitPrice = unitPrice;
-            _date = date.Date;
-            _stockQuantity = stockQuantity;
+            Id = ingredient.Id;
+            Name = ingredient.Name;
+            Unit = ingredient.Unit;
+            UnitPrice = ingredient.UnitPrice;
+            StockQuantity = ingredient.StockQuantity;
+            return this;
         }
-        public Ingredient(string id, string name, Enums.Unit unit, decimal unitPrice, DateTime date)
+        public static Ingredient Build(IngredientDTO ingredient)
         {
-            _id = id;
-            _name = name;
-            _unit = unit;
-            _unitPrice = unitPrice;
-            _date = date.Date;
+            return new Ingredient().Fill(ingredient);
         }
-        public Ingredient(string id, string name, Enums.Unit unit, decimal unitPrice)
+        public static IngredientDTO BuildDTO(Ingredient ingredient)
         {
-            _id = id;
-            _name = name;
-            _unit = unit;
-            _unitPrice = unitPrice;
+            return new IngredientDTO()
+            {
+                Id = ingredient.Id,
+                Name = ingredient.Name,
+                Unit = ingredient.Unit,
+                UnitPrice = ingredient.UnitPrice,
+                StockQuantity = ingredient.StockQuantity
+            };
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BusinessCostPriceWPF.Resources;
+using BusinessCostPriceWPF.Services.API;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,35 +15,39 @@ namespace BusinessCostPriceWPF.Models
         public string IconString { get; } = "Box24";
 
         [ObservableProperty]
-        private string _id;
+        private int _id;
         [ObservableProperty]
         private string _name;
         [ObservableProperty]
-        private Enums.Unit _unit;
+        private Unit _unit;
         [ObservableProperty]
-        private decimal _unitPrice;
+        private double _unitPrice;
         [ObservableProperty]
-        private DateTime _date;
-        [ObservableProperty]
-        private float _stockQuantity;
+        private double _stockQuantity;
 
-        [JsonConstructor]
-        public Furniture(string id, string name, Enums.Unit unit, decimal unitPrice, DateTime date, float stockQuantity)
+        public Furniture Fill(FurnitureDTO furniture)
         {
-            _id = id;
-            _name = name;
-            _unit = unit;
-            _unitPrice = unitPrice;
-            _date = date.Date;
-            _stockQuantity = stockQuantity;
+            Id = furniture.Id;
+            Name = furniture.Name;
+            Unit = furniture.Unit;
+            UnitPrice = furniture.UnitPrice;
+            StockQuantity = furniture.StockQuantity;
+            return this;
         }
-        public Furniture(string id, string name, Enums.Unit unit, decimal unitPrice, DateTime date)
+        public static Furniture Build(FurnitureDTO furniture)
         {
-            _id = id;
-            _name = name;
-            _unit = unit;
-            _unitPrice = unitPrice;
-            _date = date.Date;
+            return new Furniture().Fill(furniture);
+        }
+        public static FurnitureDTO BuildDTO(Furniture furniture)
+        {
+            return new FurnitureDTO()
+            {
+                Id = furniture.Id,
+                Name = furniture.Name,
+                Unit = furniture.Unit,
+                UnitPrice = furniture.UnitPrice,
+                StockQuantity = furniture.StockQuantity,
+            };
         }
     }
 }

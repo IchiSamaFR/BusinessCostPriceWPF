@@ -1,4 +1,5 @@
 ﻿using BusinessCostPriceWPF.Resources;
+using BusinessCostPriceWPF.Services.API;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,10 @@ namespace BusinessCostPriceWPF.Models
 {
     public interface IStock
     {
-        string IconString { get; }
-        string Id { get; }
+        int Id { get; }
         string Name { get; }
-        Enums.Unit Unit { get; }
-        decimal UnitPrice { get; }
-        DateTime Date { get; }
-        float StockQuantity { get; set; }
+        Unit Unit { get; }
+        double UnitPrice { get; }
+        double StockQuantity { get; set; }
     }
 }
