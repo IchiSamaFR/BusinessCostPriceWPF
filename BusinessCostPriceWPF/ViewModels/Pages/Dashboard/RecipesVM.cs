@@ -308,10 +308,13 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             saveFileDialog.FileName = $"recette_{recipe.Name}_{DateTime.Now.ToString("dd-MM-yyyy")}.csv";
             saveFileDialog.ShowDialog();
 
-            if(saveFileDialog.FileName == string.Empty)
+            if (saveFileDialog.FileName == string.Empty)
             {
                 return;
             }
+
+            SelectedRecipeIngredients.Clear();
+            SelectedRecipeIngredients.AddRange(await new APIService().GetRecipeIngredientsAsync(recipe.Id));
 
             using (StreamWriter outputFile = new StreamWriter(saveFileDialog.FileName, false, Encoding.UTF8))
             {
@@ -319,12 +322,12 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
 
                 foreach (var recipeIngredient in SelectedRecipeIngredients)
                 {
-                    outputFile.WriteLine($"{recipeIngredient.IIngredient.Name};{recipeIngredient.Quantity};{recipeIngredient.IIngredient.UnitPrice};{recipeIngredient.Price}");
+                    outputFile.WriteLine($"{recipeIngredient.IIngredient.Name};{recipeIngredient.Quantity.ToString("0.00")};{recipeIngredient.IIngredient.UnitPrice.ToString("0.00")};{recipeIngredient.Price.ToString("0.00")}");
                 }
                 outputFile.WriteLine(string.Empty);
-                outputFile.WriteLine($";;Prix;{recipe.RecipePriceNoFee}");
-                outputFile.WriteLine($";;Charges;{recipe.Charges}%");
-                outputFile.WriteLine($"{recipe.Name};{recipe.RecipeQuantity};{recipe.UnitPrice};{recipe.RecipePrice}");
+                outputFile.WriteLine($";;Prix;{recipe.RecipePriceNoFee.ToString("0.00")}");
+                outputFile.WriteLine($";;Charges;{recipe.Charges.ToString("0.00")}%");
+                outputFile.WriteLine($"{recipe.Name};{recipe.RecipeQuantity.ToString("0.00")};{recipe.UnitPrice.ToString("0.00")};{recipe.RecipePrice.ToString("0.00")}");
             }
         }
 

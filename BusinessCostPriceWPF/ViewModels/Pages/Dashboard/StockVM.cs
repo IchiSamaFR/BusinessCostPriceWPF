@@ -3,13 +3,9 @@ using BusinessCostPriceWPF.Resources;
 using BusinessCostPriceWPF.Services;
 using BusinessCostPriceWPF.Services.API;
 using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Wpf.Ui.Controls;
 
 namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
@@ -133,11 +129,11 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
 
                 foreach (var ingredient in AllStocks)
                 {
-                    outputFile.WriteLine($"{ingredient.Name};{ingredient.StockQuantity};{ingredient.UnitPrice};{ingredient.UnitPrice * ingredient.StockQuantity}");
+                    outputFile.WriteLine($"{ingredient.Name};{ingredient.StockQuantity.ToString("0.00")};{ingredient.UnitPrice.ToString("0.00")};{(ingredient.UnitPrice * ingredient.StockQuantity).ToString("0.00")}");
                     total += ingredient.UnitPrice * ingredient.StockQuantity;
                 }
                 outputFile.WriteLine(string.Empty);
-                outputFile.WriteLine($";;Prix Total;{total}");
+                outputFile.WriteLine($";;Prix Total;{total.ToString("0.00")}");
             }
         }
 
