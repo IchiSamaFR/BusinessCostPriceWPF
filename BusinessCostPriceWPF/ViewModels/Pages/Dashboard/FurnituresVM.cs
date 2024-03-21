@@ -1,15 +1,10 @@
-﻿using BusinessCostPriceWPF.Models;
+﻿using BusinessCostPriceAPI.Client.Models;
+using BusinessCostPriceAPI.Client.Service;
 using BusinessCostPriceWPF.Resources;
 using BusinessCostPriceWPF.Services;
-using BusinessCostPriceWPF.Services.API;
 using BusinessCostPriceWPF.Views.Pages.Dialogs;
 using BusinessCostPriceWPF.Views.Pages.Ingredients;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using Wpf.Ui.Controls;
 
@@ -87,7 +82,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         {
             Furnitures = new ObservableCollection<FurnitureDTO>();
             Furnitures.CollectionChanged += (a, e) => SearchByText();
-            Furnitures.AddRange(await new APIService().GetFurnituresAsync(0));
+            Furnitures.AddRange(await APIService.GetFurnituresAsync(0));
         }
 
         private void ClearSelection()
@@ -124,7 +119,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
                 case ContentDialogResult.Primary:
                     try
                     {
-                        var newFurniture = await new APIService().AddFurnitureAsync(new FurnitureDTO()
+                        var newFurniture = await APIService.AddFurnitureAsync(new FurnitureDTO()
                         {
                             Name = SelectedName,
                             Unit = SelectedUnitType,
@@ -170,7 +165,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
                 case ContentDialogResult.Primary:
                     try
                     {
-                        var newFurniture = await new APIService().UpdateFurnitureAsync(new FurnitureDTO()
+                        var newFurniture = await APIService.UpdateFurnitureAsync(new FurnitureDTO()
                         {
                             Id = furniture.Id,
                             Name = SelectedName,
@@ -214,7 +209,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
                 case ContentDialogResult.Primary:
                     try
                     {
-                        await new APIService().RemoveFurnitureAsync(furniture.Id);
+                        await APIService.RemoveFurnitureAsync(furniture.Id);
                         Furnitures.Remove(furniture);
                     }
                     catch (ApiException ex)

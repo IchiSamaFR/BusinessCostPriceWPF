@@ -1,18 +1,12 @@
-﻿using BusinessCostPriceWPF.Models;
+﻿using BusinessCostPriceAPI.Client.Models;
+using BusinessCostPriceAPI.Client.Service;
+using BusinessCostPriceWPF.Models;
 using BusinessCostPriceWPF.Resources;
 using BusinessCostPriceWPF.Services;
-using BusinessCostPriceWPF.Services.API;
 using BusinessCostPriceWPF.Views.Pages.Dialogs;
 using BusinessCostPriceWPF.Views.Pages.Ingredients;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
-using System.Windows.Media;
 using Wpf.Ui.Controls;
 
 namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
@@ -104,7 +98,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         {
             Ingredients = new ObservableCollection<Ingredient>();
             Ingredients.CollectionChanged += (a, e) => SearchByText();
-            Ingredients.AddRange((await new APIService().GetIngredientsAsync(0)).Select(Ingredient.Build));
+            Ingredients.AddRange((await APIService.GetIngredientsAsync(0)).Select(Ingredient.Build));
         }
 
         private void ClearSelection()
@@ -142,7 +136,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
                 case ContentDialogResult.Primary:
                     try
                     {
-                        var addedIngredient = await new APIService().AddIngredientAsync(new IngredientDTO()
+                        var addedIngredient = await APIService.AddIngredientAsync(new IngredientDTO()
                         {
                             Name = SelectedName,
                             Unit = SelectedUnitType,
@@ -171,7 +165,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             SelectedPrice = ingredient.UnitPrice;
 
             IngredientPrices.Clear();
-            IngredientPrices.AddRange(await new APIService().GetIngredientPriceDetailsAsync(ingredient.Id));
+            IngredientPrices.AddRange(await APIService.GetIngredientPriceDetailsAsync(ingredient.Id));
 
             var content = new IngredientAddDialog();
             content.DataContext = this;
@@ -191,7 +185,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
                 case ContentDialogResult.Primary:
                     try
                     {
-                        var addedIngredient = await new APIService().UpdateIngredientAsync(new IngredientDTO()
+                        var addedIngredient = await APIService.UpdateIngredientAsync(new IngredientDTO()
                         {
                             Id = ingredient.Id,
                             Name = SelectedName,
@@ -248,7 +242,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
                 case ContentDialogResult.Primary:
                     try
                     {
-                        await new APIService().RemoveIngredientAsync(ingredient.Id);
+                        await APIService.RemoveIngredientAsync(ingredient.Id);
                         Ingredients.Remove(ingredient);
                     }
                     catch (ApiException ex)

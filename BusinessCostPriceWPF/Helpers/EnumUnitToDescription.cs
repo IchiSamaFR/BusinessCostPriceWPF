@@ -1,11 +1,5 @@
-﻿using BusinessCostPriceWPF.Resources;
-using BusinessCostPriceWPF.Services.API;
-using System;
-using System.Collections.Generic;
+﻿using BusinessCostPriceAPI.Client.Models;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace BusinessCostPriceWPF.Helpers

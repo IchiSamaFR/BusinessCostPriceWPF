@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="RestSharp" Version="110.2.0" />
     <PackageReference Include="WPF-UI" Version="3.0.0-preview.4" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1 " />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1 " />
@@ -24,6 +25,12 @@
   <ItemGroup>
     <None Remove="Assets\wpfui-icon-256.png" />
     <None Remove="Assets\wpfui-icon-1024.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="BusinessCostPriceAPI.Client">
+      <HintPath>..\..\BusinessCostPriceAPI\BusinessCostPriceAPI.Client\bin\Debug\net7.0\BusinessCostPriceAPI.Client.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

@@ -3,10 +3,9 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
+using BusinessCostPriceAPI.Client.Service;
 using BusinessCostPriceWPF.Services;
-using BusinessCostPriceWPF.Services.API;
 using BusinessCostPriceWPF.ViewModels.Windows;
-using BusinessCostPriceWPF.Views.Pages;
 using System.ComponentModel;
 using Wpf.Ui.Controls;
 
@@ -40,9 +39,9 @@ namespace BusinessCostPriceWPF.Views.Windows
             NavigationView.SetServiceProvider(serviceProvider);
 
 #if DEBUG
-            APIService.BaseUrl = @"http://localhost:5281/";
+            APIService.Url = @"http://localhost:5281/";
 #else
-            APIService.BaseUrl = @"https://businesscostpriceapi.azurewebsites.net/";
+            APIService.Url = @"https://businesscostpriceapi.azurewebsites.net/";
 #endif
 
             _exceptionService = exceptionService;

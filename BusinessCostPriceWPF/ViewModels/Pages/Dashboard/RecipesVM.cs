@@ -1,18 +1,15 @@
-﻿using BusinessCostPriceWPF.Models;
+﻿using BusinessCostPriceAPI.Client.Models;
+using BusinessCostPriceAPI.Client.Service;
+using BusinessCostPriceWPF.Models;
 using BusinessCostPriceWPF.Resources;
 using BusinessCostPriceWPF.Services;
-using BusinessCostPriceWPF.Services.API;
 using BusinessCostPriceWPF.Views.Pages.Dialogs;
-using BusinessCostPriceWPF.Views.Pages.Ingredients;
 using BusinessCostPriceWPF.Views.Pages.Recipes;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Shapes;
 using Wpf.Ui.Controls;
 
 namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
@@ -114,15 +111,15 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         {
             ReloadRecipes();
             _availableIngredients.Clear();
-            _availableIngredients.AddRange((await new APIService().GetIngredientsAsync(0)).Select(Ingredient.Build));
+            _availableIngredients.AddRange((await APIService.GetIngredientsAsync(0)).Select(Ingredient.Build));
             _availableRecipeIngredients.Clear();
-            _availableRecipeIngredients.AddRange((await new APIService().GetRecipesAsync(0)).Select(Recipe.Build));
+            _availableRecipeIngredients.AddRange((await APIService.GetRecipesAsync(0)).Select(Recipe.Build));
         }
         private async void ReloadRecipes()
         {
             Recipes = new ObservableCollection<Recipe>();
             Recipes.CollectionChanged += (a, e) => SearchByText();
-            Recipes.AddRange((await new APIService().GetRecipesAsync(0)).Select(Recipe.Build));
+            Recipes.AddRange((await APIService.GetRecipesAsync(0)).Select(Recipe.Build));
         }
 
         private void ClearSelection()
@@ -161,7 +158,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
                 case ContentDialogResult.Primary:
                     try
                     {
-                        var recipe = await new APIService().AddRecipeAsync(new RecipeDTO()
+                        var recipe = await APIService.AddRecipeAsync(new RecipeDTO()
                         {
                             Name = SelectedName,
                             RecipeQuantity = SelectedQuantity,
@@ -172,10 +169,10 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
                         foreach (var item in SelectedRecipeIngredients)
                         {
                             item.RecipeId = recipe.Id;
-                            await new APIService().AddRecipeIngredientAsync(item);
+                            await APIService.AddRecipeIngredientAsync(item);
                         }
 
-                        Recipes.Add(Recipe.Build(await new APIService().GetRecipeAsync(recipe.Id)));
+                        Recipes.Add(Recipe.Build(await APIService.GetRecipeAsync(recipe.Id)));
                     }
                     catch (ApiException ex)
                     {
@@ -200,7 +197,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
 
             SelectedIngredient = null;
             SelectedRecipeIngredients.Clear();
-            SelectedRecipeIngredients.AddRange(await new APIService().GetRecipeIngredientsAsync(recipe.Id));
+            SelectedRecipeIngredients.AddRange(await APIService.GetRecipeIngredientsAsync(recipe.Id));
             _baseSelectedRecipeIngredients = SelectedRecipeIngredients.Select(ri => ri.ToSend()).ToList();
 
             AllIngredients = GetAllIngredients();
@@ -223,7 +220,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
                 case ContentDialogResult.Primary:
                     try
                     {
-                        var addedRecipe = await new APIService().UpdateRecipeAsync(new RecipeDTO()
+                        var addedRecipe = await APIService.UpdateRecipeAsync(new RecipeDTO()
                         {
                             Id = recipe.Id,
                             Name = SelectedName,
@@ -234,18 +231,18 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
 
                         foreach (var item in _baseSelectedRecipeIngredients.Where(baseIng => !SelectedRecipeIngredients.Any(selIng => selIng.Id == baseIng.Id)))
                         {
-                            await new APIService().RemoveRecipeIngredientAsync(item.Id);
+                            await APIService.RemoveRecipeIngredientAsync(item.Id);
                         }
 
                         foreach (var item in SelectedRecipeIngredients.Where(selIng => _baseSelectedRecipeIngredients.Any(baseIng => baseIng.Id == selIng.Id && baseIng.Quantity != selIng.Quantity)))
                         {
-                            await new APIService().UpdateRecipeIngredientAsync(item);
+                            await APIService.UpdateRecipeIngredientAsync(item);
                         }
 
                         foreach (var item in SelectedRecipeIngredients.Where(selIng => selIng.Id == 0))
                         {
                             item.RecipeId = recipe.Id;
-                            await new APIService().AddRecipeIngredientAsync(item);
+                            await APIService.AddRecipeIngredientAsync(item);
                         }
                         recipe.Fill(addedRecipe);
                     }
@@ -284,7 +281,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
                 case ContentDialogResult.Primary:
                     try
                     {
-                        await new APIService().RemoveRecipeAsync(recipe.Id);
+                        await APIService.RemoveRecipeAsync(recipe.Id);
                         Recipes.Remove(recipe);
                     }
                     catch (ApiException ex)
@@ -314,7 +311,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             }
 
             SelectedRecipeIngredients.Clear();
-            SelectedRecipeIngredients.AddRange(await new APIService().GetRecipeIngredientsAsync(recipe.Id));
+            SelectedRecipeIngredients.AddRange(await APIService.GetRecipeIngredientsAsync(recipe.Id));
 
             using (StreamWriter outputFile = new StreamWriter(saveFileDialog.FileName, false, Encoding.UTF8))
             {

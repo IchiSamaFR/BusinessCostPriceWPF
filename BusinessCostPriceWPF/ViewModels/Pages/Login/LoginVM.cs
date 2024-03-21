@@ -1,9 +1,6 @@
-﻿using BusinessCostPriceWPF.Services;
-using BusinessCostPriceWPF.Services.API;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using BusinessCostPriceAPI.Client.Models;
+using BusinessCostPriceAPI.Client.Service;
+using BusinessCostPriceWPF.Services;
 using Wpf.Ui.Controls;
 
 namespace BusinessCostPriceWPF.ViewModels.Pages.Login
@@ -44,7 +41,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Login
             var passwordBox = password as PasswordBox;
             try
             {
-                var result = await new APIService().LoginAsync(new AuthenticateDTO()
+                var result = await APIService.LoginAsync(new AuthenticateDTO()
                 {
                     Email = MailAdress,
                     Password = passwordBox.Password,
@@ -71,7 +68,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Login
             var passwordBox = password as PasswordBox;
             try
             {
-                var result = await new APIService().RegisterAsync(new AuthenticateDTO()
+                var result = await APIService.RegisterAsync(new AuthenticateDTO()
                 {
                     Email = MailAdress,
                     Password = passwordBox.Password,

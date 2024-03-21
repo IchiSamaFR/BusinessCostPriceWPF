@@ -3,14 +3,11 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-using BusinessCostPriceWPF.Services.API;
+using BusinessCostPriceAPI.Client.Service;
 using BusinessCostPriceWPF.Views.Pages;
 using BusinessCostPriceWPF.Views.Pages.Dashboard;
 using BusinessCostPriceWPF.Views.Pages.Login;
-using BusinessCostPriceWPF.Views.Windows;
 using System.Collections.ObjectModel;
-using System.Drawing.Printing;
-using System.Windows.Navigation;
 using Wpf.Ui.Common;
 using Wpf.Ui.Controls;
 
@@ -100,8 +97,6 @@ namespace BusinessCostPriceWPF.ViewModels.Windows
             {
                 var nav = (INavigationService)_serviceProvider.GetService(typeof(INavigationService));
                 nav.Navigate(typeof(HomePage));
-
-                var tmp = await new APIService().GetIngredientsAsync(0);
             }
         }
     }

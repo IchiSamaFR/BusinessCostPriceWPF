@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:BusinessCostPriceWPF.Views.Pages.Recipes"
              xmlns:converter="clr-namespace:BusinessCostPriceWPF.Helpers"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-             xmlns:apiModels="clr-namespace:BusinessCostPriceWPF.Services.API"
+             xmlns:apiModels="clr-namespace:BusinessCostPriceAPI.Client.Models;assembly=BusinessCostPriceAPI.Client"
              xmlns:models="clr-namespace:BusinessCostPriceWPF.Models"
              xmlns:pages="clr-namespace:BusinessCostPriceWPF.ViewModels.Pages.Dashboard"
              mc:Ignorable="d" Name="recipesDialog"

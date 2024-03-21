@@ -1,11 +1,5 @@
-﻿using BusinessCostPriceWPF.Resources;
-using BusinessCostPriceWPF.Services.API;
+﻿using BusinessCostPriceAPI.Client.Models;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessCostPriceWPF.Models
 {
