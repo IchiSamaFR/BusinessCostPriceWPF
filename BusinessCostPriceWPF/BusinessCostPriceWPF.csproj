@@ -28,9 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="BusinessCostPriceAPI.Client">
-      <HintPath>..\..\BusinessCostPriceAPI\BusinessCostPriceAPI.Client\bin\Debug\net7.0\BusinessCostPriceAPI.Client.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\BusinessCostPriceAPI.Client\BusinessCostPriceAPI.Client\BusinessCostPriceAPI.Client.csproj" />
   </ItemGroup>
 
   <ItemGroup>
