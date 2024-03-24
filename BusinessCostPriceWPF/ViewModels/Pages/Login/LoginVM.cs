@@ -1,5 +1,5 @@
 ﻿using BusinessCostPriceAPI.Client.Models;
-using BusinessCostPriceAPI.Client.Service;
+using BusinessCostPriceAPI.Client.Services;
 using BusinessCostPriceWPF.Services;
 using Wpf.Ui.Controls;
 
@@ -18,8 +18,11 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Login
         [ObservableProperty]
         private bool _isLogging;
 
-        public LoginVM()
+        private IAPIService _apiService;
+
+        public LoginVM(IAPIService service)
         {
+            _apiService = service;
             ClearValues();
 #if DEBUG
             MailAdress = "mytempmail@et.et";
@@ -41,7 +44,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Login
             var passwordBox = password as PasswordBox;
             try
             {
-                var result = await APIService.LoginAsync(new AuthenticateDTO()
+                var result = await _apiService.LoginAsync(new AuthenticateDTO()
                 {
                     Email = MailAdress,
                     Password = passwordBox.Password,
@@ -68,7 +71,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Login
             var passwordBox = password as PasswordBox;
             try
             {
-                var result = await APIService.RegisterAsync(new AuthenticateDTO()
+                var result = await _apiService.RegisterAsync(new AuthenticateDTO()
                 {
                     Email = MailAdress,
                     Password = passwordBox.Password,

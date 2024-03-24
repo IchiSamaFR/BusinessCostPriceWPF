@@ -1,5 +1,5 @@
 ﻿using BusinessCostPriceAPI.Client.Models;
-using BusinessCostPriceAPI.Client.Service;
+using BusinessCostPriceAPI.Client.Services;
 using BusinessCostPriceWPF.Models;
 using BusinessCostPriceWPF.Resources;
 using BusinessCostPriceWPF.Services;
@@ -42,6 +42,12 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         [ObservableProperty]
         private string _nameToFind = string.Empty;
 
+        private IAPIService _apiService;
+        public StockVM(IAPIService service)
+        {
+            _apiService = service;
+        }
+
         public void OnNavigatedTo()
         {
             if (!_isInitialized)
@@ -63,8 +69,8 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         {
             _availableIngredients.Clear();
             _availableFurnitures.Clear();
-            _availableIngredients.AddRange((await APIService.GetIngredientsAsync(0)).Select(Ingredient.Build));
-            _availableFurnitures.AddRange((await APIService.GetFurnituresAsync(0)).Select(Furniture.Build));
+            _availableIngredients.AddRange((await _apiService.GetIngredientsAsync(0)).Select(Ingredient.Build));
+            _availableFurnitures.AddRange((await _apiService.GetFurnituresAsync(0)).Select(Furniture.Build));
 
             _ingredientsBaseStock.Clear();
             _availableIngredients.Foreach(item => _ingredientsBaseStock.Add(item, item.StockQuantity));
@@ -84,7 +90,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
                     {
                         if (stock is Ingredient)
                         {
-                            var res = await APIService.AddIngredientStockAsync(new IngredientStockInfoDTO()
+                            var res = await _apiService.AddIngredientStockAsync(new IngredientStockInfoDTO()
                             {
                                 IngredientId = stock.Id,
                                 StockQuantity = stock.StockQuantity
@@ -93,7 +99,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
                         }
                         else if (stock is Furniture)
                         {
-                            var res = await APIService.AddFurnitureStockAsync(new FurnitureStockInfoDTO()
+                            var res = await _apiService.AddFurnitureStockAsync(new FurnitureStockInfoDTO()
                             {
                                 FurnitureId = stock.Id,
                                 StockQuantity = stock.StockQuantity

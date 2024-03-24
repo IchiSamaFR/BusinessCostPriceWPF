@@ -3,6 +3,7 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
+using BusinessCostPriceAPI.Client.Services;
 using BusinessCostPriceWPF.Services;
 using BusinessCostPriceWPF.ViewModels.Pages.Dashboard;
 using BusinessCostPriceWPF.ViewModels.Pages.Login;
@@ -39,6 +40,7 @@ namespace BusinessCostPriceWPF
                 services.AddSingleton<INavigationService, NavigationService>();
                 services.AddSingleton<ISnackbarService, SnackbarService>();
                 services.AddSingleton<IContentDialogService, ContentDialogService>();
+                services.AddSingleton<IAPIService, APIService>();
 
                 services.AddSingleton<LoginView>();
                 services.AddSingleton<LoginVM>();
