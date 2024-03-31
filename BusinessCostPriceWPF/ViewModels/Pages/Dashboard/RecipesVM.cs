@@ -48,12 +48,13 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
         [ObservableProperty]
         private ObservableCollection<RecipeIngredientDTO> _selectedRecipeIngredients = new ObservableCollection<RecipeIngredientDTO>();
         private List<RecipeIngredientDTO> _baseSelectedRecipeIngredients = new List<RecipeIngredientDTO>();
+        private List<RecipeDTO> _baseParentRecipes = new List<RecipeDTO>();
 
         private IEnumerable<IIngredient> GetAllIngredients()
         {
             var tmp = new List<IIngredient>();
             tmp.AddRange(_availableIngredients.Where(avIng => !_selectedRecipeIngredients.Any(ing => ing.IngredientId == avIng.Id)));
-            tmp.AddRange(_availableRecipeIngredients.Where(avIng => !_selectedRecipeIngredients.Any(ing => ing.IngredientRecipeId == avIng.Id) && avIng.Id != _modifiedId));
+            tmp.AddRange(_availableRecipeIngredients.Where(avIng => !_selectedRecipeIngredients.Any(ing => ing.IngredientRecipeId == avIng.Id) && !_baseParentRecipes.Any(rec => rec.Id == avIng.Id)));
             return tmp;
         }
         #endregion
@@ -202,6 +203,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             SelectedRecipeIngredients.AddRange(await _apiService.GetRecipeIngredientsAsync(recipe.Id));
             _baseSelectedRecipeIngredients = SelectedRecipeIngredients.Select(ri => ri.ToSend()).ToList();
 
+            _baseParentRecipes = await _apiService.GetRecipeFromSubRecipeAsync(recipe.Id);
             AllIngredients = GetAllIngredients();
 
             var content = new RecipeAddDialog();

@@ -3,7 +3,7 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-using BusinessCostPriceAPI.Client.Service;
+using BusinessCostPriceAPI.Client.Services;
 using BusinessCostPriceWPF.Views.Pages;
 using BusinessCostPriceWPF.Views.Pages.Dashboard;
 using BusinessCostPriceWPF.Views.Pages.Login;
