@@ -22,7 +22,8 @@ namespace BusinessCostPriceWPF.Views.Windows
             INavigationService navigationService,
             IServiceProvider serviceProvider,
             ISnackbarService snackbarService,
-            IContentDialogService contentDialogService
+            IContentDialogService contentDialogService,
+            IAPIService apiService
         )
         {
             Wpf.Ui.Appearance.Watcher.Watch(this);
@@ -39,9 +40,9 @@ namespace BusinessCostPriceWPF.Views.Windows
             NavigationView.SetServiceProvider(serviceProvider);
 
 #if DEBUG
-            APIService.Url = @"http://localhost:5281/";
+            apiService.SetUrl(@"http://localhost:5281/");
 #else
-            APIService.Url = @"https://businesscostpriceapi.azurewebsites.net/";
+            apiService.SetUrl(@"https://businesscostpriceapi.azurewebsites.net/");
 #endif
 
             _exceptionService = exceptionService;

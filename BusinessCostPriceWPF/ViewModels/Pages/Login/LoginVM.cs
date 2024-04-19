@@ -51,7 +51,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Login
                     Token = ""
                 });
 
-                APIService.JwtToken = result.Token;
+                _apiService.JwtToken = result.Token;
                 ClearValues();
             }
             catch (ApiException ex)
@@ -78,7 +78,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Login
                     Token = ""
                 });
 
-                APIService.JwtToken = result.Token;
+                _apiService.JwtToken = result.Token;
             }
             catch (ApiException ex)
             {
@@ -92,7 +92,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Login
 
         public void Disconnect()
         {
-            APIService.JwtToken = string.Empty;
+            _apiService.JwtToken = string.Empty;
             OnLogged.Invoke();
         }
     }

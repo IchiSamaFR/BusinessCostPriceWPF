@@ -83,16 +83,18 @@ namespace BusinessCostPriceWPF.ViewModels.Windows
         private LoginView _loginView;
 
         private IServiceProvider _serviceProvider;
-        public MainWindowVM(LoginView loginView, IServiceProvider serviceProvider)
+        private IAPIService _apiService;
+        public MainWindowVM(LoginView loginView, IServiceProvider serviceProvider, IAPIService apiService)
         {
             _serviceProvider = serviceProvider;
+            _apiService = apiService;
             _loginView = loginView;
             _loginView.ViewModel.OnLogged += OnLogged;
             
         }
         private async void OnLogged()
         {
-            IsLogged = APIService.IsLogged;
+            IsLogged = !string.IsNullOrEmpty(_apiService.JwtToken);
             if (IsLogged)
             {
                 var nav = (INavigationService)_serviceProvider.GetService(typeof(INavigationService));
