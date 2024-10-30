@@ -167,7 +167,7 @@ namespace BusinessCostPriceWPF.ViewModels.Pages.Dashboard
             SelectedPrice = ingredient.UnitPrice;
 
             IngredientPrices.Clear();
-            IngredientPrices.AddRange(await _apiService.GetIngredientPriceDetailsAsync(ingredient.Id));
+            IngredientPrices.AddRange(await _apiService.GetIngredientPriceInfosAsync(ingredient.Id));
 
             var content = new IngredientAddDialog();
             content.DataContext = this;
