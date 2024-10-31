@@ -39,11 +39,7 @@ namespace BusinessCostPriceWPF.Views.Windows
 
             NavigationView.SetServiceProvider(serviceProvider);
 
-#if DEBUG
             apiService.SetUrl(@"http://localhost:5281/");
-#else
-            apiService.SetUrl(@"https://businesscostpriceapi.azurewebsites.net/");
-#endif
 
             _exceptionService = exceptionService;
         }

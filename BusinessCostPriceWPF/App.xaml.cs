@@ -4,6 +4,7 @@
 // All Rights Reserved.
 
 using BusinessCostPriceAPI.Client.Services;
+using BusinessCostPriceAPI.Client.Services.Mock;
 using BusinessCostPriceWPF.Services;
 using BusinessCostPriceWPF.ViewModels.Pages.Dashboard;
 using BusinessCostPriceWPF.ViewModels.Pages.Login;
@@ -40,7 +41,7 @@ namespace BusinessCostPriceWPF
                 services.AddSingleton<INavigationService, NavigationService>();
                 services.AddSingleton<ISnackbarService, SnackbarService>();
                 services.AddSingleton<IContentDialogService, ContentDialogService>();
-                services.AddSingleton<IAPIService, APIService>();
+                services.AddSingleton<IAPIService, APIServiceMock>();
 
                 services.AddSingleton<LoginView>();
                 services.AddSingleton<LoginVM>();
